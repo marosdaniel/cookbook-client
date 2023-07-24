@@ -1,0 +1,41 @@
+name: Continuous Integration
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+      - .gitignore
+      - .editorconfig
+      - .docs/**
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  continous-integration:
+    runs-on: ubuntu-latest
+    # environment: something
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-${{ github.repository }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-${{ github.repository }}-node-modules-
+      - uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/node
+          key: ${{ runner.OS }}-${{ github.repository }}-npm-global-${{ hashFiles('**/package-lock.json') }}
+
+      - run: npm ci
+      - run: npx rimraf dist
+      - run: npx eslint "src/**" "**/*.{js,jsx,ts,tsx}"
+      - run: npm run build
