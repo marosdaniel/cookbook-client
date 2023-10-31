@@ -1,14 +1,13 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import loadable from "@loadable/component";
-import LoadingBar from "../components/LoadingBar";
-import Navbar from "../components/Navbar";
+import loadable from '@loadable/component';
+import LoadingBar from '../components/LoadingBar';
 
-import { nonProtectedRoutes } from "./nonProtectedRoutes";
-import { protectedRoutes } from "./protectedRoutes";
-import Authenticated from "./Authenticated";
+import { nonProtectedRoutes } from './nonProtectedRoutes';
+import { protectedRoutes } from './protectedRoutes';
+import Authenticated from './Authenticated';
 
-const NotFound = loadable(() => import("../pages/NotFoundPage"), {
+const NotFound = loadable(() => import('../pages/NotFoundPage'), {
   fallback: <LoadingBar />,
 });
 
@@ -17,7 +16,7 @@ export const router = createBrowserRouter([
     path,
     element: (
       <>
-        <Navbar />
+        {/* <Navbar /> */}
         <Component />
       </>
     ),
@@ -26,13 +25,13 @@ export const router = createBrowserRouter([
     path,
     element: (
       <Authenticated>
-        <Navbar />
+        {/* <Navbar /> */}
         <Component />
       </Authenticated>
     ),
   })),
   {
-    path: "*",
+    path: '*',
     element: <NotFound />,
   },
 ]);

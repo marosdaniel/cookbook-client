@@ -1,22 +1,8 @@
-import {
-  configureStore,
-  ThunkAction,
-  Action,
-  combineReducers,
-} from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
-import globalReducer from "./Global";
-import { globalPersistConfig } from "./utils/persistConfigs";
+import globalReducer from './Global';
+import { globalPersistConfig } from './utils/persistConfigs';
 
 const reducers = combineReducers({
   global: persistReducer(globalPersistConfig, globalReducer),
@@ -25,7 +11,7 @@ const reducers = combineReducers({
 
 export const store = configureStore({
   reducer: reducers,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

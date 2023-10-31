@@ -1,20 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider } from '@mui/material';
 
-import App from "./App";
-import theme from "./theme/";
-import { persistor, store } from "./store";
-import reportWebVitals from "./reportWebVitals";
+import App from './App';
+import theme from './theme/';
+import { persistor, store } from './store';
+import reportWebVitals from './reportWebVitals';
 
-import "./index.css";
+import './index.css';
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
@@ -25,7 +23,7 @@ root.render(
         </ThemeProvider>
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

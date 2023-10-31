@@ -1,9 +1,9 @@
-import React from "react";
-import { useSearchParams } from "react-router-dom";
+import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const Recipes = () => {
   const [searchParams] = useSearchParams();
-  const category = searchParams.get("category");
+  const category = searchParams.get('category');
   console.log(searchParams);
 
   if (!category) {

@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
-import Recipes from "./Recipes";
+import React from 'react';
+import { Box, Container, Grid, Typography } from '@mui/material';
+import Recipes from './Recipes';
 
 const RecipesPage = () => {
   return (
