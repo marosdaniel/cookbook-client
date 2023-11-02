@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -13,16 +14,22 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const client = new ApolloClient({
+  uri: 'http://localhost:8080/graphql',
+  cache: new InMemoryCache(),
+});
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>,
 );
 

@@ -24,9 +24,8 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "import/extensions": "off",
-    "import/no-extraneous-dependencies": "off"
-
-    // "@typescript-eslint/no-explicit-any": "off",
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "globals": {
     "Atomics": "readonly",
