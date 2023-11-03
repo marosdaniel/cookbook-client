@@ -2,11 +2,12 @@ import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/t
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import globalReducer from './Global';
-import { globalPersistConfig } from './utils/persistConfigs';
+import authReducer from './Auth';
+import { authPersistConfig, globalPersistConfig } from './utils/persistConfigs';
 
 const reducers = combineReducers({
   global: persistReducer(globalPersistConfig, globalReducer),
-  // global: globalReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
 });
 
 export const store = configureStore({

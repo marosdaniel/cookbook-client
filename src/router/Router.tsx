@@ -6,6 +6,8 @@ import LoadingBar from '../components/LoadingBar';
 import { nonProtectedRoutes } from './nonProtectedRoutes';
 import { protectedRoutes } from './protectedRoutes';
 import Authenticated from './Authenticated';
+import AppBar from '../components/AppBar/';
+import { ENonProtectedRoutes } from './types';
 
 const NotFound = loadable(() => import('../pages/NotFoundPage'), {
   fallback: <LoadingBar />,
@@ -16,8 +18,13 @@ export const router = createBrowserRouter([
     path,
     element: (
       <>
-        {/* <Navbar /> */}
-        <Component />
+        {path !== ENonProtectedRoutes.SIGNIN ? (
+          <AppBar>
+            <Component />
+          </AppBar>
+        ) : (
+          <Component />
+        )}
       </>
     ),
   })),
@@ -25,8 +32,9 @@ export const router = createBrowserRouter([
     path,
     element: (
       <Authenticated>
-        {/* <Navbar /> */}
-        <Component />
+        <AppBar>
+          <Component />
+        </AppBar>
       </Authenticated>
     ),
   })),

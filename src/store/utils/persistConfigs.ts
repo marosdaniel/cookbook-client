@@ -5,3 +5,9 @@ export const globalPersistConfig = {
   version: 1,
   storage: storageSession,
 };
+
+export const authPersistConfig = {
+  key: 'auth',
+  version: 1,
+  storage: storageSession,
+};

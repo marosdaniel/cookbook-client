@@ -1,18 +1,38 @@
 import React from 'react';
+import { useMutation } from '@apollo/client';
 import { Container, Box, Typography, TextField, Button, Grid, Link } from '@mui/material';
+
+import { CREATE_USER } from '../../../service/graphql/user/createUser';
 
 import { IProps } from './types';
 import { boxStyle } from './styles';
 
 const Register = ({ setIsLogin }: IProps) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [createUser, { loading, error }] = useMutation(CREATE_USER);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const userRegisterInput = {
+      firstName: data.get('first-name'),
+      lastName: data.get('last-name'),
+      userName: data.get('user-name'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+
+    try {
+      await createUser({
+        variables: { userRegisterInput },
+      });
+      setIsLogin(true);
+    } catch (_error) {
+      console.error(_error);
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Container maxWidth="sm">

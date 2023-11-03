@@ -1,16 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { useSearchParams } from 'react-router-dom';
-import { GET_RECIPES } from '../../../service/graphql/getRecipes';
+import { GET_RECIPES } from '../../../service/graphql/recipe/getRecipes';
+import LoadingBar from '../../../components/LoadingBar';
 
 const Recipes = () => {
-  const [searchParams] = useSearchParams();
   const { loading, error, data } = useQuery(GET_RECIPES);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingBar />;
   if (error) return <div>Error :(</div>;
 
   const recipes = data?.getRecipes?.recipes || [];
-  console.log(searchParams);
 
   return (
     <div>
