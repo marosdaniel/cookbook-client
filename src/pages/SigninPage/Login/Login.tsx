@@ -18,7 +18,6 @@ import { IProps } from './types';
 import { boxStyle } from './styles';
 import { useAppDispatch } from '../../../store/hooks';
 import { login } from '../../../store/Auth/auth';
-import { useAuthState } from '../../../store/Auth';
 import { useNavigate } from 'react-router-dom';
 import { ENonProtectedRoutes } from '../../../router/types';
 import LoadingBar from '../../../components/LoadingBar';
@@ -27,9 +26,8 @@ const Login = ({ setIsLogin }: IProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useAuthState();
   const [loginUser, { loading }] = useMutation(LOGIN_USER);
-  console.log('isAuthenticated', isAuthenticated);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

@@ -1,5 +1,7 @@
-import React, { PropsWithChildren } from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { PropsWithChildren, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -11,14 +13,18 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+
+import { useAuthState } from '../../store/Auth';
 import { AppBarProps } from './types';
+import { getAvatarName, useBottomMenuItems } from './utils';
+import { Avatar, Link } from '@mui/material';
+import { ENonProtectedRoutes } from '../../router/types';
 
 const drawerWidth = 240;
 
@@ -86,8 +92,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 }));
 
 export default function AppBar({ children }: PropsWithChildren) {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const { isAuthenticated, user } = useAuthState();
+  const [open, setOpen] = useState(false);
+  const bottomMenuItems = useBottomMenuItems();
+
+  const avatarName = getAvatarName(user);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -117,13 +126,27 @@ export default function AppBar({ children }: PropsWithChildren) {
           <Typography variant="h6" noWrap component="div">
             CookBook
           </Typography>
+          {!isAuthenticated ? (
+            <Link
+              component={RouterLink}
+              to={ENonProtectedRoutes.SIGNIN}
+              variant="h6"
+              noWrap
+              sx={{
+                color: 'white',
+                marginLeft: 'auto',
+              }}
+            >
+              Login
+            </Link>
+          ) : (
+            <Avatar sx={{ marginLeft: 'auto', width: 42, height: 42 }}>{avatarName}</Avatar>
+          )}
         </Toolbar>
       </MuiBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+          <IconButton onClick={handleDrawerClose}>{<ChevronLeftIcon />}</IconButton>
         </DrawerHeader>
         <Divider />
         <List>
@@ -152,28 +175,30 @@ export default function AppBar({ children }: PropsWithChildren) {
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          {bottomMenuItems.map(item =>
+            !item.disabled ? (
+              <ListItem key={item.key} disablePadding sx={{ display: 'block' }} onClick={item?.action}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {<MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ) : null,
+          )}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
