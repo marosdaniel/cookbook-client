@@ -15,7 +15,7 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const client = new ApolloClient({
-  uri: 'http://localhost:8080/graphql',
+  uri: process.env.REACT_APP_SERVER_URI,
   cache: new InMemoryCache(),
 });
 

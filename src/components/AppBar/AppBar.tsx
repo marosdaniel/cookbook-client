@@ -124,7 +124,7 @@ export default function AppBar({ children }: PropsWithChildren) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            CookBook
+            CookBook - Where Recipes Turn into Magic!
           </Typography>
           {!isAuthenticated ? (
             <Link
