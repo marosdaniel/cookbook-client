@@ -11,8 +11,6 @@ import theme from './theme/';
 import { persistor, store } from './store';
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SERVER_URI,
