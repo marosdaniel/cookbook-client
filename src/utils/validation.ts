@@ -1,3 +1,5 @@
+import * as Yup from 'yup';
+
 export const EMAIL_VALIDATOR_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 export const PASSWORD_VALIDATOR_REGEX_3_CHAR = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{3,})/;
@@ -7,3 +9,12 @@ export const PASSWORD_VALIDATOR_REGEX_8_CHAR = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9
 
 // Minimum eight characters, at least one letter, one number and one special character
 export const PASSWORD_VALIDATOR_REGEX_8_CHAR_SPECIAL = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+export const customValidationSchema = Yup.object().shape({
+  firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+  lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string()
+    .matches(PASSWORD_VALIDATOR_REGEX_8_CHAR, 'Password is too weak')
+    .required('Password is required'),
+});

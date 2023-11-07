@@ -1,6 +1,6 @@
-import React from 'react';
-
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { useFormik } from 'formik';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -11,16 +11,17 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+import { login } from '../../../store/Auth/auth';
 import { LOGIN_USER } from '../../../service/graphql/user/loginUser';
+import LoadingBar from '../../../components/LoadingBar';
+import { ENonProtectedRoutes } from '../../../router/types';
+import { customValidationSchema } from '../../../utils/validation';
 
 import { IProps } from './types';
 import { boxStyle } from './styles';
 import { useAppDispatch } from '../../../store/hooks';
-import { login } from '../../../store/Auth/auth';
-import { useNavigate } from 'react-router-dom';
-import { ENonProtectedRoutes } from '../../../router/types';
-import LoadingBar from '../../../components/LoadingBar';
 
 const Login = ({ setIsLogin }: IProps) => {
   const dispatch = useAppDispatch();
@@ -28,19 +29,16 @@ const Login = ({ setIsLogin }: IProps) => {
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+  const onSubmit = async () => {
     const userLoginInput = {
-      userNameOrEmail: data.get('email'),
-      password: data.get('password'),
+      userNameOrEmail: values.email,
+      password: values.password,
     };
 
     try {
       const {
         data: {
-          loginUser: { token, user, userId },
+          loginUser: { user },
         },
       } = await loginUser({
         variables: { userLoginInput },
@@ -61,6 +59,15 @@ const Login = ({ setIsLogin }: IProps) => {
     }
   };
 
+  const { values, handleChange, handleSubmit, touched, errors } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit,
+    validationSchema: customValidationSchema,
+  });
+
   if (loading) return <LoadingBar />;
 
   return (
@@ -69,16 +76,20 @@ const Login = ({ setIsLogin }: IProps) => {
         <Typography component="h1" variant="h4">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email address or username"
+            label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleChange}
+            value={values.email}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
           />
           <TextField
             margin="normal"
@@ -89,6 +100,10 @@ const Login = ({ setIsLogin }: IProps) => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleChange}
+            value={values.password}
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
           />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -106,6 +121,16 @@ const Login = ({ setIsLogin }: IProps) => {
               </Link>
             </Grid>
           </Grid>
+          <Button
+            type="button"
+            variant="text"
+            sx={{ mt: 6, mb: -3 }}
+            component={RouterLink}
+            to={ENonProtectedRoutes.RECIPES}
+          >
+            <ArrowBackIcon />
+            Go to the recipes
+          </Button>
         </Box>
       </Box>
     </Container>
