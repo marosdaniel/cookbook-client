@@ -1,25 +1,27 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
 import { useMutation } from '@apollo/client';
+
 import { Container, Box, Typography, TextField, Button, Grid, Link } from '@mui/material';
 
 import { CREATE_USER } from '../../../service/graphql/user/createUser';
+import { customValidationSchema } from '../../../utils/validation';
+import { ENonProtectedRoutes } from '../../../router/types';
 
 import { IProps } from './types';
 import { boxStyle } from './styles';
 
 const Register = ({ setIsLogin }: IProps) => {
-  const [createUser, { loading, error }] = useMutation(CREATE_USER);
+  const navigate = useNavigate();
+  const [createUser, { loading }] = useMutation(CREATE_USER);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+  const onSubmit = async () => {
     const userRegisterInput = {
-      firstName: data.get('first-name'),
-      lastName: data.get('last-name'),
-      userName: data.get('user-name'),
-      email: data.get('email'),
-      password: data.get('password'),
+      firstName: values.firstName,
+      lastName: values.lastName,
+      userName: values.userName,
+      email: values.email,
+      password: values.password,
     };
 
     try {
@@ -27,12 +29,24 @@ const Register = ({ setIsLogin }: IProps) => {
         variables: { userRegisterInput },
       });
       setIsLogin(true);
-    } catch (_error) {
+      navigate(ENonProtectedRoutes.HOME);
+    } catch (_error: any) {
       console.error(_error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      userName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: customValidationSchema,
+    onSubmit,
+  });
 
   return (
     <Container maxWidth="sm">
@@ -40,16 +54,20 @@ const Register = ({ setIsLogin }: IProps) => {
         <Typography component="h1" variant="h4">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
             id="first-name"
             label="First Name"
-            name="first-name"
+            name="firstName"
             autoComplete="firstName"
-            autoFocus
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.firstName}
+            error={touched.firstName && Boolean(errors.firstName)}
+            helperText={touched.firstName && errors.firstName}
           />
           <TextField
             margin="normal"
@@ -57,8 +75,13 @@ const Register = ({ setIsLogin }: IProps) => {
             fullWidth
             id="last-name"
             label="Last Name"
-            name="last-name"
+            name="lastName"
             autoComplete="lastName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.lastName}
+            error={touched.lastName && Boolean(errors.lastName)}
+            helperText={touched.lastName && errors.lastName}
           />
           <TextField
             margin="normal"
@@ -66,8 +89,13 @@ const Register = ({ setIsLogin }: IProps) => {
             fullWidth
             id="user-name"
             label="Username"
-            name="user-name"
+            name="userName"
             autoComplete="userName"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.userName}
+            error={touched.userName && Boolean(errors.userName)}
+            helperText={touched.userName && errors.userName}
           />
           <TextField
             margin="normal"
@@ -77,6 +105,11 @@ const Register = ({ setIsLogin }: IProps) => {
             label="Email Address"
             name="email"
             autoComplete="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.email}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
           />
           <TextField
             margin="normal"
@@ -86,19 +119,31 @@ const Register = ({ setIsLogin }: IProps) => {
             label="Password"
             type="password"
             id="password"
+            inputProps={{ maxLength: 30 }}
             autoComplete="current-password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password}
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password-again"
-            label="Password again"
+            name="confirmPassword"
+            label="Confirm password"
             type="password"
-            id="password-again"
-            autoComplete="current-password-again"
+            id="confirm-password"
+            autoComplete="confirm-password"
+            inputProps={{ maxLength: 30 }}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.confirmPassword}
+            error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+            helperText={touched.confirmPassword && errors.confirmPassword}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
             Register
           </Button>
           <Grid container>

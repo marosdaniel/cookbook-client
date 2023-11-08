@@ -9,6 +9,28 @@ const theme = createTheme({
       // main: '#40B5AD',
     },
   },
+  // components: {
+  //   MuiAlert: {
+  //     styleOverrides: {
+  //       standardSuccess: {
+  //         backgroundColor: 'green',
+  //         color: 'white',
+  //       },
+  //       standardError: {
+  //         backgroundColor: 'red',
+  //         color: 'white',
+  //       },
+  //       standardWarning: {
+  //         backgroundColor: 'orange',
+  //         color: 'white',
+  //       },
+  //       standardInfo: {
+  //         backgroundColor: 'grey',
+  //         color: 'black',
+  //       },
+  //     },
+  //   },
+  // },
 });
 
 export default theme;
