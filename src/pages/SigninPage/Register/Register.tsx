@@ -1,19 +1,27 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
 import { useMutation } from '@apollo/client';
+import { useFormik } from 'formik';
 
-import { Container, Box, Typography, TextField, Button, Grid, Link } from '@mui/material';
+import { Container, Box, Typography, TextField, Button, Grid, Link, Alert, Snackbar } from '@mui/material';
 
+import { login } from '../../../store/Auth/auth';
+import { useAppDispatch } from '../../../store/hooks';
 import { CREATE_USER } from '../../../service/graphql/user/createUser';
-import { customValidationSchema } from '../../../utils/validation';
+import { LOGIN_USER } from '../../../service/graphql/user/loginUser';
 import { ENonProtectedRoutes } from '../../../router/types';
+import { customValidationSchema } from '../../../utils/validation';
 
-import { IProps } from './types';
+import { linkStyles } from '../styles';
+import { IFormikProps, IProps } from './types';
 import { boxStyle } from './styles';
 
 const Register = ({ setIsLogin }: IProps) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [createUser, { loading }] = useMutation(CREATE_USER);
+  const [loginUser, { loading: loginLoading }] = useMutation(LOGIN_USER);
+  const [error, setError] = useState<string>('');
 
   const onSubmit = async () => {
     const userRegisterInput = {
@@ -28,14 +36,29 @@ const Register = ({ setIsLogin }: IProps) => {
       await createUser({
         variables: { userRegisterInput },
       });
-      setIsLogin(true);
-      navigate(ENonProtectedRoutes.HOME);
     } catch (_error: any) {
-      console.error(_error);
+      setError(_error.message);
     }
+    try {
+      const userLoginInput = {
+        userNameOrEmail: values.email,
+        password: values.password,
+      };
+      const {
+        data: {
+          loginUser: { user },
+        },
+      } = await loginUser({
+        variables: { userLoginInput },
+      });
+      dispatch(login(user));
+    } catch (_error: any) {
+      setError(_error.message);
+    }
+    navigate(ENonProtectedRoutes.HOME);
   };
 
-  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik({
+  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik<IFormikProps>({
     initialValues: {
       firstName: '',
       lastName: '',
@@ -143,18 +166,32 @@ const Register = ({ setIsLogin }: IProps) => {
             error={touched.confirmPassword && Boolean(errors.confirmPassword)}
             helperText={touched.confirmPassword && errors.confirmPassword}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading || loginLoading}>
             Register
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2" onClick={() => setIsLogin(true)}>
+              <Link sx={linkStyles} variant="body2" onClick={() => setIsLogin(true)}>
                 {'I already have an account'}
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={!!error}
+        onClose={() => setError('')}
+        autoHideDuration={3000}
+        message={error}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Alert variant="filled" severity="error">
+          {error}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

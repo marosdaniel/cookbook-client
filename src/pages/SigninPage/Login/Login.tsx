@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
@@ -22,7 +21,8 @@ import { LOGIN_USER } from '../../../service/graphql/user/loginUser';
 import { loginValidationSchema } from '../../../utils/validation';
 import { ENonProtectedRoutes } from '../../../router/types';
 
-import { IProps } from './types';
+import { linkStyles } from '../styles';
+import { IFormikProps, IProps } from './types';
 import { boxStyle } from './styles';
 
 const Login = ({ setIsLogin }: IProps) => {
@@ -30,7 +30,7 @@ const Login = ({ setIsLogin }: IProps) => {
   const navigate = useNavigate();
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
   const onSubmit = async () => {
     const userLoginInput = {
@@ -62,7 +62,7 @@ const Login = ({ setIsLogin }: IProps) => {
     }
   };
 
-  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik({
+  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik<IFormikProps>({
     initialValues: {
       email: '',
       password: '',
@@ -114,12 +114,12 @@ const Login = ({ setIsLogin }: IProps) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link sx={linkStyles} variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2" onClick={() => setIsLogin(false)}>
+              <Link sx={linkStyles} variant="body2" onClick={() => setIsLogin(false)}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
