@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import App from './App';
 import theme from './theme/';
@@ -23,6 +23,8 @@ root.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
+            <CssBaseline />
+
             <App />
           </ThemeProvider>
         </PersistGate>

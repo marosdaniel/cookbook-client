@@ -1,8 +1,12 @@
 import React from 'react';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { TLoadingBarProps } from './types';
 
-const LoadingBar = ({ sizeInRem }: TLoadingBarProps) => {
-  return <CircularProgress size={sizeInRem} />;
+const LoadingBar = ({ sizeInRem = '3rem' }: TLoadingBarProps) => {
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" maxHeight="100vh">
+      <CircularProgress size={sizeInRem} />
+    </Box>
+  );
 };
 export default LoadingBar;

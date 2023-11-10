@@ -1,60 +1,66 @@
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import CreateIcon from '@mui/icons-material/Create';
+
 import { useAuthState } from './../../store/Auth/selectors';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/Auth/auth';
 import { TUser } from '../../store/Auth/types';
+import { IBottomMenuItem } from './types';
 
 export const topMenuItems = [
   {
     name: 'Home',
     path: ENonProtectedRoutes.HOME,
-    icon: 'home',
+    iconComponent: 'home',
     disabled: false,
     key: 'home',
   },
   {
     name: 'Recipes',
     path: ENonProtectedRoutes.RECIPES,
-    icon: 'home',
+    iconComponent: 'home',
     disabled: false,
     key: 'recipes',
   },
 ];
 
-export const useBottomMenuItems = () => {
+export const useBottomMenuItems = (): IBottomMenuItem[] => {
   const { isAuthenticated } = useAuthState();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
-    console.log('logout');
   };
+
   return [
     {
       name: 'Profile',
       path: EProtectedRoutes.PROFILE,
-      icon: 'home',
+      iconComponent: AccountBoxIcon,
       disabled: !isAuthenticated,
       key: 'profile',
     },
     {
       name: 'My Recipes',
       path: EProtectedRoutes.MY_RECIPES,
-      icon: 'home',
+      iconComponent: LocalDiningIcon,
       disabled: !isAuthenticated,
       key: 'my-recipes',
     },
     {
       name: 'New Recipe',
       path: EProtectedRoutes.NEW_RECIPE,
-      icon: 'home',
+      iconComponent: CreateIcon,
       disabled: !isAuthenticated,
       key: 'new-recipe',
     },
     {
       name: 'Logout',
       action: handleLogout,
-      icon: 'home',
+      iconComponent: LogoutIcon,
       disabled: !isAuthenticated,
       key: 'logout',
     },
@@ -62,7 +68,7 @@ export const useBottomMenuItems = () => {
 };
 
 export const getAvatarName = (user: TUser | null) => {
-  return user?.locale === 'hu-HU'
-    ? `${user.firstName.charAt(0)} ${user.lastName.charAt(0)}`
-    : `${user?.lastName.charAt(0)} ${user?.firstName.charAt(0)}` || null;
+  return user?.locale !== 'hu-HU'
+    ? `${user?.firstName.charAt(0)} ${user?.lastName.charAt(0)}`
+    : `${user?.lastName.charAt(0)} ${user?.firstName.charAt(0)}` || 'J D';
 };

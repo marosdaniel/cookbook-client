@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -7,7 +7,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -22,7 +21,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { Avatar, Link } from '@mui/material';
 
 import { useAuthState } from '../../store/Auth';
-import { ENonProtectedRoutes } from '../../router/types';
+import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import { AppBarProps } from './types';
 import { getAvatarName, useBottomMenuItems } from './utils';
 
@@ -92,6 +91,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 }));
 
 export default function AppBar({ children }: PropsWithChildren) {
+  const navigate = useNavigate();
   const { isAuthenticated, user } = useAuthState();
   const [open, setOpen] = useState(false);
   const bottomMenuItems = useBottomMenuItems();
@@ -106,9 +106,12 @@ export default function AppBar({ children }: PropsWithChildren) {
     setOpen(false);
   };
 
+  const navigateTo = (path: ENonProtectedRoutes | EProtectedRoutes) => {
+    navigate(path);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
       <MuiBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -177,7 +180,12 @@ export default function AppBar({ children }: PropsWithChildren) {
         <List>
           {bottomMenuItems.map(item =>
             !item.disabled ? (
-              <ListItem key={item.key} disablePadding sx={{ display: 'block' }} onClick={item?.action}>
+              <ListItem
+                key={item.key}
+                disablePadding
+                sx={{ display: 'block' }}
+                onClick={() => (item.path ? navigateTo(item.path) : item.action?.())}
+              >
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -192,7 +200,7 @@ export default function AppBar({ children }: PropsWithChildren) {
                       justifyContent: 'center',
                     }}
                   >
-                    {<MailIcon />}
+                    <item.iconComponent />
                   </ListItemIcon>
                   <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
