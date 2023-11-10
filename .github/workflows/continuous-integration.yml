@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 1
       - uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
+          node-version: '18.x'
       - uses: actions/cache@v3
         with:
           path: node_modules
@@ -35,7 +35,7 @@ jobs:
           path: /opt/hostedtoolcache/node
           key: ${{ runner.OS }}-${{ github.repository }}-npm-global-${{ hashFiles('**/package-lock.json') }}
 
-      - run: npm ci
+      - run: npm i --legacy-peer-deps
       - run: npx rimraf dist
       - run: npx eslint "src/**" "**/*.{js,jsx,ts,tsx}"
       - run: npm run build

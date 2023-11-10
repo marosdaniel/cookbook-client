@@ -16,14 +16,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Avatar, Link } from '@mui/material';
 
 import { useAuthState } from '../../store/Auth';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import { AppBarProps } from './types';
-import { getAvatarName, useBottomMenuItems } from './utils';
+import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
 
 const drawerWidth = 240;
 
@@ -95,6 +93,7 @@ export default function AppBar({ children }: PropsWithChildren) {
   const { isAuthenticated, user } = useAuthState();
   const [open, setOpen] = useState(false);
   const bottomMenuItems = useBottomMenuItems();
+  const topMenuItems = useTopMenuItems();
 
   const avatarName = getAvatarName(user);
 
@@ -111,7 +110,7 @@ export default function AppBar({ children }: PropsWithChildren) {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box display="flex">
       <MuiBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -153,8 +152,15 @@ export default function AppBar({ children }: PropsWithChildren) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {topMenuItems.map(item => (
+            <ListItem
+              key={item.key}
+              disablePadding
+              sx={{ display: 'block' }}
+              onClick={() => {
+                return item.path && navigateTo(item.path);
+              }}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -169,9 +175,9 @@ export default function AppBar({ children }: PropsWithChildren) {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <item.iconComponent />
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}

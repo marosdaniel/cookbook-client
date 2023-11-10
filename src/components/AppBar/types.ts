@@ -1,15 +1,29 @@
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { SvgIconTypeMap } from '@mui/material';
 
 export interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-export interface IBottomMenuItem {
+interface IMenuItemBase {
   name: string;
   path?: ENonProtectedRoutes | EProtectedRoutes;
-  iconComponent: any;
+  iconComponent: OverridableComponent<
+    SvgIconTypeMap<
+      {
+        title?: string | undefined;
+      },
+      'svg'
+    >
+  > & { muiName: string };
   disabled: boolean;
   key: string;
+}
+
+export interface IBottomMenuItem extends IMenuItemBase {
   action?: () => void;
 }
+
+export interface ITopMenuItem extends IMenuItemBase {}
