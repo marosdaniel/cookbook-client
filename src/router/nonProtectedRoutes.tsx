@@ -15,6 +15,9 @@ const RecipeDetails = loadable(() => import('../pages/RecipeDetailsPage'), {
 const Recipes = loadable(() => import('../pages/RecipesPage'), {
   fallback: <LoadingBar />,
 });
+const User = loadable(() => import('../pages/UserPage'), {
+  fallback: <LoadingBar />,
+});
 
 export const nonProtectedRoutes = [
   {
@@ -32,5 +35,9 @@ export const nonProtectedRoutes = [
   {
     path: ENonProtectedRoutes.RECIPES,
     component: Recipes,
+  },
+  {
+    path: `${ENonProtectedRoutes.USERS}/:userName/*`,
+    component: User,
   },
 ];

@@ -5,6 +5,7 @@ export enum ENonProtectedRoutes {
   SIGNIN = '/signin',
   ARTICLES = '/articles',
   CONTACT_US = '/contact-us',
+  USERS = '/users',
 }
 
 export enum EProtectedRoutes {

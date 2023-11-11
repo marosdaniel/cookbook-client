@@ -9,6 +9,7 @@ const GET_RECIPES = gql`
         description
         title
         createdAt
+        preparationTime
       }
     }
   }
@@ -29,6 +30,7 @@ const GET_RECIPE_BY_ID = gql`
       instructions
       title
       updatedAt
+      preparationTime
     }
   }
 `;
