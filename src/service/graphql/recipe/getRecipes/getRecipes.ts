@@ -1,13 +1,15 @@
 import gql from 'graphql-tag';
 
 const GET_RECIPES = gql`
-  query GetRecipes {
-    getRecipes {
+  query GetRecipes($limit: Int) {
+    getRecipes(limit: $limit) {
       recipes {
         _id
+        createdBy
+        description
         title
+        createdAt
       }
-      totalRecipes
     }
   }
 `;
