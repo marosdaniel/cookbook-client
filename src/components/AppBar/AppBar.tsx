@@ -22,6 +22,8 @@ import { useAuthState } from '../../store/Auth';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import { AppBarProps } from './types';
 import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
+import { getListItemStyles } from './styles';
+import myTheme from '../../theme';
 
 const drawerWidth = 240;
 
@@ -126,7 +128,7 @@ export default function AppBar({ children }: PropsWithChildren) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            CookBook - Where Recipes Turn into Magic!
+            Where Recipes Turn into Magic!
           </Typography>
           {!isAuthenticated ? (
             <Link
@@ -148,6 +150,9 @@ export default function AppBar({ children }: PropsWithChildren) {
       </MuiBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
+          <Typography variant="h5" sx={{ margin: '0 auto', color: myTheme.palette.primary.main }}>
+            CookBook
+          </Typography>
           <IconButton onClick={handleDrawerClose}>{<ChevronLeftIcon />}</IconButton>
         </DrawerHeader>
         <Divider />
@@ -185,11 +190,12 @@ export default function AppBar({ children }: PropsWithChildren) {
         <Divider />
         <List>
           {bottomMenuItems.map(item =>
-            !item.disabled ? (
+            !item.hidden ? (
               <ListItem
+                disabled={item.disabled}
                 key={item.key}
                 disablePadding
-                sx={{ display: 'block' }}
+                sx={getListItemStyles(item.disabled)}
                 onClick={() => (item.path ? navigateTo(item.path) : item.action?.())}
               >
                 <ListItemButton

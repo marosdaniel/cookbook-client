@@ -19,6 +19,7 @@ interface IMenuItemBase {
     >
   > & { muiName: string };
   disabled: boolean;
+  hidden: boolean;
   key: string;
 }
 

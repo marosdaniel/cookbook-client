@@ -27,7 +27,10 @@ const GET_RECIPE_BY_ID = gql`
         quantity
         unit
       }
-      instructions
+      preparationSteps {
+        description
+        order
+      }
       title
       updatedAt
       preparationTime

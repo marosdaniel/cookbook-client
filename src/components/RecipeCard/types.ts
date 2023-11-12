@@ -1,10 +1,10 @@
-import { TIngredient } from '../../store/Recipe/types';
+import { TIngredient, TPreparationStep } from '../../store/Recipe/types';
 
 export interface IProps {
   title: string;
   description: string;
   ingredients: TIngredient[];
-  instructions: string;
+  preparationSteps: TPreparationStep[];
   createdAt: string;
   createdBy: string;
   updatedAt: string;

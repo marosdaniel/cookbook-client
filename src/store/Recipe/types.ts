@@ -3,7 +3,7 @@ export type TRecipe = {
   title: string;
   description: string;
   ingredients: TIngredient[];
-  instructions: string;
+  preparationSteps: TPreparationStep[];
   createdAt: string;
   createdBy: string;
   updatedAt: string;
@@ -14,4 +14,10 @@ export type TIngredient = {
   _id: string;
   name: string;
   quantity: string;
+};
+
+export type TPreparationStep = {
+  _id: string;
+  description: string;
+  order: number;
 };

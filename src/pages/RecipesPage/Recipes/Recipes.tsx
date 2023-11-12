@@ -24,7 +24,7 @@ const Recipes = () => {
           createdAt={recipe.createdAt}
           createdBy={recipe.createdBy}
           ingredients={recipe.ingredients}
-          instructions={recipe.instructions}
+          preparationSteps={recipe.preparationSteps}
           updatedAt={recipe.updatedAt}
           id={recipe._id}
         />

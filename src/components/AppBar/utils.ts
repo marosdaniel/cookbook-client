@@ -11,31 +11,15 @@ import { TUser } from '../../store/Auth/types';
 import { IBottomMenuItem, ITopMenuItem } from './types';
 import { useAppDispatch } from '../../store/hooks';
 
-export const topMenuItems = [
-  {
-    name: 'Home',
-    path: ENonProtectedRoutes.HOME,
-    iconComponent: 'home',
-    disabled: false,
-    key: 'home',
-  },
-  {
-    name: 'Recipes',
-    path: ENonProtectedRoutes.RECIPES,
-    iconComponent: 'home',
-    disabled: false,
-    key: 'recipes',
-  },
-];
-
 export const useTopMenuItems = (): ITopMenuItem[] => {
   return [
     {
       name: 'Recipes',
       path: ENonProtectedRoutes.RECIPES,
       iconComponent: MenuBookIcon,
-      disabled: false,
+      hidden: false,
       key: 'recipes',
+      disabled: false,
     },
   ];
 };
@@ -53,29 +37,33 @@ export const useBottomMenuItems = (): IBottomMenuItem[] => {
       name: 'Profile',
       path: EProtectedRoutes.PROFILE,
       iconComponent: AccountBoxIcon,
-      disabled: !isAuthenticated,
+      disabled: false,
       key: 'profile',
+      hidden: !isAuthenticated,
     },
     {
       name: 'My Recipes',
       path: EProtectedRoutes.MY_RECIPES,
       iconComponent: LocalDiningIcon,
-      disabled: !isAuthenticated,
+      hidden: !isAuthenticated,
       key: 'my-recipes',
+      disabled: true,
     },
     {
       name: 'New Recipe',
       path: EProtectedRoutes.NEW_RECIPE,
       iconComponent: CreateIcon,
-      disabled: !isAuthenticated,
+      hidden: !isAuthenticated,
       key: 'new-recipe',
+      disabled: false,
     },
     {
       name: 'Logout',
       action: handleLogout,
       iconComponent: LogoutIcon,
-      disabled: !isAuthenticated,
+      hidden: !isAuthenticated,
       key: 'logout',
+      disabled: false,
     },
   ];
 };

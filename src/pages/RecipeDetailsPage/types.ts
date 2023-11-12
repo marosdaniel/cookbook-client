@@ -1,4 +1,4 @@
-import { TIngredient } from '../../store/Recipe/types';
+import { TIngredient, TPreparationStep } from '../../store/Recipe/types';
 
 export interface RecipeDetailsData {
   getRecipeById: {
@@ -7,7 +7,7 @@ export interface RecipeDetailsData {
     createdBy: string;
     createdAt: string;
     description: string;
-    instructions: string;
+    preparationSteps: TPreparationStep[];
     ingredients: TIngredient[];
     updatedAt: string;
   };
