@@ -3,6 +3,8 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import CreateIcon from '@mui/icons-material/Create';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import { useAuthState } from './../../store/Auth/selectors';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
@@ -19,6 +21,22 @@ export const useTopMenuItems = (): ITopMenuItem[] => {
       iconComponent: MenuBookIcon,
       hidden: false,
       key: 'recipes',
+      disabled: false,
+    },
+    {
+      name: 'Blogs',
+      path: ENonProtectedRoutes.BLOGS,
+      iconComponent: RssFeedIcon,
+      hidden: false,
+      key: 'blogs',
+      disabled: false,
+    },
+    {
+      name: 'Tips and Tricks',
+      path: ENonProtectedRoutes.TIPS_AND_TRICKS,
+      iconComponent: AutoFixHighIcon,
+      hidden: false,
+      key: 'tips-and-tricks',
       disabled: false,
     },
   ];

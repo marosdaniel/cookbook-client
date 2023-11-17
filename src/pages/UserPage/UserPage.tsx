@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
+import { Typography } from '@mui/material';
+
 import { GET_USER_BY_USERNAME } from '../../service/graphql/user/getUser';
 import LoadingBar from '../../components/LoadingBar';
 import { TRecipe } from '../../store/Recipe/types';

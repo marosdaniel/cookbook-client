@@ -20,6 +20,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ##### New Recipe
 
+##### Add to favorites
+
 ##### Create Logo & favicon
 
 ##### Filter Recipes by \*

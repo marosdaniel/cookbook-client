@@ -1,21 +1,27 @@
-import { useQuery } from '@apollo/client';
+import { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
 import LoadingBar from '../../components/LoadingBar';
 import { RecipeDetailsData } from './types';
-import { Container, Link, Typography } from '@mui/material';
+import { Button, Container, Grid, Link, ListItemText, Typography } from '@mui/material';
+import { useAuthState } from '../../store/Auth';
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuthState();
   const { loading, error, data } = useQuery<RecipeDetailsData>(GET_RECIPE_BY_ID, {
     variables: { id } as { id: string },
   });
-  console.log(data);
+
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   if (loading) return <LoadingBar />;
   if (error) return <div>Error :(</div>;
 
   const recipe = data?.getRecipeById;
+
+  const isEditAvailable = data?.getRecipeById.createdBy === user?.userName;
 
   const { title, createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
 
@@ -26,11 +32,26 @@ const RecipeDetailsPage = () => {
   );
 
   return (
-    <Container>
-      <Typography variant="h3">{title}</Typography>
-      <Typography variant="subtitle1">from {linkToCreator}'s kitchen</Typography>
-      <Typography variant="h6">{description}</Typography>
-      <ul>{preparationSteps?.map(step => <li key={step._id}>{step.description}</li>)}</ul>
+    <Container maxWidth={'xl'}>
+      <Grid display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h3">{title}</Typography>
+        {isEditAvailable && (
+          <Button variant="outlined" color="primary">
+            Edit
+          </Button>
+        )}
+      </Grid>
+      <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
+      <Typography variant="subtitle1">{description}</Typography>
+      <Typography variant="h5">Cooking instructions</Typography>
+
+      <ul>
+        {preparationSteps?.map(step => (
+          <ListItemText key={step.order}>
+            <Typography variant="body1">{step.description}</Typography>
+          </ListItemText>
+        ))}
+      </ul>
     </Container>
   );
 };

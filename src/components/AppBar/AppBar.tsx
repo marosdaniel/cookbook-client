@@ -16,6 +16,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+
 import { Avatar, Link } from '@mui/material';
 
 import { useAuthState } from '../../store/Auth';
@@ -158,45 +160,14 @@ export default function AppBar({ children }: PropsWithChildren) {
         <Divider />
         <List>
           {topMenuItems.map(item => (
-            <ListItem
-              key={item.key}
-              disablePadding
-              sx={{ display: 'block' }}
-              onClick={() => {
-                return item.path && navigateTo(item.path);
-              }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <item.iconComponent />
-                </ListItemIcon>
-                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {bottomMenuItems.map(item =>
-            !item.hidden ? (
+            <Tooltip title={item.name} placement="right" key={item.key}>
               <ListItem
-                disabled={item.disabled}
                 key={item.key}
                 disablePadding
-                sx={getListItemStyles(item.disabled)}
-                onClick={() => (item.path ? navigateTo(item.path) : item.action?.())}
+                sx={{ display: 'block' }}
+                onClick={() => {
+                  return item.path && navigateTo(item.path);
+                }}
               >
                 <ListItemButton
                   sx={{
@@ -217,6 +188,41 @@ export default function AppBar({ children }: PropsWithChildren) {
                   <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
+            </Tooltip>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {bottomMenuItems.map(item =>
+            !item.hidden ? (
+              <Tooltip title={item.name} placement="right" key={item.key}>
+                <ListItem
+                  disabled={item.disabled}
+                  key={item.key}
+                  disablePadding
+                  sx={getListItemStyles(item.disabled)}
+                  onClick={() => (item.path ? navigateTo(item.path) : item.action?.())}
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <item.iconComponent />
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
             ) : null,
           )}
         </List>

@@ -1,23 +1,14 @@
-import { Box, Grid, TextField, Typography } from '@mui/material';
-import { boxStyles } from './styles';
+import { Grid, Typography } from '@mui/material';
+import RecipeFormEditor from '../../components/RecipeFormEditor';
 
 const NewRecipePage = () => {
-  const handleSubmit = () => {};
+  // const handleSubmit = () => {};
   return (
     <Grid>
-      <Typography variant="h3">Creating new recipe</Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={boxStyles}>
-        <TextField margin="normal" required fullWidth id="title" label="Title" name="title" autoComplete="title" />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="description"
-          label="Description"
-          name="description"
-          autoComplete="description"
-        />
-      </Box>
+      <Typography variant="h3" marginBottom={4}>
+        Creating new recipe
+      </Typography>
+      <RecipeFormEditor />
     </Grid>
   );
 };

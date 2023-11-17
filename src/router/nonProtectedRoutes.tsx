@@ -18,6 +18,15 @@ const Recipes = loadable(() => import('../pages/RecipesPage'), {
 const User = loadable(() => import('../pages/UserPage'), {
   fallback: <LoadingBar />,
 });
+const Blogs = loadable(() => import('../pages/BlogsPage'), {
+  fallback: <LoadingBar />,
+});
+const BlogDetails = loadable(() => import('../pages/BlogDetailsPage'), {
+  fallback: <LoadingBar />,
+});
+const TipsAndTricks = loadable(() => import('../pages/TipsAndTricksPage'), {
+  fallback: <LoadingBar />,
+});
 
 export const nonProtectedRoutes = [
   {
@@ -39,5 +48,17 @@ export const nonProtectedRoutes = [
   {
     path: `${ENonProtectedRoutes.USERS}/:userName/*`,
     component: User,
+  },
+  {
+    path: `${ENonProtectedRoutes.BLOG_DETAILS}/*`,
+    component: BlogDetails,
+  },
+  {
+    path: ENonProtectedRoutes.BLOGS,
+    component: Blogs,
+  },
+  {
+    path: ENonProtectedRoutes.TIPS_AND_TRICKS,
+    component: TipsAndTricks,
   },
 ];
