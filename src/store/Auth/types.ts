@@ -5,6 +5,12 @@ export interface IAuthState {
 
 type TLocale = 'en-GB' | 'hu-HU';
 
+export enum ERole {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  BLOGGER = 'BLOGGER',
+}
+
 export type TUser = {
   _id: string;
   email: string;
@@ -13,4 +19,5 @@ export type TUser = {
   locale: TLocale;
   userName: string;
   password: string;
+  role: ERole;
 };

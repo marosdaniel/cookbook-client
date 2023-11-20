@@ -14,6 +14,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ##### Subscription for a user to receive notifications when the followed user creates a new recipe.
 
+##### Admin
+
+- collection for misc (categories...)
+- page
+- rights
+- mutations
+
 ##### Recipe Details Page
 
 ##### Recipes Page

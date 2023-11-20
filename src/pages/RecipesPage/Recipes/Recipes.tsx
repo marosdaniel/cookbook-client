@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Grid } from '@mui/material';
 import { GET_RECIPES } from '../../../service/graphql/recipe/getRecipes';
 import LoadingBar from '../../../components/LoadingBar';
-import RecipeCard from '../../../components/RecipeCard';
+import RecipeCard from '../../../components/Recipe/RecipeCard';
 import { TRecipe } from '../../../store/Recipe/types';
 import { gridStyles } from './styles';
 

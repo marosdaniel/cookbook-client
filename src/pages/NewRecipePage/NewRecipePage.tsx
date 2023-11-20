@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material';
-import RecipeFormEditor from '../../components/RecipeFormEditor';
+import RecipeFormEditor from '../../components/Recipe/RecipeFormEditor';
 
 const NewRecipePage = () => {
   // const handleSubmit = () => {};

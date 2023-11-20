@@ -8,6 +8,9 @@ const Profile = loadable(() => import('../pages/ProfilePage'), {
 const NewRecipe = loadable(() => import('../pages/NewRecipePage'), {
   fallback: <LoadingBar />,
 });
+const AdminPage = loadable(() => import('../pages/AdminPage'), {
+  fallback: <LoadingBar />,
+});
 
 export const protectedRoutes = [
   {
@@ -17,5 +20,10 @@ export const protectedRoutes = [
   {
     path: EProtectedRoutes.NEW_RECIPE,
     component: NewRecipe,
+  },
+  {
+    path: EProtectedRoutes.ADMIN,
+    component: AdminPage,
+    adminOnly: true,
   },
 ];

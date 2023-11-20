@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { Button, Container, Grid, Link, ListItemText, Typography } from '@mui/material';
+
 import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
 import LoadingBar from '../../components/LoadingBar';
-import { RecipeDetailsData } from './types';
-import { Button, Container, Grid, Link, ListItemText, Typography } from '@mui/material';
 import { useAuthState } from '../../store/Auth';
+import { RecipeDetailsData } from './types';
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();

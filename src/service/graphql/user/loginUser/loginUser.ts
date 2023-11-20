@@ -11,6 +11,7 @@ const LOGIN_USER = gql`
         firstName
         lastName
         locale
+        role
       }
       userId
     }

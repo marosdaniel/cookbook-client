@@ -1,12 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import { GET_USER_BY_USERNAME } from '../../service/graphql/user/getUser';
 import LoadingBar from '../../components/LoadingBar';
 import { TRecipe } from '../../store/Recipe/types';
-import RecipeCard from '../../components/RecipeCard';
+import RecipeCard from '../../components/Recipe/RecipeCard';
 
 const UserPage = () => {
   const { userName } = useParams<{ userName: string }>();
@@ -20,9 +20,9 @@ const UserPage = () => {
   if (error) return <div>Error :(</div>;
 
   return (
-    <div>
+    <Grid>
       {data.getUserByUserName.userName}
-      <ul>
+      <Grid component="ul">
         {data.getUserByUserName.recipes?.map((recipe: TRecipe) => (
           <RecipeCard
             key={recipe._id}
@@ -37,8 +37,8 @@ const UserPage = () => {
             id={recipe._id}
           />
         ))}
-      </ul>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 
