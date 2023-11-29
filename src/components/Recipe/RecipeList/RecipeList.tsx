@@ -1,23 +1,16 @@
-import { useQuery } from '@apollo/client';
 import { Grid } from '@mui/material';
-import { GET_RECIPES } from '../../../service/graphql/recipe/getRecipes';
-import LoadingBar from '../../../components/LoadingBar';
-import RecipeCard from '../../../components/Recipe/RecipeCard';
+
+import RecipeCard from '../RecipeCard';
 import { TRecipe } from '../../../store/Recipe/types';
 import { gridStyles } from './styles';
+import { IProps } from './types';
 
-const Recipes = () => {
-  const { loading, error, data } = useQuery(GET_RECIPES);
-  if (loading) return <LoadingBar />;
-  if (error) return <div>Error :(</div>;
-
-  const recipes: TRecipe[] = data?.getRecipes?.recipes || [];
-
+const RecipeList = ({ recipes }: IProps) => {
   return (
     <Grid sx={gridStyles}>
-      {recipes.map((recipe: TRecipe) => (
+      {recipes.map((recipe: TRecipe, index) => (
         <RecipeCard
-          key={recipe._id}
+          key={recipe._id || index}
           title={recipe.title}
           description={recipe.description}
           author={recipe.author}
@@ -33,4 +26,4 @@ const Recipes = () => {
   );
 };
 
-export default Recipes;
+export default RecipeList;

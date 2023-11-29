@@ -1,23 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { GET_USER_BY_USERNAME } from '../../service/graphql/user/getUser';
 import LoadingBar from '../../components/LoadingBar';
 import { TRecipe } from '../../store/Recipe/types';
 import RecipeCard from '../../components/Recipe/RecipeCard';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const UserPage = () => {
   const { userName } = useParams<{ userName: string }>();
 
-  console.log(userName);
   const { loading, error, data } = useQuery(GET_USER_BY_USERNAME, {
     variables: { userName } as { userName: string },
   });
 
   if (loading) return <LoadingBar />;
-  if (error) return <div>Error :(</div>;
+  if (error) return <ErrorMessage />;
 
   return (
     <Grid>

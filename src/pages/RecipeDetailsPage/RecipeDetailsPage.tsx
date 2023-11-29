@@ -7,6 +7,8 @@ import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
 import LoadingBar from '../../components/LoadingBar';
 import { useAuthState } from '../../store/Auth';
 import { RecipeDetailsData } from './types';
+import ErrorMessage from '../../components/ErrorMessage';
+import { ENonProtectedRoutes } from '../../router/types';
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +20,7 @@ const RecipeDetailsPage = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   if (loading) return <LoadingBar />;
-  if (error) return <div>Error :(</div>;
+  if (error) return <ErrorMessage />;
 
   const recipe = data?.getRecipeById;
 
@@ -27,7 +29,7 @@ const RecipeDetailsPage = () => {
   const { title, createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
 
   const linkToCreator = (
-    <Link component={RouterLink} to={`/users/${createdBy}`}>
+    <Link component={RouterLink} to={`${ENonProtectedRoutes.USERS}/${createdBy}`}>
       {createdBy}
     </Link>
   );

@@ -13,7 +13,9 @@ export enum ENonProtectedRoutes {
 
 export enum EProtectedRoutes {
   ADMIN = '/admin',
+  ME = '/me',
   PROFILE = '/me/profile',
   MY_RECIPES = '/me/recipes',
+  FAVORITES = '/me/favorites',
   NEW_RECIPE = '/new-recipe',
 }

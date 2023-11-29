@@ -1,3 +1,5 @@
+import { TRecipe } from '../Recipe/types';
+
 export interface IAuthState {
   user: TUser | null;
   isAuthenticated: boolean;
@@ -20,4 +22,5 @@ export type TUser = {
   userName: string;
   password: string;
   role: ERole;
+  favoriteRecipes?: TRecipe[];
 };

@@ -38,29 +38,36 @@ const GET_RECIPE_BY_ID = gql`
   }
 `;
 
-export { GET_RECIPES, GET_RECIPE_BY_ID };
+const GET_RECIPES_BY_USER_NAME = gql`
+  query GetRecipesByUserName($userName: String!) {
+    getRecipesByUserName(userName: $userName) {
+      recipes {
+        categories {
+          _id
+          key
+          name
+        }
+        createdAt
+        createdBy
+        description
+        ingredients {
+          _id
+          name
+          quantity
+          unit
+        }
+        preparationSteps {
+          _id
+          description
+          order
+        }
+        preparationTime
+        updatedAt
+        title
+        _id
+      }
+    }
+  }
+`;
 
-// import { gql } from '@apollo/client';
-// import { IModel } from '../../../../store/AddMachine';
-
-// import { TLaunchDarklySet } from '../../../../store/LaunchDarkly';
-
-// import { TQueryResponse } from '../../../types';
-
-// import { client } from '../../graphql';
-
-// export const getModels = async (launchDarkly: TLaunchDarklySet, modelSeriesId: string): Promise<IModel[]> => {
-//   const { data } = await client(launchDarkly).query<TQueryResponse<'deviceModels', IModel[]>>({
-//     query: gql`
-//       query {
-//         deviceModels (filter: { modelSeriesId: "${modelSeriesId}" }) {
-//           deviceType
-//           id
-//           modelSeriesId
-//           name
-//         }
-//       }
-//     `,
-//   });
-//   return data.deviceModels;
-// };
+export { GET_RECIPES, GET_RECIPE_BY_ID, GET_RECIPES_BY_USER_NAME };

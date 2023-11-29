@@ -14,7 +14,19 @@ const AdminPage = loadable(() => import('../pages/AdminPage'), {
 
 export const protectedRoutes = [
   {
+    path: EProtectedRoutes.ME,
+    component: Profile,
+  },
+  {
     path: EProtectedRoutes.PROFILE,
+    component: Profile,
+  },
+  {
+    path: EProtectedRoutes.MY_RECIPES,
+    component: Profile,
+  },
+  {
+    path: EProtectedRoutes.FAVORITES,
     component: Profile,
   },
   {
