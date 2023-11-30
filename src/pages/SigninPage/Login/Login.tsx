@@ -41,20 +41,14 @@ const Login = ({ setIsLogin }: IProps) => {
     try {
       const {
         data: {
-          loginUser: { user },
+          loginUser: { user, token },
         },
       } = await loginUser({
         variables: { userLoginInput },
       });
 
-      // console.log({
-      //   token,
-      //   user,
-      //   userId,
-      // });
-      // await loginUser({
-      //   variables: { userLoginInput },
-      // });
+      localStorage.setItem('c_b_token', token);
+
       dispatch(login(user));
       navigate(ENonProtectedRoutes.HOME);
     } catch (_error: any) {

@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
@@ -11,9 +12,23 @@ import theme from './theme/';
 import { persistor, store } from './store';
 import reportWebVitals from './reportWebVitals';
 
+const httpLink = createHttpLink({
+  uri: process.env.REACT_APP_SERVER_URI,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('c_b_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ?? '',
+    },
+  };
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_SERVER_URI,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -24,7 +39,6 @@ root.render(
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-
             <App />
           </ThemeProvider>
         </PersistGate>

@@ -7,15 +7,15 @@ import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 
 import { TIngredient } from '../../../store/Recipe/types';
-import { difficultyLevels } from './const';
-import { renderItem } from './utils';
+import { renderItem, useGetDifficultyLevels } from './utils';
 
 const RecipeFormEditor = () => {
-  const [ingredients, setIngredients] = useState<TIngredient[]>([{ _id: '1', name: '', quantity: '1', unit: '' }]);
+  const difficultyLevels = useGetDifficultyLevels();
+  const [ingredients, setIngredients] = useState<TIngredient[]>([{ _id: '1', name: '', quantity: 1, unit: '' }]);
 
   const handleAddIngredient = () => {
     const newId = (ingredients.length + 1).toString();
-    setIngredients(prevIngredients => [...prevIngredients, { _id: newId, name: '', quantity: '1', unit: '' }]);
+    setIngredients(prevIngredients => [...prevIngredients, { _id: newId, name: '', quantity: 1, unit: '' }]);
   };
 
   const handleRemoveIngredient = (itemId: string) => {
@@ -91,9 +91,10 @@ const RecipeFormEditor = () => {
             helperText="Please select level of difficulty"
             variant="standard"
             defaultValue="medium"
+            disabled={!difficultyLevels.length}
           >
             {difficultyLevels.map(option => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem key={option.key} value={option.label}>
                 {option.label}
               </MenuItem>
             ))}
@@ -103,7 +104,7 @@ const RecipeFormEditor = () => {
       <Grid item xs={12} md={6} lg={8}>
         <Typography variant="h6">Ingredients</Typography>
 
-        <List sx={{ mt: 1 }}>
+        <List>
           <TransitionGroup>
             {ingredients.map(item => (
               <Collapse key={item._id}>{renderItem({ item, handleRemoveIngredient, handleIngredientChange })}</Collapse>

@@ -13,7 +13,7 @@ export type TRecipe = {
 export type TIngredient = {
   _id: string;
   name: string;
-  quantity: string;
+  quantity: number;
   unit: string;
 };
 

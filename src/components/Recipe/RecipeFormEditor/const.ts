@@ -1,13 +1,4 @@
-// TODO: make custom hook for API call to get difficulty levels
-
-import { TDifficultyLevel, TUnit } from '../../../store/Recipe/types';
-
-// useGetDifficultyLevels
-export const difficultyLevels: TDifficultyLevel[] = [
-  { value: 'easy', label: 'Easy' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'hard', label: 'Hard' },
-];
+import { TUnit } from '../../../store/Recipe/types';
 
 // TODO: make custom hook for API call to get units
 // useGetDifficultyLevels
