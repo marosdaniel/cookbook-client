@@ -19,11 +19,13 @@ const UserPage = () => {
   if (loading) return <LoadingBar />;
   if (error) return <ErrorMessage />;
 
+  const recipes: TRecipe[] = data?.getUserByUserName.recipes || [];
+
   return (
     <Grid>
-      {data.getUserByUserName.userName}
+      {userName}
       <Grid component="ul">
-        {data.getUserByUserName.recipes?.map((recipe: TRecipe) => (
+        {recipes.map((recipe: TRecipe) => (
           <RecipeCard
             key={recipe._id}
             title={recipe.title}

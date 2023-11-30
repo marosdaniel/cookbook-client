@@ -1,6 +1,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
+import { Avatar, Link } from '@mui/material';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -18,14 +19,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 
-import { Avatar, Link } from '@mui/material';
-
 import { useAuthState } from '../../store/Auth';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
-import { AppBarProps } from './types';
-import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
-import { getListItemStyles } from './styles';
 import myTheme from '../../theme';
+import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
+import { AppBarProps } from './types';
+import { getListItemStyles } from './styles';
 
 const drawerWidth = 240;
 

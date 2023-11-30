@@ -14,10 +14,22 @@ export type TIngredient = {
   _id: string;
   name: string;
   quantity: string;
+  unit: string;
 };
 
 export type TPreparationStep = {
   _id: string;
   description: string;
   order: number;
+};
+
+export type TDifficultyLevel = {
+  value: string;
+  label: string;
+};
+
+export type TUnit = {
+  name: string;
+  label: string;
+  key: string;
 };

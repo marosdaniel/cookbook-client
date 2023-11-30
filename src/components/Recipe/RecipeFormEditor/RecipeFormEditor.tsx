@@ -1,56 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
 import { Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import DeleteIcon from '@mui/icons-material/Delete';
 
+import { TIngredient } from '../../../store/Recipe/types';
 import { difficultyLevels } from './const';
-import { RenderItemOptions } from './types';
-
-const ingredientItems = ['🍏 Apple', '🍌 Banana', '🍍 Pineapple', '🥥 Coconut', '🍉 Watermelon'];
-
-function renderItem({ item, handleRemoveFruit }: RenderItemOptions) {
-  return (
-    <ListItem
-      secondaryAction={
-        <IconButton edge="end" aria-label="delete" title="Delete" onClick={() => handleRemoveFruit(item)}>
-          <DeleteIcon />
-        </IconButton>
-      }
-    >
-      <ListItemText primary={item} />
-    </ListItem>
-  );
-}
+import { renderItem } from './utils';
 
 const RecipeFormEditor = () => {
-  const [fruitsInBasket, setFruitsInBasket] = useState(ingredientItems.slice(0, 3));
+  const [ingredients, setIngredients] = useState<TIngredient[]>([{ _id: '1', name: '', quantity: '1', unit: '' }]);
 
   const handleAddIngredient = () => {
-    const nextHiddenItem = ingredientItems.find(i => !fruitsInBasket.includes(i));
-    if (nextHiddenItem) {
-      setFruitsInBasket(prev => [nextHiddenItem, ...prev]);
-    }
+    const newId = (ingredients.length + 1).toString();
+    setIngredients(prevIngredients => [...prevIngredients, { _id: newId, name: '', quantity: '1', unit: '' }]);
   };
 
-  const handleRemoveIngredient = (item: string) => {
-    setFruitsInBasket(prev => [...prev.filter(i => i !== item)]);
+  const handleRemoveIngredient = (itemId: string) => {
+    setIngredients(prevIngredients => prevIngredients.filter(item => item._id !== itemId));
+  };
+
+  const handleIngredientChange = (updatedItem: TIngredient) => {
+    setIngredients(prevIngredients =>
+      prevIngredients.map(item => (item._id === updatedItem._id ? { ...updatedItem } : item)),
+    );
   };
 
   const addIngredientButton = (
-    <Button sx={{ marginRight: 'auto' }} variant="contained" onClick={handleAddIngredient}>
+    <Button variant="contained" onClick={handleAddIngredient}>
       Add ingredient
     </Button>
   );
 
+  useEffect(() => {
+    console.log('useEffect ingredients: ', ingredients);
+  }, [ingredients]);
+
   return (
-    <Grid component="form" container spacing={12}>
+    <Grid component="form" container spacing={12} maxWidth={1400}>
       <Grid item xs={12} md={6} lg={4}>
         <Typography variant="h6">Please fill all fields</Typography>
         <TextField
@@ -116,8 +105,8 @@ const RecipeFormEditor = () => {
 
         <List sx={{ mt: 1 }}>
           <TransitionGroup>
-            {fruitsInBasket.map(item => (
-              <Collapse key={item}>{renderItem({ item, handleRemoveFruit: handleRemoveIngredient })}</Collapse>
+            {ingredients.map(item => (
+              <Collapse key={item._id}>{renderItem({ item, handleRemoveIngredient, handleIngredientChange })}</Collapse>
             ))}
           </TransitionGroup>
         </List>

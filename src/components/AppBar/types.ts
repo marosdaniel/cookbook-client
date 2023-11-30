@@ -1,7 +1,7 @@
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
+import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 
 export interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

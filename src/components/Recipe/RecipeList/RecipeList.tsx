@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 
-import RecipeCard from '../RecipeCard';
 import { TRecipe } from '../../../store/Recipe/types';
+import RecipeCard from '../RecipeCard';
 import { gridStyles } from './styles';
 import { IProps } from './types';
 

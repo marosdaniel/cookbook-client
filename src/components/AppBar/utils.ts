@@ -1,4 +1,3 @@
-import { ERole, TUser } from './../../store/Auth/types';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -8,6 +7,7 @@ import RssFeedIcon from '@mui/icons-material/RssFeed';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
+import { ERole, TUser } from './../../store/Auth/types';
 import { useAuthState } from './../../store/Auth/selectors';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import { logout } from '../../store/Auth/auth';

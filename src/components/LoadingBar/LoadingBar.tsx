@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, CircularProgress } from '@mui/material';
+
 import { TLoadingBarProps } from './types';
 
 const LoadingBar = ({ sizeInRem = '3rem' }: TLoadingBarProps) => {

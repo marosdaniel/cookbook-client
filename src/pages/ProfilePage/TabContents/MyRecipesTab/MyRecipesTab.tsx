@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React from 'react';
+
 import { GET_RECIPES_BY_USER_NAME } from '../../../../service/graphql/recipe/getRecipes';
 import { TRecipe } from '../../../../store/Recipe/types';
 import { useAuthState } from '../../../../store/Auth';
