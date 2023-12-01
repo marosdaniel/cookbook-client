@@ -47,4 +47,17 @@ const GET_USER_BY_USERNAME = gql`
   }
 `;
 
+export const GET_ALL_USERS = gql`
+  query GetAllUser {
+    getAllUser {
+      _id
+      email
+      role
+      userName
+      firstName
+      lastName
+    }
+  }
+`;
+
 export { GET_USER_BY_ID, GET_USER_BY_USERNAME };
