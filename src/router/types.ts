@@ -13,6 +13,10 @@ export enum ENonProtectedRoutes {
 
 export enum EProtectedRoutes {
   ADMIN = '/admin',
+  ADMIN_UNITS = '/admin/units',
+  ADMIN_USERS = '/admin/users',
+  ADMIN_CATEGORIES = '/admin/categories',
+  ADMIN_LABELS = '/admin/labels',
   ME = '/me',
   PROFILE = '/me/profile',
   MY_RECIPES = '/me/recipes',

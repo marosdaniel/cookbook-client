@@ -38,4 +38,24 @@ export const protectedRoutes = [
     component: AdminPage,
     adminOnly: true,
   },
+  {
+    path: EProtectedRoutes.ADMIN_CATEGORIES,
+    component: AdminPage,
+    adminOnly: true,
+  },
+  {
+    path: EProtectedRoutes.ADMIN_LABELS,
+    component: AdminPage,
+    adminOnly: true,
+  },
+  {
+    path: EProtectedRoutes.ADMIN_UNITS,
+    component: AdminPage,
+    adminOnly: true,
+  },
+  {
+    path: EProtectedRoutes.ADMIN_USERS,
+    component: AdminPage,
+    adminOnly: true,
+  },
 ];

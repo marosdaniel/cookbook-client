@@ -8,15 +8,9 @@ import Box from '@mui/material/Box';
 import ProfileTab from './TabContents/ProfileTab';
 import MyRecipesTab from './TabContents/MyRecipesTab';
 import FavoritesTab from './TabContents/FavoritesTab';
-import CustomTabPanel from './components/CustomTabPanel';
+import CustomTabPanel from '../../components/CustomTabPanel';
 import { EProtectedRoutes } from '../../router/types';
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+import { a11yProps } from '../../components/CustomTabPanel/utils';
 
 const ProfilePage = () => {
   const [value, setValue] = useState(0);
