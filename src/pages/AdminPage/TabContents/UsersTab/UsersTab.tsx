@@ -23,7 +23,7 @@ const UsersTab = () => {
   };
 
   return (
-    <List>
+    <List sx={{ maxWidth: '960px' }}>
       {users.map((user, index) => {
         const { _id: userId, userName, role } = user;
         return (
