@@ -8,6 +8,7 @@ export type TRecipe = {
   createdBy: string;
   updatedAt: string;
   author: string;
+  imgSrc?: string;
 };
 
 export type TIngredient = {

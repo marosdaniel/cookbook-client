@@ -1,15 +1,13 @@
-import { Grid, Typography } from '@mui/material';
-
 import RecipeFormEditor from '../../components/Recipe/RecipeFormEditor';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
+import PageTitle from '../../components/stylingComponents/PageTitle';
 
 const NewRecipePage = () => {
   return (
-    <Grid>
-      <Typography variant="h3" marginBottom={4}>
-        Creating new recipe
-      </Typography>
+    <WrapperContainer id="new-recipe-page">
+      <PageTitle title="Create new Recipe" />
       <RecipeFormEditor />
-    </Grid>
+    </WrapperContainer>
   );
 };
 

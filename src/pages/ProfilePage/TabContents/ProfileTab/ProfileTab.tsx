@@ -1,5 +1,11 @@
+import UnderConstruction from '../../../../components/UnderConstruction';
+
 const ProfileTab = () => {
-  return <div>ProfileTab</div>;
+  return (
+    <section id="profile-tab">
+      <UnderConstruction />
+    </section>
+  );
 };
 
 export default ProfileTab;

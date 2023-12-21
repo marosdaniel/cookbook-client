@@ -4,4 +4,5 @@ export const gridStyles = {
   flexGrow: 1,
   gap: '1rem',
   flexDirection: 'row',
+  width: '100%',
 };

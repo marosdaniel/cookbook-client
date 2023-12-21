@@ -11,6 +11,7 @@ import FavoritesTab from './TabContents/FavoritesTab';
 import CustomTabPanel from '../../components/CustomTabPanel';
 import { EProtectedRoutes } from '../../router/types';
 import { a11yProps } from '../../components/CustomTabPanel/utils';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 
 const ProfilePage = () => {
   const [value, setValue] = useState(0);
@@ -50,7 +51,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Box>
+    <WrapperContainer id="profile-page">
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: 'max-content' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Profile" {...a11yProps(0)} />
@@ -67,7 +68,7 @@ const ProfilePage = () => {
       <CustomTabPanel value={value} index={2}>
         <FavoritesTab />
       </CustomTabPanel>
-    </Box>
+    </WrapperContainer>
   );
 };
 

@@ -21,6 +21,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - rights
 - mutations
 
+##### Subscription for newly added recipes of the followed users
+
+- https://www.apollographql.com/docs/react/data/subscriptions
+
 ##### Recipe Details Page
 
 ##### Recipes Page
@@ -38,6 +42,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `nvm use 18.18`
 
 ### `npm start`
 

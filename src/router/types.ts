@@ -9,6 +9,7 @@ export enum ENonProtectedRoutes {
   BLOGS = '/blogs',
   BLOG_DETAILS = '/blogs/:id',
   TIPS_AND_TRICKS = '/tips-and-tricks',
+  PRIVACY_POLICY = '/privacy-policy',
 }
 
 export enum EProtectedRoutes {

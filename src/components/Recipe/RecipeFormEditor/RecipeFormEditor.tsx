@@ -28,8 +28,10 @@ const RecipeFormEditor = () => {
     );
   };
 
+  const addIngredientButtonDisabled = ingredients.some(item => !item.name || !item.quantity || !item.unit);
+
   const addIngredientButton = (
-    <Button variant="contained" onClick={handleAddIngredient}>
+    <Button variant="contained" onClick={handleAddIngredient} disabled={addIngredientButtonDisabled}>
       Add ingredient
     </Button>
   );
@@ -39,9 +41,9 @@ const RecipeFormEditor = () => {
   }, [ingredients]);
 
   return (
-    <Grid component="form" container spacing={12} maxWidth={1400}>
-      <Grid item xs={12} md={6} lg={4}>
-        <Typography variant="h6">Please fill all fields</Typography>
+    <Grid component="form" container spacing={8} width="100%">
+      <Grid item xs={12} sm={10} md={4}>
+        <Typography variant="h6">Please ensure all fields are filled out</Typography>
         <TextField
           margin="normal"
           required
@@ -60,6 +62,15 @@ const RecipeFormEditor = () => {
           label="Description"
           name="description"
           autoComplete="description"
+          variant="standard"
+        />
+        <TextField
+          margin="normal"
+          fullWidth
+          id="image-url"
+          label="Image URL"
+          name="image-url"
+          autoComplete="image-url"
           variant="standard"
         />
         <TextField
@@ -87,7 +98,7 @@ const RecipeFormEditor = () => {
           <TextField
             id="difficulty-level"
             select
-            label="Difficult level"
+            label="Difficulty level"
             helperText="Please select level of difficulty"
             variant="standard"
             defaultValue="medium"
@@ -101,9 +112,8 @@ const RecipeFormEditor = () => {
           </TextField>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={6} lg={8}>
+      <Grid item xs={12} sm={12} md={6} lg={8}>
         <Typography variant="h6">Ingredients</Typography>
-
         <List>
           <TransitionGroup>
             {ingredients.map(item => (

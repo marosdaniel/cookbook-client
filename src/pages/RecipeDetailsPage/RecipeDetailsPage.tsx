@@ -9,6 +9,10 @@ import { useAuthState } from '../../store/Auth';
 import { RecipeDetailsData } from './types';
 import ErrorMessage from '../../components/ErrorMessage';
 import { ENonProtectedRoutes } from '../../router/types';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
+import PageTitle from '../../components/stylingComponents/PageTitle';
+import PreparationStepList from './PreparationStepList';
+import IngredientList from './IngredientList';
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,7 +30,7 @@ const RecipeDetailsPage = () => {
 
   const isEditAvailable = data?.getRecipeById.createdBy === user?.userName;
 
-  const { title, createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
+  const { title = '', createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
 
   const linkToCreator = (
     <Link component={RouterLink} to={`${ENonProtectedRoutes.USERS}/${createdBy}`}>
@@ -34,10 +38,12 @@ const RecipeDetailsPage = () => {
     </Link>
   );
 
+  const orderedPreparationSteps = preparationSteps?.sort((a, b) => a.order - b.order);
+
   return (
-    <Container maxWidth={'xl'}>
+    <WrapperContainer id="recipe-detail-page">
       <Grid display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h3">{title}</Typography>
+        <PageTitle title={title} />
         {isEditAvailable && (
           <Button variant="outlined" color="primary">
             Edit
@@ -48,14 +54,12 @@ const RecipeDetailsPage = () => {
       <Typography variant="subtitle1">{description}</Typography>
       <Typography variant="h5">Cooking instructions</Typography>
 
-      <ul>
-        {preparationSteps?.map(step => (
-          <ListItemText key={step.order}>
-            <Typography variant="body1">{step.description}</Typography>
-          </ListItemText>
-        ))}
-      </ul>
-    </Container>
+      {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} />}
+
+      {orderedPreparationSteps && orderedPreparationSteps.length > 0 && (
+        <PreparationStepList preparationSteps={orderedPreparationSteps} />
+      )}
+    </WrapperContainer>
   );
 };
 

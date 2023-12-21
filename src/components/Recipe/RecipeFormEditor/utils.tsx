@@ -42,7 +42,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
         </IconButton>
       }
     >
-      <Grid item xs={6} md={6} lg={9}>
+      <Grid item xs={12} md={6} lg={9}>
         <TextField
           value={item.name}
           label="Name"
@@ -52,7 +52,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
           required
         />
       </Grid>
-      <Grid item xs={3} md={3} lg={1} marginRight={2}>
+      <Grid item xs={6} md={3} lg={1} marginRight={2}>
         <TextField
           value={item.quantity}
           label="Quantity"
@@ -63,7 +63,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
           required
         />
       </Grid>
-      <Grid item xs={3} md={3} lg={2} marginRight={2}>
+      <Grid item xs={6} md={3} lg={2} marginRight={2}>
         <TextField
           select
           id="unit-dropdown"

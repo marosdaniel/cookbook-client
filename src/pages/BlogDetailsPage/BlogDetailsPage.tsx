@@ -1,11 +1,11 @@
-import { Container, Typography } from '@mui/material';
-import React from 'react';
+import UnderConstruction from '../../components/UnderConstruction';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 
 const BlogDetailsPage = () => {
   return (
-    <Container>
-      <Typography variant="h3">BlogDetailsPage</Typography>
-    </Container>
+    <WrapperContainer id="blog-detail-page">
+      <UnderConstruction />
+    </WrapperContainer>
   );
 };
 

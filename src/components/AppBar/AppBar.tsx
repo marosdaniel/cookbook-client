@@ -226,7 +226,7 @@ export default function AppBar({ children }: PropsWithChildren) {
           )}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" width="100%" sx={{ flexGrow: 1 }}>
         <DrawerHeader />
         {children}
       </Box>

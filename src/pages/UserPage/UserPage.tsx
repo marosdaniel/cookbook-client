@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { Grid } from '@mui/material';
-
 import { GET_USER_BY_USERNAME } from '../../service/graphql/user/getUser';
 import LoadingBar from '../../components/LoadingBar';
 import { TRecipe } from '../../store/Recipe/types';
-import RecipeCard from '../../components/Recipe/RecipeCard';
 import ErrorMessage from '../../components/ErrorMessage';
+import RecipeList from '../../components/Recipe/RecipeList';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
+import PageTitle from '../../components/stylingComponents/PageTitle';
 
 const UserPage = () => {
   const { userName } = useParams<{ userName: string }>();
@@ -20,27 +20,13 @@ const UserPage = () => {
   if (error) return <ErrorMessage />;
 
   const recipes: TRecipe[] = data?.getUserByUserName.recipes || [];
+  const title = recipes.length ? `best recipes from ${userName}'s kitchen` : `${userName} has no recipes yet`;
 
   return (
-    <Grid>
-      {userName}
-      <Grid component="ul">
-        {recipes.map((recipe: TRecipe) => (
-          <RecipeCard
-            key={recipe._id}
-            title={recipe.title}
-            description={recipe.description}
-            author={recipe.author}
-            createdAt={recipe.createdAt}
-            createdBy={recipe.createdBy}
-            ingredients={recipe.ingredients}
-            preparationSteps={recipe.preparationSteps}
-            updatedAt={recipe.updatedAt}
-            id={recipe._id}
-          />
-        ))}
-      </Grid>
-    </Grid>
+    <WrapperContainer id="user-page">
+      <PageTitle title={title} />
+      {recipes.length ? <RecipeList recipes={recipes} /> : null}
+    </WrapperContainer>
   );
 };
 

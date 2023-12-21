@@ -27,6 +27,9 @@ const BlogDetails = loadable(() => import('../pages/BlogDetailsPage'), {
 const TipsAndTricks = loadable(() => import('../pages/TipsAndTricksPage'), {
   fallback: <LoadingBar />,
 });
+const PrivacyPolicy = loadable(() => import('../pages/PrivacyPage'), {
+  fallback: <LoadingBar />,
+});
 
 export const nonProtectedRoutes = [
   {
@@ -60,5 +63,9 @@ export const nonProtectedRoutes = [
   {
     path: ENonProtectedRoutes.TIPS_AND_TRICKS,
     component: TipsAndTricks,
+  },
+  {
+    path: ENonProtectedRoutes.PRIVACY_POLICY,
+    component: PrivacyPolicy,
   },
 ];

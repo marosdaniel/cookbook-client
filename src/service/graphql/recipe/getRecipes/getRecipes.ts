@@ -10,6 +10,7 @@ const GET_RECIPES = gql`
         title
         createdAt
         preparationTime
+        imgSrc
       }
     }
   }
@@ -34,6 +35,7 @@ const GET_RECIPE_BY_ID = gql`
       title
       updatedAt
       preparationTime
+      imgSrc
     }
   }
 `;
@@ -62,6 +64,7 @@ const GET_RECIPES_BY_USER_NAME = gql`
           order
         }
         preparationTime
+        imgSrc
         updatedAt
         title
         _id

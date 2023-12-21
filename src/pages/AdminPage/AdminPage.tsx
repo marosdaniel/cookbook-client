@@ -11,6 +11,7 @@ import UsersTab from './TabContents/UsersTab';
 import CategoriesTab from './TabContents/CategoriesTab';
 import UnitsTab from './TabContents/UnitsTab';
 import LabelsTab from './TabContents/LabelsTab';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 
 const AdminPage = () => {
   const [value, setValue] = useState(0);
@@ -54,7 +55,7 @@ const AdminPage = () => {
     }
   };
   return (
-    <Box>
+    <WrapperContainer id="admin-page">
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: 'max-content' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Users" {...a11yProps(0)} />
@@ -75,7 +76,7 @@ const AdminPage = () => {
       <CustomTabPanel value={value} index={3}>
         <LabelsTab />
       </CustomTabPanel>
-    </Box>
+    </WrapperContainer>
   );
 };
 

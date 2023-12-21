@@ -1,11 +1,11 @@
 import UnderConstruction from '../../components/UnderConstruction';
 
-const TipsAndTricksPage = () => {
+const PrivacyPage = () => {
   return (
-    <section id="tips-and-tricks-page">
+    <section id="privacy-policy-page">
       <UnderConstruction />
     </section>
   );
 };
 
-export default TipsAndTricksPage;
+export default PrivacyPage;

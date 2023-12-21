@@ -1,9 +1,21 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 
-import { Container, Box, Typography, TextField, Button, Grid, Link, Alert, Snackbar } from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Link,
+  Alert,
+  Snackbar,
+  FormControlLabel,
+  Checkbox,
+} from '@mui/material';
 
 import { login } from '../../../store/Auth/auth';
 import { useAppDispatch } from '../../../store/hooks';
@@ -22,6 +34,23 @@ const Register = ({ setIsLogin }: IProps) => {
   const [createUser, { loading }] = useMutation(CREATE_USER);
   const [loginUser, { loading: loginLoading }] = useMutation(LOGIN_USER);
   const [error, setError] = useState<string>('');
+  const [isPrivacyAccepted, setIsPrivacyAccepted] = useState<boolean>(false);
+
+  const privacyLink = (
+    <Link
+      component={RouterLink}
+      to={ENonProtectedRoutes.PRIVACY_POLICY}
+      sx={linkStyles}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      I accept the privacy policy
+    </Link>
+  );
+
+  const handleChangePrivacy = () => {
+    setIsPrivacyAccepted(!isPrivacyAccepted);
+  };
 
   const onSubmit = async () => {
     const userRegisterInput = {
@@ -166,13 +195,31 @@ const Register = ({ setIsLogin }: IProps) => {
             error={touched.confirmPassword && Boolean(errors.confirmPassword)}
             helperText={touched.confirmPassword && errors.confirmPassword}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading || loginLoading}>
+          <FormControlLabel
+            required
+            control={
+              <Checkbox
+                onChange={handleChangePrivacy}
+                color="primary"
+                name="confirmPrivacy"
+                value={isPrivacyAccepted}
+              />
+            }
+            label={privacyLink}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={loading || loginLoading || !isPrivacyAccepted}
+          >
             Register
           </Button>
           <Grid container>
             <Grid item>
               <Link sx={linkStyles} variant="body2" onClick={() => setIsLogin(true)}>
-                {'I already have an account'}
+                I already have an account
               </Link>
             </Grid>
           </Grid>
