@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Button, Container, Grid, Link, ListItemText, Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 
 import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
 import LoadingBar from '../../components/LoadingBar';
@@ -38,7 +38,10 @@ const RecipeDetailsPage = () => {
     </Link>
   );
 
-  const orderedPreparationSteps = preparationSteps?.sort((a, b) => a.order - b.order);
+  const orderedPreparationSteps =
+    preparationSteps!.length > 0
+      ? preparationSteps?.filter(step => typeof step.order === 'number').sort((a, b) => a.order - b.order)
+      : [];
 
   return (
     <WrapperContainer id="recipe-detail-page">
@@ -52,12 +55,11 @@ const RecipeDetailsPage = () => {
       </Grid>
       <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
       <Typography variant="subtitle1">{description}</Typography>
-      <Typography variant="h5">Cooking instructions</Typography>
 
-      {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} />}
+      {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} title="Ingredients" />}
 
       {orderedPreparationSteps && orderedPreparationSteps.length > 0 && (
-        <PreparationStepList preparationSteps={orderedPreparationSteps} />
+        <PreparationStepList preparationSteps={orderedPreparationSteps} title="Cooking instructions" />
       )}
     </WrapperContainer>
   );

@@ -1,49 +1,22 @@
-import { useEffect, useState } from 'react';
-import { TransitionGroup } from 'react-transition-group';
+import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 
-import { Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import List from '@mui/material/List';
-
-import { TIngredient } from '../../../store/Recipe/types';
-import { renderItem, useGetDifficultyLevels } from './utils';
+import PreparationStepsEditor from './PreparationStepsEditor';
+import IngredientsEditor from './IngredientsEditor';
+import { useGetDifficultyLevels } from './utils';
+import { gridContainerStyles } from './styles';
 
 const RecipeFormEditor = () => {
   const difficultyLevels = useGetDifficultyLevels();
-  const [ingredients, setIngredients] = useState<TIngredient[]>([{ _id: '1', name: '', quantity: 1, unit: '' }]);
-
-  const handleAddIngredient = () => {
-    const newId = (ingredients.length + 1).toString();
-    setIngredients(prevIngredients => [...prevIngredients, { _id: newId, name: '', quantity: 1, unit: '' }]);
-  };
-
-  const handleRemoveIngredient = (itemId: string) => {
-    setIngredients(prevIngredients => prevIngredients.filter(item => item._id !== itemId));
-  };
-
-  const handleIngredientChange = (updatedItem: TIngredient) => {
-    setIngredients(prevIngredients =>
-      prevIngredients.map(item => (item._id === updatedItem._id ? { ...updatedItem } : item)),
-    );
-  };
-
-  const addIngredientButtonDisabled = ingredients.some(item => !item.name || !item.quantity || !item.unit);
-
-  const addIngredientButton = (
-    <Button variant="contained" onClick={handleAddIngredient} disabled={addIngredientButtonDisabled}>
-      Add ingredient
-    </Button>
-  );
-
-  useEffect(() => {
-    console.log('useEffect ingredients: ', ingredients);
-  }, [ingredients]);
+  // useEffect(() => {
+  //   console.log('useEffect ingredients: ', ingredients);
+  // }, [ingredients]);
 
   return (
-    <Grid component="form" container spacing={8} width="100%">
-      <Grid item xs={12} sm={10} md={4}>
-        <Typography variant="h6">Please ensure all fields are filled out</Typography>
+    <Grid component="form" container sx={gridContainerStyles}>
+      <Grid item xs={12} sm={12} md={6} lg={8} marginBottom={8}>
+        <Typography variant="h5" marginBottom={2}>
+          Please ensure all fields are filled out
+        </Typography>
         <TextField
           margin="normal"
           required
@@ -86,7 +59,7 @@ const RecipeFormEditor = () => {
             inputProps: {
               type: 'number',
               min: 0,
-              max: 1000,
+              max: 999,
               step: 1,
               style: { textAlign: 'right', marginRight: '8px' },
             },
@@ -112,16 +85,12 @@ const RecipeFormEditor = () => {
           </TextField>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={12} md={6} lg={8}>
-        <Typography variant="h6">Ingredients</Typography>
-        <List>
-          <TransitionGroup>
-            {ingredients.map(item => (
-              <Collapse key={item._id}>{renderItem({ item, handleRemoveIngredient, handleIngredientChange })}</Collapse>
-            ))}
-          </TransitionGroup>
-        </List>
-        {addIngredientButton}
+      <IngredientsEditor />
+      <PreparationStepsEditor />
+      <Grid item xs={12} sm={12} md={6} lg={8} textAlign={'right'}>
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
       </Grid>
     </Grid>
   );

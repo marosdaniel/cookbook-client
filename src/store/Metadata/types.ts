@@ -1,8 +1,28 @@
-export type TMetadataType = 'level' | 'category' | 'unit' | 'label';
+export enum TMetadataType {
+  LEVEL = 'level',
+  CATEGORY = 'category',
+  UNIT = 'unit',
+  LABEL = 'label',
+}
 
-export type TMetadata = {
+type TMetadata = {
   key: string;
   label: string;
-  type: TMetadataType;
   name: string;
+};
+
+export type TLevelMetadata = TMetadata & {
+  type: TMetadataType.LEVEL;
+};
+
+export type TCategoryMetadata = TMetadata & {
+  type: TMetadataType.CATEGORY;
+};
+
+export type TUnitMetadata = TMetadata & {
+  type: TMetadataType.UNIT;
+};
+
+export type TLabelMetadata = TMetadata & {
+  type: TMetadataType.LABEL;
 };

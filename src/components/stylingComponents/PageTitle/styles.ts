@@ -9,7 +9,7 @@ export const titleStyles = {
     xs: '1rem',
     sm: '1rem',
     md: '2rem',
-    lg: '2rem',
-    xl: '3rem',
+    lg: '3rem',
+    xl: '3.5rem',
   },
 };

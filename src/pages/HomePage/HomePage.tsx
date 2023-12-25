@@ -7,6 +7,7 @@ const HomePage = () => {
   };
   return (
     <WrapperContainer id="home-page" additionalStyles={tempStyles}>
+      {/* TODO: recently added recipes */}
       <UnderConstruction />
     </WrapperContainer>
   );
