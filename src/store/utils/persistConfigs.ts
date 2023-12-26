@@ -5,3 +5,8 @@ export const authPersistConfig = {
   version: 1,
   storage: localStorage,
 };
+export const recipePersistConfig = {
+  key: 'recipe',
+  version: 2,
+  storage: localStorage,
+};

@@ -5,7 +5,7 @@ import PageTitle from '../../components/stylingComponents/PageTitle';
 const NewRecipePage = () => {
   return (
     <WrapperContainer id="new-recipe-page">
-      <PageTitle title="Create new Recipe" />
+      <PageTitle title="Start Crafting" />
       <RecipeFormEditor />
     </WrapperContainer>
   );

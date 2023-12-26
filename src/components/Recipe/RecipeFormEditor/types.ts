@@ -5,3 +5,11 @@ export interface RenderItemOptions {
   handleRemoveIngredient: (item: string) => void;
   handleIngredientChange: (item: TIngredient) => void;
 }
+
+export interface IFormikProps {
+  title: string;
+  description: string;
+  imgSrc?: string;
+  cookingTime: number;
+  difficultyLevel: string;
+}

@@ -2,10 +2,12 @@ import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/t
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import authReducer from './Auth';
-import { authPersistConfig } from './utils/persistConfigs';
+import recipeReducer from './Recipe';
+import { authPersistConfig, recipePersistConfig } from './utils/persistConfigs';
 
 const reducers = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  recipe: persistReducer(recipePersistConfig, recipeReducer),
 });
 
 export const store = configureStore({

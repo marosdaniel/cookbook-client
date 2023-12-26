@@ -40,3 +40,19 @@ export const customValidationSchema = Yup.object().shape({
     .required('Confirm password is required'),
   userName: Yup.string().min(3, 'Minumum 3 chars needed').max(20, 'Maximum 20 chars allowed').required('Required'),
 });
+
+export const recipeFormValidationSchema = Yup.object().shape({
+  title: Yup.string().required('Required'),
+  description: Yup.string().required('Required'),
+  imgSrc: Yup.string().url('Invalid url'),
+  cookingTime: Yup.number().required('Required'),
+  difficultyLevel: Yup.string().required('Required'),
+  ingredients: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required('Required'),
+      quantity: Yup.number().required('Required'),
+      unit: Yup.string().required('Required'),
+    }),
+  ),
+  steps: Yup.array().of(Yup.string().required('Required')),
+});

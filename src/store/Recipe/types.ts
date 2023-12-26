@@ -9,6 +9,9 @@ export type TRecipe = {
   updatedAt: string;
   author: string;
   imgSrc?: string;
+  cookingTime: number;
+  // difficultyLevel: TDifficultyLevel;
+  difficultyLevel: string;
 };
 
 export type TIngredient = {
