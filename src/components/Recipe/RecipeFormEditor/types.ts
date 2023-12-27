@@ -1,4 +1,4 @@
-import { TIngredient } from '../../../store/Recipe/types';
+import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
 export interface RenderItemOptions {
   item: TIngredient;
@@ -12,4 +12,6 @@ export interface IFormikProps {
   imgSrc?: string;
   cookingTime: number;
   difficultyLevel: string;
+  // ingredients: TIngredient[] | [];
+  // preparationSteps: TPreparationStep[] | [];
 }

@@ -42,13 +42,15 @@ const RecipeFormEditor = () => {
     // }
   };
 
-  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik<IFormikProps>({
+  const { values, handleChange, handleSubmit, handleBlur, errors, isSubmitting } = useFormik<IFormikProps>({
     initialValues: {
       title: newRecipeFromStore?.title || '',
       description: newRecipeFromStore?.description || '',
       imgSrc: newRecipeFromStore?.imgSrc || '',
       cookingTime: newRecipeFromStore?.cookingTime || 0,
       difficultyLevel: newRecipeFromStore?.difficultyLevel || '',
+      // ingredients: newRecipeFromStore?.ingredients || [],
+      // preparationSteps: newRecipeFromStore?.preparationSteps || [],
     },
     onSubmit,
     validationSchema: recipeFormValidationSchema,
@@ -57,8 +59,9 @@ const RecipeFormEditor = () => {
   const [debouncedValues, setDebouncedValues] = useState(values);
 
   const handleFormChange = () => {
-    const { title, description, imgSrc, cookingTime } = values;
-    dispatch(newRecipe({ title, description, imgSrc, cookingTime }));
+    const { title, description, imgSrc, cookingTime, difficultyLevel } = values;
+    dispatch(newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel }));
+    console.log('handleFormChange');
   };
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const RecipeFormEditor = () => {
 
   useEffect(() => {
     handleFormChange();
+    console.log('debouncedValues: ', debouncedValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValues]);
 
@@ -176,7 +180,7 @@ const RecipeFormEditor = () => {
       <IngredientsEditor />
       <PreparationStepsEditor />
       <Grid item xs={12} sm={12} md={6} lg={8} textAlign={'right'}>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={isSubmitting}>
           Complete & Share
         </Button>
       </Grid>

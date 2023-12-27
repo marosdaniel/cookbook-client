@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-
-import { TIngredient } from '../../../../store/Recipe/types';
-import { renderItem } from '../utils';
 import { Button, Grid, Typography, List, Collapse } from '@mui/material';
 
+import { TIngredient } from '../../../../store/Recipe/types';
+import { useRecipeState } from '../../../../store/Recipe';
+import { useAppDispatch } from '../../../../store/hooks';
+import { newRecipe } from '../../../../store/Recipe/recipe';
+import { renderItem } from '../utils';
+
 const IngredientsEditor = () => {
+  const dispatch = useAppDispatch();
+  const { newRecipe: storedNewRecipe, editRecipe: storedEditRecipe } = useRecipeState();
+
+  const newIngredients = storedNewRecipe?.ingredients || [];
+  const editIngredients = storedEditRecipe?.ingredients || [];
+
   const newIngredient = { _id: '', name: '', quantity: 1, unit: '' };
-  const [ingredients, setIngredients] = useState<TIngredient[]>([
-    // { _id: '1', name: 'sajt', quantity: 1, unit: 'kilogram' },
-    // { _id: '2', name: 'tojás', quantity: 2, unit: 'piece' },
-    newIngredient,
-  ]);
+  const initialIngredient = newIngredients?.length ? [...newIngredients] : [newIngredient];
+
+  const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredient);
 
   const handleAddIngredient = () => {
     const newId = (ingredients.length + 1).toString();
@@ -31,7 +38,8 @@ const IngredientsEditor = () => {
   const addIngredientButtonDisabled = ingredients.some(item => !item.name || !item.quantity || !item.unit);
 
   useEffect(() => {
-    console.log('ingredients: ', ingredients);
+    dispatch(newRecipe({ ...storedNewRecipe, ingredients }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients]);
 
   return (

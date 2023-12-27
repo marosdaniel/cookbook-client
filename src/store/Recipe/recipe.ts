@@ -3,21 +3,29 @@ import { TRecipe } from './types';
 
 interface RecipeState {
   newRecipe: TRecipe | undefined;
+  editRecipe: TRecipe | undefined;
 }
 
 const initialState: RecipeState = {
   newRecipe: undefined,
+  editRecipe: undefined,
 };
 
 const recipeSlice = createSlice({
   name: 'recipe',
   initialState,
   reducers: {
-    newRecipe: (state, action: PayloadAction<any | undefined>) => {
+    newRecipe: (state, action: PayloadAction<any>) => {
       state.newRecipe = action.payload;
     },
     resetNewRecipe: state => {
-      state.newRecipe = undefined;
+      delete state.newRecipe;
+    },
+    editRecipe: (state, action: PayloadAction<TRecipe>) => {
+      state.editRecipe = action.payload;
+    },
+    resetEditRecipe: state => {
+      delete state.editRecipe;
     },
   },
 });
