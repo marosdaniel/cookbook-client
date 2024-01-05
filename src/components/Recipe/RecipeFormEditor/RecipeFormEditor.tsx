@@ -4,14 +4,14 @@ import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@
 
 import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
+import { newRecipe } from '../../../store/Recipe/recipe';
+import { useRecipeState } from '../../../store/Recipe';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
 import { useGetDifficultyLevels } from './utils';
 import { gridContainerStyles } from './styles';
 import { IFormikProps } from './types';
-import { newRecipe } from '../../../store/Recipe/recipe';
-import { useRecipeState } from '../../../store/Recipe';
 
 const RecipeFormEditor = () => {
   const dispatch = useAppDispatch();
@@ -49,6 +49,7 @@ const RecipeFormEditor = () => {
       imgSrc: newRecipeFromStore?.imgSrc || '',
       cookingTime: newRecipeFromStore?.cookingTime || 0,
       difficultyLevel: newRecipeFromStore?.difficultyLevel || '',
+      ingredients: newRecipeFromStore?.ingredients || [],
       // ingredients: newRecipeFromStore?.ingredients || [],
       // preparationSteps: newRecipeFromStore?.preparationSteps || [],
     },
@@ -57,6 +58,7 @@ const RecipeFormEditor = () => {
   });
 
   const [debouncedValues, setDebouncedValues] = useState(values);
+  console.log(values);
 
   const handleFormChange = () => {
     const { title, description, imgSrc, cookingTime, difficultyLevel } = values;

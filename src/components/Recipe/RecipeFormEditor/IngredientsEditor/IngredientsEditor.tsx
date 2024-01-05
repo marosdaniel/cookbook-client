@@ -53,7 +53,7 @@ const IngredientsEditor = () => {
         </TransitionGroup>
       </List>
       <Button variant="outlined" onClick={handleAddIngredient} disabled={addIngredientButtonDisabled}>
-        Add ingredient
+        +
       </Button>
     </Grid>
   );

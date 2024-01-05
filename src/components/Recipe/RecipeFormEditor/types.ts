@@ -12,6 +12,6 @@ export interface IFormikProps {
   imgSrc?: string;
   cookingTime: number;
   difficultyLevel: string;
-  // ingredients: TIngredient[] | [];
+  ingredients: TIngredient[] | [];
   // preparationSteps: TPreparationStep[] | [];
 }

@@ -62,7 +62,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
           variant="standard"
           onChange={handleQuantityChange}
           inputProps={{ min: 0, style: { textAlign: 'right' } }}
-          sx={{ width: '90%' }}
+          sx={{ width: '95%' }}
           required
         />
       </Grid>
