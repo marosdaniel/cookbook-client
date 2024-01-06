@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { Button, Grid, Typography, List, Collapse } from '@mui/material';
 
@@ -7,18 +7,19 @@ import { useRecipeState } from '../../../../store/Recipe';
 import { useAppDispatch } from '../../../../store/hooks';
 import { newRecipe } from '../../../../store/Recipe/recipe';
 import { renderItem } from '../utils';
+import { IProps } from './types';
 
-const IngredientsEditor = () => {
+const IngredientsEditor = ({ ingredients, setIngredients }: IProps) => {
   const dispatch = useAppDispatch();
   const { newRecipe: storedNewRecipe, editRecipe: storedEditRecipe } = useRecipeState();
 
-  const newIngredients = storedNewRecipe?.ingredients || [];
-  const editIngredients = storedEditRecipe?.ingredients || [];
+  // const newIngredients = storedNewRecipe?.ingredients || [];
+  // const editIngredients = storedEditRecipe?.ingredients || [];
 
-  const newIngredient = { _id: '', name: '', quantity: 1, unit: '' };
-  const initialIngredient = newIngredients?.length ? [...newIngredients] : [newIngredient];
+  // const newIngredient = { _id: '', name: '', quantity: 1, unit: '' };
+  // const initialIngredient = newIngredients?.length ? [...newIngredients] : [newIngredient];
 
-  const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredient);
+  // const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredient);
 
   const handleAddIngredient = () => {
     const newId = (ingredients.length + 1).toString();
@@ -52,7 +53,12 @@ const IngredientsEditor = () => {
           ))}
         </TransitionGroup>
       </List>
-      <Button variant="outlined" onClick={handleAddIngredient} disabled={addIngredientButtonDisabled}>
+      <Button
+        variant="outlined"
+        onClick={handleAddIngredient}
+        disabled={addIngredientButtonDisabled}
+        sx={{ marginTop: '12px' }}
+      >
         +
       </Button>
     </Grid>

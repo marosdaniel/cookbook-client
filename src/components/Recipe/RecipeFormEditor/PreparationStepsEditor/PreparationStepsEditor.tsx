@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
 import Collapse from '@mui/material/Collapse';
@@ -11,22 +11,16 @@ import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 
-import { TPreparationStep } from '../../../../store/Recipe/types';
 import { useAppDispatch } from '../../../../store/hooks';
 import { newRecipe } from '../../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../../store/Recipe';
 import { listItemStyles } from '../styles';
+import { IProps } from './types';
 
-const PreparationStepsEditor = () => {
-  const newPreparationStep: TPreparationStep = {
-    _id: '1',
-    description: '',
-    order: 1,
-  };
+const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps }: IProps) => {
   const dispatch = useAppDispatch();
   const { newRecipe: storedNewRecipe, editRecipe: storedEditRecipe } = useRecipeState();
 
-  const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>([newPreparationStep]);
   const addPreparationStepButtonDisabled = preparationSteps.some(step => step.description === '');
 
   const handleAddPreparationStep = () => {
@@ -41,8 +35,13 @@ const PreparationStepsEditor = () => {
     ]);
   };
 
-  const handleRemovePreparationStep = (index: number) => {
-    setPreparationSteps(prevSteps => prevSteps.filter((_, i) => i !== index));
+  const handleRemovePreparationStep = (indexToRemove: number) => {
+    setPreparationSteps(prevSteps => {
+      const updatedSteps = prevSteps
+        .filter((_, index) => index !== indexToRemove)
+        .map((step, index) => ({ ...step, order: index + 1 }));
+      return updatedSteps;
+    });
   };
 
   const handlePreparationStepChange = (index: number, updatedStep: string) => {
@@ -85,7 +84,12 @@ const PreparationStepsEditor = () => {
           ))}
         </TransitionGroup>
       </List>
-      <Button variant="outlined" onClick={handleAddPreparationStep} disabled={addPreparationStepButtonDisabled}>
+      <Button
+        variant="outlined"
+        onClick={handleAddPreparationStep}
+        disabled={addPreparationStepButtonDisabled}
+        sx={{ marginTop: '12px' }}
+      >
         +
       </Button>
     </Grid>

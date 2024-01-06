@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
 import { newRecipe } from '../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../store/Recipe';
+import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
@@ -15,13 +16,25 @@ import { IFormikProps } from './types';
 
 const RecipeFormEditor = () => {
   const dispatch = useAppDispatch();
+  const { newRecipe: newRecipeFromStore } = useRecipeState();
 
   const difficultyLevels = useGetDifficultyLevels();
-  // useEffect(() => {
-  //   console.log('useEffect ingredients: ', ingredients);
-  // }, [ingredients]);
 
-  const { newRecipe: newRecipeFromStore } = useRecipeState();
+  const newIngredients = newRecipeFromStore?.ingredients || [];
+  const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
+  // const editIngredients = storedEditRecipe?.ingredients || [];
+
+  const newIngredient = { _id: '', name: '', quantity: 1, unit: '' };
+  const newPreparationStep: TPreparationStep = {
+    _id: '1',
+    description: '',
+    order: 1,
+  };
+  const initialIngredients = newIngredients?.length ? [...newIngredients] : [newIngredient];
+  const initialPreparationSteps = newPreparationSteps?.length ? [...newPreparationSteps] : [newPreparationStep];
+
+  const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredients);
+  const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>(initialPreparationSteps);
 
   const onSubmit = async () => {
     // log newRecipe from store
@@ -50,20 +63,17 @@ const RecipeFormEditor = () => {
       cookingTime: newRecipeFromStore?.cookingTime || 0,
       difficultyLevel: newRecipeFromStore?.difficultyLevel || '',
       ingredients: newRecipeFromStore?.ingredients || [],
-      // ingredients: newRecipeFromStore?.ingredients || [],
-      // preparationSteps: newRecipeFromStore?.preparationSteps || [],
+      preparationSteps: newRecipeFromStore?.preparationSteps || [],
     },
     onSubmit,
     validationSchema: recipeFormValidationSchema,
   });
 
   const [debouncedValues, setDebouncedValues] = useState(values);
-  console.log(values);
 
   const handleFormChange = () => {
     const { title, description, imgSrc, cookingTime, difficultyLevel } = values;
     dispatch(newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel }));
-    console.log('handleFormChange');
   };
 
   useEffect(() => {
@@ -78,7 +88,6 @@ const RecipeFormEditor = () => {
 
   useEffect(() => {
     handleFormChange();
-    console.log('debouncedValues: ', debouncedValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValues]);
 
@@ -179,9 +188,12 @@ const RecipeFormEditor = () => {
           </TextField>
         </Grid>
       </Grid>
-      <IngredientsEditor />
-      <PreparationStepsEditor />
+      <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} />
+      <PreparationStepsEditor preparationSteps={preparationSteps} setPreparationSteps={setPreparationSteps} />
       <Grid item xs={12} sm={12} md={6} lg={8} textAlign={'right'}>
+        <Button color="error" variant="contained" type="reset" disabled={isSubmitting} sx={{ marginRight: '8px' }}>
+          Reset
+        </Button>
         <Button variant="contained" type="submit" disabled={isSubmitting}>
           Complete & Share
         </Button>
