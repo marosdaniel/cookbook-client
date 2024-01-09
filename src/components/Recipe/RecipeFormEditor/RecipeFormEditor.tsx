@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 
@@ -6,31 +8,34 @@ import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
 import { newRecipe, resetNewRecipe } from '../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../store/Recipe';
-import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
+import { TIngredient, TPreparationStep, TRecipe } from '../../../store/Recipe/types';
+import { ENonProtectedRoutes, EProtectedRoutes } from '../../../router/types';
+import { CREATE_RECIPE } from '../../../service/graphql/recipe/createRecipe';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
 import { useGetCategories, useGetDifficultyLevels, useGetLabels } from './utils';
-import { gridContainerStyles } from './styles';
 import { IFormikProps } from './types';
-import { useLocation } from 'react-router-dom';
-import { EProtectedRoutes } from '../../../router/types';
+import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
 
 const RecipeFormEditor = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const [createRecipe, { data, loading: createRecipeLoading, error }] = useMutation(CREATE_RECIPE);
+
   const { newRecipe: newRecipeFromStore } = useRecipeState();
   const isNewRecipeMode = useLocation().pathname === EProtectedRoutes.NEW_RECIPE;
 
   const metaDifficultyLevels = useGetDifficultyLevels();
   const metaCategories = useGetCategories();
   const metaLabels = useGetLabels();
-  console.log(metaLabels);
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
   // const editIngredients = storedEditRecipe?.ingredients || [];
 
-  const newIngredient = { _id: '', name: '', quantity: 1, unit: '' };
+  const newIngredient = { _id: '1', name: '', quantity: 1, unit: '' };
   const newPreparationStep: TPreparationStep = {
     _id: '1',
     description: '',
@@ -40,25 +45,32 @@ const RecipeFormEditor = () => {
   const initialPreparationSteps = newPreparationSteps?.length ? [...newPreparationSteps] : [newPreparationStep];
 
   const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredients);
+  console.log(ingredients);
   const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>(initialPreparationSteps);
 
   const onSubmit = async () => {
-    // log newRecipe from store
-    console.log(newRecipeFromStore);
-    // try {
-    //   const {
-    //     data: {
-    //       loginUser: { user, token },
-    //     },
-    //   } = await loginUser({
-    //     variables: { userLoginInput },
-    //   });
-    //   localStorage.setItem('c_b_token', token);
-    //   dispatch(login(user));
-    //   navigate(ENonProtectedRoutes.HOME);
-    // } catch (_error: any) {
-    //   setError(_error.message);
-    // }
+    const recipeCreateInput = {
+      title: newRecipeFromStore?.title,
+      description: newRecipeFromStore?.description,
+      imgSrc: newRecipeFromStore?.imgSrc,
+      cookingTime: newRecipeFromStore?.cookingTime,
+      difficultyLevel: newRecipeFromStore?.difficultyLevel,
+      category: newRecipeFromStore?.category,
+      labels: newRecipeFromStore?.labels,
+      ingredients: newRecipeFromStore?.ingredients,
+      preparationSteps: newRecipeFromStore?.preparationSteps,
+    };
+    try {
+      await createRecipe({
+        variables: {
+          recipeCreateInput,
+        },
+      });
+      console.log('data: ', data);
+      navigate(ENonProtectedRoutes.RECIPES);
+    } catch (_error: any) {
+      console.log(_error.message);
+    }
   };
 
   const { values, handleChange, handleSubmit, handleBlur, errors, isSubmitting } = useFormik<IFormikProps>({
@@ -245,37 +257,20 @@ const RecipeFormEditor = () => {
       </Grid>
       <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} />
       <PreparationStepsEditor preparationSteps={preparationSteps} setPreparationSteps={setPreparationSteps} />
-      <Grid
-        item
-        xs={12}
-        sm={12}
-        md={6}
-        lg={8}
-        sx={{
-          display: 'flex',
-          justifyContent: {
-            xs: 'center',
-            md: 'flex-end',
-          },
-          flexDirection: {
-            xs: 'column',
-            md: 'row',
-          },
-        }}
-      >
+      <Grid item xs={12} sm={12} md={6} lg={8} sx={buttonWrapperStyles}>
         {isNewRecipeMode && (
           <Button
             color="error"
             variant="contained"
             type="reset"
-            disabled={isSubmitting}
-            sx={{ marginRight: '8px' }}
+            disabled={isSubmitting || createRecipeLoading}
+            sx={resetButtonStyles}
             onClick={handleOnReset}
           >
             Reset
           </Button>
         )}
-        <Button variant="contained" type="submit" disabled={isSubmitting}>
+        <Button variant="contained" type="submit" disabled={isSubmitting || createRecipeLoading} sx={buttonStyles}>
           Complete & Share
         </Button>
       </Grid>

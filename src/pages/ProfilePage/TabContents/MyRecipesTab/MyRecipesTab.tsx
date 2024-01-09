@@ -9,10 +9,9 @@ import ErrorMessage from '../../../../components/ErrorMessage';
 
 const MyRecipesTab = () => {
   const { user } = useAuthState();
-  const { data, error, loading } = useQuery(GET_RECIPES_BY_USER_NAME, {
-    variables: {
-      userName: user?.userName,
-    },
+  const userName = user?.userName || '';
+  const { loading, error, data } = useQuery(GET_RECIPES_BY_USER_NAME, {
+    variables: { userName } as { userName: string },
   });
 
   if (loading) return <LoadingBar />;
