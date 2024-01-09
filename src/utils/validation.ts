@@ -46,7 +46,16 @@ export const recipeFormValidationSchema = Yup.object().shape({
   description: Yup.string().required('Required'),
   imgSrc: Yup.string().url('Invalid url'),
   cookingTime: Yup.number().required('Required'),
-  difficultyLevel: Yup.string().required('Required'),
+  difficultyLevel: Yup.object().shape({
+    key: Yup.string().required('Required'),
+    name: Yup.string().required('Required'),
+    label: Yup.string().required('Required'),
+  }),
+  category: Yup.object().shape({
+    key: Yup.string().required('Required'),
+    name: Yup.string().required('Required'),
+    label: Yup.string().required('Required'),
+  }),
   ingredients: Yup.array().of(
     Yup.object().shape({
       name: Yup.string().required('Required'),

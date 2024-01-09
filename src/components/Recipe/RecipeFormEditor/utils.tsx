@@ -2,7 +2,13 @@ import { useQuery } from '@apollo/client';
 import { ListItem, IconButton, TextField, Grid, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { TCategoryMetadata, TLevelMetadata, TMetadataType, TUnitMetadata } from '../../../store/Metadata/types';
+import {
+  TCategoryMetadata,
+  TLabelMetadata,
+  TLevelMetadata,
+  TMetadataType,
+  TUnitMetadata,
+} from '../../../store/Metadata/types';
 import { GET_METADATA_BY_TYPE } from '../../../service/graphql/metadata/getMetadata';
 // import { units } from './const';
 import { RenderItemOptions } from './types';
@@ -22,6 +28,17 @@ export const useGetDifficultyLevels = () => {
 export const useGetUnits = () => {
   const { data, loading, error } = useQuery<{ getMetadataByType: TUnitMetadata[] }>(GET_METADATA_BY_TYPE, {
     variables: { type: TMetadataType.UNIT },
+  });
+
+  if (loading) return [];
+  if (error) return [];
+
+  return data?.getMetadataByType || [];
+};
+
+export const useGetLabels = () => {
+  const { data, loading, error } = useQuery<{ getMetadataByType: TLabelMetadata[] }>(GET_METADATA_BY_TYPE, {
+    variables: { type: TMetadataType.LABEL },
   });
 
   if (loading) return [];
@@ -86,7 +103,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
           variant="standard"
           onChange={handleQuantityChange}
           inputProps={{ min: 0, style: { textAlign: 'right' } }}
-          sx={{ width: '95%' }}
+          sx={{ width: '90%' }}
           required
         />
       </Grid>

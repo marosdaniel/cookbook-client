@@ -10,7 +10,7 @@ import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
-import { useGetCategories, useGetDifficultyLevels } from './utils';
+import { useGetCategories, useGetDifficultyLevels, useGetLabels } from './utils';
 import { gridContainerStyles } from './styles';
 import { IFormikProps } from './types';
 
@@ -18,8 +18,9 @@ const RecipeFormEditor = () => {
   const dispatch = useAppDispatch();
   const { newRecipe: newRecipeFromStore } = useRecipeState();
 
-  const difficultyLevels = useGetDifficultyLevels();
-  const categories = useGetCategories();
+  const metaDifficultyLevels = useGetDifficultyLevels();
+  const metaCategories = useGetCategories();
+  const metaLabels = useGetLabels();
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
@@ -62,8 +63,9 @@ const RecipeFormEditor = () => {
       description: newRecipeFromStore?.description || '',
       imgSrc: newRecipeFromStore?.imgSrc || '',
       cookingTime: newRecipeFromStore?.cookingTime || 0,
-      difficultyLevel: newRecipeFromStore?.difficultyLevel || '',
-      category: newRecipeFromStore?.category || '',
+      difficultyLevel: newRecipeFromStore?.difficultyLevel || undefined,
+      category: newRecipeFromStore?.category || undefined,
+      labels: newRecipeFromStore?.labels || [],
       ingredients: newRecipeFromStore?.ingredients || [],
       preparationSteps: newRecipeFromStore?.preparationSteps || [],
     },
@@ -74,11 +76,14 @@ const RecipeFormEditor = () => {
   const [debouncedValues, setDebouncedValues] = useState(values);
 
   const handleFormChange = () => {
-    const { title, description, imgSrc, cookingTime, difficultyLevel, category } = values;
-    dispatch(newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel, category }));
+    const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels } = values;
+    dispatch(
+      newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel, category, labels }),
+    );
   };
 
   useEffect(() => {
+    console.log(values);
     const timer = setTimeout(() => {
       setDebouncedValues(values);
     }, 400);
@@ -97,7 +102,7 @@ const RecipeFormEditor = () => {
     <Grid component="form" container sx={gridContainerStyles} onSubmit={handleSubmit} onChange={handleFormChange}>
       <Grid item xs={12} sm={12} md={6} lg={8} marginBottom={8}>
         <Typography variant="h6" marginBottom={2}>
-          Please ensure all fields are filled out
+          Please fill in the form below to create a new recipe
         </Typography>
         <TextField
           value={values.title}
@@ -168,9 +173,17 @@ const RecipeFormEditor = () => {
         />
         <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
           <TextField
-            value={values.difficultyLevel}
+            value={values.difficultyLevel?.label || ''}
             error={Boolean(errors.difficultyLevel)}
-            onChange={handleChange}
+            onChange={event => {
+              const selectedDifficulty = metaDifficultyLevels.find(option => option.label === event.target.value);
+              handleChange({
+                target: {
+                  name: 'difficultyLevel',
+                  value: selectedDifficulty,
+                },
+              });
+            }}
             onBlur={handleBlur}
             id="difficultyLevel"
             name="difficultyLevel"
@@ -180,9 +193,9 @@ const RecipeFormEditor = () => {
             helperText="Please select level of difficulty"
             variant="standard"
             defaultValue=""
-            disabled={!difficultyLevels.length}
+            disabled={!metaDifficultyLevels.length}
           >
-            {difficultyLevels.map(option => (
+            {metaDifficultyLevels.map(option => (
               <MenuItem key={option.key} value={option.label}>
                 {option.label}
               </MenuItem>
@@ -191,9 +204,17 @@ const RecipeFormEditor = () => {
         </Grid>
         <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
           <TextField
-            value={values.category}
+            value={values.category?.label || ''}
             error={Boolean(errors.category)}
-            onChange={handleChange}
+            onChange={event => {
+              const selectedCategory = metaCategories.find(option => option.label === event.target.value);
+              handleChange({
+                target: {
+                  name: 'category',
+                  value: selectedCategory,
+                },
+              });
+            }}
             onBlur={handleBlur}
             id="category"
             name="category"
@@ -202,10 +223,9 @@ const RecipeFormEditor = () => {
             label="Category"
             helperText="Please select a category"
             variant="standard"
-            defaultValue=""
-            disabled={!categories.length}
+            disabled={!metaCategories.length}
           >
-            {categories.map(option => (
+            {metaCategories.map(option => (
               <MenuItem key={option.key} value={option.label}>
                 {option.label}
               </MenuItem>

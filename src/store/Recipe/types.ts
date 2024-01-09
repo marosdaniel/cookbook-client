@@ -1,3 +1,5 @@
+import { TCategoryMetadata, TLabelMetadata, TLevelMetadata } from '../Metadata/types';
+
 export type TRecipe = {
   _id: string;
   title: string;
@@ -8,11 +10,11 @@ export type TRecipe = {
   createdBy: string;
   updatedAt: string;
   author: string;
-  imgSrc?: string;
+  imgSrc?: string | undefined;
   cookingTime: number;
-  // difficultyLevel: TDifficultyLevel;
-  difficultyLevel: string;
-  category: string;
+  difficultyLevel: TLevelMetadata | undefined;
+  category: TCategoryMetadata | undefined;
+  labels: TLabelMetadata[] | [];
 };
 
 export type TIngredient = {
