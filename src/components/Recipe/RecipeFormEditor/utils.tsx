@@ -2,9 +2,9 @@ import { useQuery } from '@apollo/client';
 import { ListItem, IconButton, TextField, Grid, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { TLevelMetadata, TMetadataType } from '../../../store/Metadata/types';
+import { TCategoryMetadata, TLevelMetadata, TMetadataType, TUnitMetadata } from '../../../store/Metadata/types';
 import { GET_METADATA_BY_TYPE } from '../../../service/graphql/metadata/getMetadata';
-import { units } from './const';
+// import { units } from './const';
 import { RenderItemOptions } from './types';
 import { listItemStyles } from './styles';
 
@@ -19,7 +19,31 @@ export const useGetDifficultyLevels = () => {
   return data?.getMetadataByType || [];
 };
 
+export const useGetUnits = () => {
+  const { data, loading, error } = useQuery<{ getMetadataByType: TUnitMetadata[] }>(GET_METADATA_BY_TYPE, {
+    variables: { type: TMetadataType.UNIT },
+  });
+
+  if (loading) return [];
+  if (error) return [];
+
+  return data?.getMetadataByType || [];
+};
+
+export const useGetCategories = () => {
+  const { data, loading, error } = useQuery<{ getMetadataByType: TCategoryMetadata[] }>(GET_METADATA_BY_TYPE, {
+    variables: { type: TMetadataType.CATEGORY },
+  });
+
+  if (loading) return [];
+  if (error) return [];
+
+  return data?.getMetadataByType || [];
+};
+
 export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChange }: RenderItemOptions) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const units = useGetUnits();
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedItem = { ...item, name: e.target.value };
     // TODO: save it to the store
@@ -51,7 +75,7 @@ export const renderItem = ({ item, handleRemoveIngredient, handleIngredientChang
           label="Name"
           variant="standard"
           onChange={handleNameChange}
-          sx={{ width: '95%' }}
+          sx={{ width: '90%' }}
           required
         />
       </Grid>

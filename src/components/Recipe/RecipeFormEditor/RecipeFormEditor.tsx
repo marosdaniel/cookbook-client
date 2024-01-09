@@ -10,7 +10,7 @@ import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
-import { useGetDifficultyLevels } from './utils';
+import { useGetCategories, useGetDifficultyLevels } from './utils';
 import { gridContainerStyles } from './styles';
 import { IFormikProps } from './types';
 
@@ -19,6 +19,7 @@ const RecipeFormEditor = () => {
   const { newRecipe: newRecipeFromStore } = useRecipeState();
 
   const difficultyLevels = useGetDifficultyLevels();
+  const categories = useGetCategories();
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
@@ -62,6 +63,7 @@ const RecipeFormEditor = () => {
       imgSrc: newRecipeFromStore?.imgSrc || '',
       cookingTime: newRecipeFromStore?.cookingTime || 0,
       difficultyLevel: newRecipeFromStore?.difficultyLevel || '',
+      category: newRecipeFromStore?.category || '',
       ingredients: newRecipeFromStore?.ingredients || [],
       preparationSteps: newRecipeFromStore?.preparationSteps || [],
     },
@@ -72,8 +74,8 @@ const RecipeFormEditor = () => {
   const [debouncedValues, setDebouncedValues] = useState(values);
 
   const handleFormChange = () => {
-    const { title, description, imgSrc, cookingTime, difficultyLevel } = values;
-    dispatch(newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel }));
+    const { title, description, imgSrc, cookingTime, difficultyLevel, category } = values;
+    dispatch(newRecipe({ ...newRecipeFromStore, title, description, imgSrc, cookingTime, difficultyLevel, category }));
   };
 
   useEffect(() => {
@@ -181,6 +183,29 @@ const RecipeFormEditor = () => {
             disabled={!difficultyLevels.length}
           >
             {difficultyLevels.map(option => (
+              <MenuItem key={option.key} value={option.label}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
+          <TextField
+            value={values.category}
+            error={Boolean(errors.category)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            id="category"
+            name="category"
+            select
+            required
+            label="Category"
+            helperText="Please select a category"
+            variant="standard"
+            defaultValue=""
+            disabled={!categories.length}
+          >
+            {categories.map(option => (
               <MenuItem key={option.key} value={option.label}>
                 {option.label}
               </MenuItem>

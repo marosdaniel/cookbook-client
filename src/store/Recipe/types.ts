@@ -12,6 +12,7 @@ export type TRecipe = {
   cookingTime: number;
   // difficultyLevel: TDifficultyLevel;
   difficultyLevel: string;
+  category: string;
 };
 
 export type TIngredient = {
@@ -25,15 +26,4 @@ export type TPreparationStep = {
   _id: string;
   description: string;
   order: number;
-};
-
-export type TDifficultyLevel = {
-  value: string;
-  label: string;
-};
-
-export type TUnit = {
-  name: string;
-  label: string;
-  key: string;
 };

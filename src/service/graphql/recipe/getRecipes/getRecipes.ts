@@ -44,10 +44,11 @@ const GET_RECIPES_BY_USER_NAME = gql`
   query GetRecipesByUserName($userName: String!) {
     getRecipesByUserName(userName: $userName) {
       recipes {
-        categories {
+        category {
           _id
           key
           name
+          label
         }
         createdAt
         createdBy
