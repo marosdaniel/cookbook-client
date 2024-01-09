@@ -4,7 +4,7 @@ import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@
 
 import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
-import { newRecipe } from '../../../store/Recipe/recipe';
+import { newRecipe, resetNewRecipe } from '../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../store/Recipe';
 import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
@@ -13,14 +13,18 @@ import IngredientsEditor from './IngredientsEditor';
 import { useGetCategories, useGetDifficultyLevels, useGetLabels } from './utils';
 import { gridContainerStyles } from './styles';
 import { IFormikProps } from './types';
+import { useLocation } from 'react-router-dom';
+import { EProtectedRoutes } from '../../../router/types';
 
 const RecipeFormEditor = () => {
   const dispatch = useAppDispatch();
   const { newRecipe: newRecipeFromStore } = useRecipeState();
+  const isNewRecipeMode = useLocation().pathname === EProtectedRoutes.NEW_RECIPE;
 
   const metaDifficultyLevels = useGetDifficultyLevels();
   const metaCategories = useGetCategories();
   const metaLabels = useGetLabels();
+  console.log(metaLabels);
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
@@ -82,6 +86,10 @@ const RecipeFormEditor = () => {
     );
   };
 
+  const handleOnReset = () => {
+    dispatch(resetNewRecipe());
+  };
+
   useEffect(() => {
     console.log(values);
     const timer = setTimeout(() => {
@@ -101,7 +109,7 @@ const RecipeFormEditor = () => {
   return (
     <Grid component="form" container sx={gridContainerStyles} onSubmit={handleSubmit} onChange={handleFormChange}>
       <Grid item xs={12} sm={12} md={6} lg={8} marginBottom={8}>
-        <Typography variant="h6" marginBottom={2}>
+        <Typography variant="h6" marginBottom={2} fontStyle={'italic'}>
           Please fill in the form below to create a new recipe
         </Typography>
         <TextField
@@ -165,7 +173,7 @@ const RecipeFormEditor = () => {
               min: 0,
               max: 999,
               step: 1,
-              style: { textAlign: 'right', marginRight: '8px' },
+              style: { textAlign: 'right', marginRight: '8px', width: '200px' },
             },
           }}
           variant="standard"
@@ -194,6 +202,7 @@ const RecipeFormEditor = () => {
             variant="standard"
             defaultValue=""
             disabled={!metaDifficultyLevels.length}
+            InputProps={{ style: { width: '240px' } }}
           >
             {metaDifficultyLevels.map(option => (
               <MenuItem key={option.key} value={option.label}>
@@ -224,6 +233,7 @@ const RecipeFormEditor = () => {
             helperText="Please select a category"
             variant="standard"
             disabled={!metaCategories.length}
+            InputProps={{ style: { width: '240px' } }}
           >
             {metaCategories.map(option => (
               <MenuItem key={option.key} value={option.label}>
@@ -235,10 +245,36 @@ const RecipeFormEditor = () => {
       </Grid>
       <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} />
       <PreparationStepsEditor preparationSteps={preparationSteps} setPreparationSteps={setPreparationSteps} />
-      <Grid item xs={12} sm={12} md={6} lg={8} textAlign={'right'}>
-        <Button color="error" variant="contained" type="reset" disabled={isSubmitting} sx={{ marginRight: '8px' }}>
-          Reset
-        </Button>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={6}
+        lg={8}
+        sx={{
+          display: 'flex',
+          justifyContent: {
+            xs: 'center',
+            md: 'flex-end',
+          },
+          flexDirection: {
+            xs: 'column',
+            md: 'row',
+          },
+        }}
+      >
+        {isNewRecipeMode && (
+          <Button
+            color="error"
+            variant="contained"
+            type="reset"
+            disabled={isSubmitting}
+            sx={{ marginRight: '8px' }}
+            onClick={handleOnReset}
+          >
+            Reset
+          </Button>
+        )}
         <Button variant="contained" type="submit" disabled={isSubmitting}>
           Complete & Share
         </Button>

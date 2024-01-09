@@ -25,6 +25,9 @@ import myTheme from '../../theme';
 import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
 import { AppBarProps } from './types';
 import { getListItemStyles } from './styles';
+import { useGlobalState } from '../../store/Global';
+import { useAppDispatch } from '../../store/hooks';
+import { closeDrawer, openDrawer } from '../../store/Global/global';
 
 const drawerWidth = 240;
 
@@ -92,20 +95,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 }));
 
 export default function AppBar({ children }: PropsWithChildren) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuthState();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const isDrawerOpen = useGlobalState().isDrawerOpen;
   const bottomMenuItems = useBottomMenuItems();
   const topMenuItems = useTopMenuItems();
 
   const avatarName = getAvatarName(user);
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    dispatch(openDrawer());
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    dispatch(closeDrawer());
   };
 
   const navigateTo = (path: ENonProtectedRoutes | EProtectedRoutes) => {
@@ -114,7 +119,7 @@ export default function AppBar({ children }: PropsWithChildren) {
 
   return (
     <Box display="flex">
-      <MuiBar position="fixed" open={open}>
+      <MuiBar position="fixed" open={isDrawerOpen}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -123,7 +128,7 @@ export default function AppBar({ children }: PropsWithChildren) {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
+              ...(isDrawerOpen && { display: 'none' }),
             }}
           >
             <MenuIcon />
@@ -149,7 +154,7 @@ export default function AppBar({ children }: PropsWithChildren) {
           )}
         </Toolbar>
       </MuiBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={isDrawerOpen}>
         <DrawerHeader>
           <Typography variant="h5" sx={{ margin: '0 auto', color: myTheme.palette.primary.main }}>
             CookBook
@@ -171,20 +176,20 @@ export default function AppBar({ children }: PropsWithChildren) {
                 <ListItemButton
                   sx={{
                     minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
+                    justifyContent: isDrawerOpen ? 'initial' : 'center',
                     px: 2.5,
                   }}
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
-                      mr: open ? 3 : 'auto',
+                      mr: isDrawerOpen ? 3 : 'auto',
                       justifyContent: 'center',
                     }}
                   >
                     <item.iconComponent />
                   </ListItemIcon>
-                  <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary={item.name} sx={{ opacity: isDrawerOpen ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
             </Tooltip>
@@ -205,20 +210,20 @@ export default function AppBar({ children }: PropsWithChildren) {
                   <ListItemButton
                     sx={{
                       minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
+                      justifyContent: isDrawerOpen ? 'initial' : 'center',
                       px: 2.5,
                     }}
                   >
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
-                        mr: open ? 3 : 'auto',
+                        mr: isDrawerOpen ? 3 : 'auto',
                         justifyContent: 'center',
                       }}
                     >
                       <item.iconComponent />
                     </ListItemIcon>
-                    <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                    <ListItemText primary={item.name} sx={{ opacity: isDrawerOpen ? 1 : 0 }} />
                   </ListItemButton>
                 </ListItem>
               </Tooltip>

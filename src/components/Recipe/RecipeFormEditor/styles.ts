@@ -1,13 +1,10 @@
 export const gridContainerStyles = {
   width: '100%',
-  marginLeft: {
-    xs: 0,
-    sm: 0,
-    md: '120px',
-    lg: '220px',
-    xl: '320px',
+  paddingLeft: {
+    md: '80px',
   },
-  paddingLeft: 0,
+  display: 'flex',
+  flexDirection: 'rows',
 };
 
 export const listItemStyles = {

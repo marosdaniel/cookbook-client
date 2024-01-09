@@ -8,11 +8,7 @@ function App() {
     loadDevMessages();
     loadErrorMessages();
   }
-  return (
-    <div className="App">
-      <Router />
-    </div>
-  );
+  return <Router />;
 }
 
 export default App;

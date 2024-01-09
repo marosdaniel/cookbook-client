@@ -1,12 +1,11 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-
 import loadable from '@loadable/component';
 import LoadingBar from '../components/LoadingBar';
-
+import AppBar from '../components/AppBar/';
+import PageWrapper from '../components/PageWrapper';
 import { nonProtectedRoutes } from './nonProtectedRoutes';
 import { protectedRoutes } from './protectedRoutes';
 import Authenticated from './Authenticated';
-import AppBar from '../components/AppBar/';
 import { ENonProtectedRoutes } from './types';
 
 const NotFound = loadable(() => import('../pages/NotFoundPage'), {
@@ -19,9 +18,12 @@ export const router = createBrowserRouter([
     element: (
       <>
         {path !== ENonProtectedRoutes.SIGNIN ? (
-          <AppBar>
-            <Component />
-          </AppBar>
+          <>
+            <AppBar />
+            <PageWrapper>
+              <Component />
+            </PageWrapper>
+          </>
         ) : (
           <Component />
         )}
@@ -32,9 +34,10 @@ export const router = createBrowserRouter([
     path,
     element: (
       <Authenticated>
-        <AppBar>
+        <AppBar />
+        <PageWrapper>
           <Component />
-        </AppBar>
+        </PageWrapper>
       </Authenticated>
     ),
   })),
