@@ -7,7 +7,6 @@ export interface IProps {
   createdAt: string;
   createdBy: string;
   updatedAt: string;
-  author: string;
   id: string;
   imgSrc?: string;
 }

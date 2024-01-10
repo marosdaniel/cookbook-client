@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
 import { newRecipe, resetNewRecipe } from '../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../store/Recipe';
-import { TIngredient, TPreparationStep, TRecipe } from '../../../store/Recipe/types';
+import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 import { ENonProtectedRoutes, EProtectedRoutes } from '../../../router/types';
 import { CREATE_RECIPE } from '../../../service/graphql/recipe/createRecipe';
 
@@ -86,7 +86,6 @@ const RecipeFormEditor = () => {
       ingredients: newRecipeFromStore?.ingredients,
       preparationSteps: newRecipeFromStore?.preparationSteps,
     };
-    console.log('recipeCreateInput: ', recipeCreateInput);
     try {
       await createRecipe({
         variables: {
@@ -95,6 +94,7 @@ const RecipeFormEditor = () => {
       });
       console.log('data: ', data);
       navigate(ENonProtectedRoutes.RECIPES);
+      dispatch(resetNewRecipe());
     } catch (_error: any) {
       console.log(_error.message);
     }

@@ -14,7 +14,6 @@ const RecipeList = ({ recipes }: IProps) => {
           _id,
           title,
           description,
-          author,
           createdBy,
           createdAt,
           ingredients,
@@ -26,7 +25,6 @@ const RecipeList = ({ recipes }: IProps) => {
             key={_id || index}
             title={title}
             description={description}
-            author={author}
             createdAt={createdAt}
             createdBy={createdBy}
             ingredients={ingredients}

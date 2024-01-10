@@ -28,9 +28,6 @@ const CREATE_RECIPE = gql`
       createdAt
       updatedAt
       createdBy
-      author {
-        userName
-      }
       cookingTime
       imgSrc
     }

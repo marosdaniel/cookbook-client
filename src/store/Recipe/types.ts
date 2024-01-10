@@ -9,7 +9,6 @@ export type TRecipe = {
   createdAt: string;
   createdBy: string;
   updatedAt: string;
-  author: string;
   imgSrc?: string | undefined;
   cookingTime: number;
   difficultyLevel: TLevelMetadata;
