@@ -17,6 +17,7 @@ import IngredientsEditor from './IngredientsEditor';
 import { useGetCategories, useGetDifficultyLevels, useGetLabels } from './utils';
 import { IFormikProps } from './types';
 import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
+import { TCategoryMetadata, TLabelMetadata, TLevelMetadata, TMetadataType } from '../../../store/Metadata/types';
 
 const RecipeFormEditor = () => {
   const navigate = useNavigate();
@@ -35,9 +36,8 @@ const RecipeFormEditor = () => {
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
   // const editIngredients = storedEditRecipe?.ingredients || [];
 
-  const newIngredient = { _id: '1', name: '', quantity: 1, unit: '' };
+  const newIngredient = { localId: '1', name: '', quantity: 1, unit: '' };
   const newPreparationStep: TPreparationStep = {
-    _id: '1',
     description: '',
     order: 1,
   };
@@ -45,8 +45,34 @@ const RecipeFormEditor = () => {
   const initialPreparationSteps = newPreparationSteps?.length ? [...newPreparationSteps] : [newPreparationStep];
 
   const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredients);
-  console.log(ingredients);
   const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>(initialPreparationSteps);
+
+  const cleanCategory = (category: TCategoryMetadata | undefined): TCategoryMetadata => {
+    return {
+      key: category?.key || '',
+      label: category?.label || '',
+      name: category?.name || '',
+      type: TMetadataType.CATEGORY,
+    };
+  };
+
+  const cleanLabels = (labels: TLabelMetadata[]): TLabelMetadata[] => {
+    return labels.map(label => ({
+      key: label.key,
+      label: label.label,
+      name: label.name,
+      type: TMetadataType.LABEL,
+    }));
+  };
+
+  const cleanDifficultyLevel = (difficultyLevel: TLevelMetadata | undefined): TLevelMetadata => {
+    return {
+      key: difficultyLevel?.key || '',
+      label: difficultyLevel?.label || '',
+      name: difficultyLevel?.name || '',
+      type: TMetadataType.LEVEL,
+    };
+  };
 
   const onSubmit = async () => {
     const recipeCreateInput = {
@@ -54,12 +80,13 @@ const RecipeFormEditor = () => {
       description: newRecipeFromStore?.description,
       imgSrc: newRecipeFromStore?.imgSrc,
       cookingTime: newRecipeFromStore?.cookingTime,
-      difficultyLevel: newRecipeFromStore?.difficultyLevel,
-      category: newRecipeFromStore?.category,
-      labels: newRecipeFromStore?.labels,
+      difficultyLevel: cleanDifficultyLevel(newRecipeFromStore?.difficultyLevel),
+      category: cleanCategory(newRecipeFromStore?.category),
+      labels: cleanLabels(newRecipeFromStore?.labels || []),
       ingredients: newRecipeFromStore?.ingredients,
       preparationSteps: newRecipeFromStore?.preparationSteps,
     };
+    console.log('recipeCreateInput: ', recipeCreateInput);
     try {
       await createRecipe({
         variables: {

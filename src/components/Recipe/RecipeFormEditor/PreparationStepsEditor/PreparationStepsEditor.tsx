@@ -28,7 +28,6 @@ const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps }: IProp
     setPreparationSteps(prevSteps => [
       ...prevSteps,
       {
-        _id: '1',
         description: '',
         order: newOrder,
       },

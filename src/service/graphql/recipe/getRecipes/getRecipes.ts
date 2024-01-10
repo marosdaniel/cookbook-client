@@ -9,7 +9,7 @@ const GET_RECIPES = gql`
         description
         title
         createdAt
-        preparationTime
+        cookingTime
         imgSrc
       }
     }
@@ -34,7 +34,7 @@ const GET_RECIPE_BY_ID = gql`
       }
       title
       updatedAt
-      preparationTime
+      cookingTime
       imgSrc
     }
   }
@@ -64,7 +64,7 @@ const GET_RECIPES_BY_USER_NAME = gql`
           description
           order
         }
-        preparationTime
+        cookingTime
         imgSrc
         updatedAt
         title

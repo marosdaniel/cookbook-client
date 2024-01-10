@@ -31,7 +31,7 @@ const CREATE_RECIPE = gql`
       author {
         userName
       }
-      preparationTime
+      cookingTime
       imgSrc
     }
   }

@@ -12,20 +12,19 @@ export type TRecipe = {
   author: string;
   imgSrc?: string | undefined;
   cookingTime: number;
-  difficultyLevel: TLevelMetadata | undefined;
-  category: TCategoryMetadata | undefined;
+  difficultyLevel: TLevelMetadata;
+  category: TCategoryMetadata;
   labels: TLabelMetadata[] | [];
 };
 
 export type TIngredient = {
-  _id: string;
+  localId: string;
   name: string;
   quantity: number;
   unit: string;
 };
 
 export type TPreparationStep = {
-  _id: string;
   description: string;
   order: number;
 };
