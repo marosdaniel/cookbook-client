@@ -60,6 +60,7 @@ const GET_RECIPE_BY_ID = gql`
         label
         type
       }
+      servings
     }
   }
 `;

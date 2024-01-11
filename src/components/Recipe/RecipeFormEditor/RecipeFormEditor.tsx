@@ -11,14 +11,13 @@ import { useRecipeState } from '../../../store/Recipe';
 import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 import { ENonProtectedRoutes } from '../../../router/types';
 import { CREATE_RECIPE } from '../../../service/graphql/recipe/createRecipe';
-import { TCategoryMetadata, TLabelMetadata, TLevelMetadata, TMetadataType } from '../../../store/Metadata/types';
 
 import ErrorMessage from '../../ErrorMessage';
 import LoadingBar from '../../LoadingBar';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
-import { useGetCategories, useGetDifficultyLevels, useGetLabels } from './utils';
+import { cleanCategory, cleanDifficultyLevel, cleanLabels, useGetCategories, useGetDifficultyLevels } from './utils';
 import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
 import { IFormikProps, IProps } from './types';
 
@@ -34,7 +33,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
 
   const metaDifficultyLevels = useGetDifficultyLevels();
   const metaCategories = useGetCategories();
-  const metaLabels = useGetLabels();
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
@@ -59,33 +57,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
 
   const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredients);
   const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>(initialPreparationSteps);
-
-  const cleanCategory = (category: TCategoryMetadata | undefined): TCategoryMetadata => {
-    return {
-      key: category?.key || '',
-      label: category?.label || '',
-      name: category?.name || '',
-      type: TMetadataType.CATEGORY,
-    };
-  };
-
-  const cleanLabels = (labels: TLabelMetadata[]): TLabelMetadata[] => {
-    return labels.map(label => ({
-      key: label.key,
-      label: label.label,
-      name: label.name,
-      type: TMetadataType.LABEL,
-    }));
-  };
-
-  const cleanDifficultyLevel = (difficultyLevel: TLevelMetadata | undefined): TLevelMetadata => {
-    return {
-      key: difficultyLevel?.key || '',
-      label: difficultyLevel?.label || '',
-      name: difficultyLevel?.name || '',
-      type: TMetadataType.LEVEL,
-    };
-  };
 
   const onSubmit = async () => {
     const inputValues = isEditMode ? editRecipeFromStore : newRecipeFromStore;

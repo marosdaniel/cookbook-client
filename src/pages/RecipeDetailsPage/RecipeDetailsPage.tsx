@@ -35,7 +35,7 @@ const RecipeDetailsPage = () => {
 
   const isEditAvailable = data?.getRecipeById.createdBy === user?.userName;
 
-  const { title = '', createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
+  const { title = '', createdBy, description, preparationSteps, ingredients } = recipe || {};
 
   const handleEdit = () => {
     if (recipe) {

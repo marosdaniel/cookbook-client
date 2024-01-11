@@ -52,3 +52,30 @@ export const useGetCategories = () => {
 
   return data?.getMetadataByType || [];
 };
+
+export const cleanCategory = (category: TCategoryMetadata | undefined): TCategoryMetadata => {
+  return {
+    key: category?.key || '',
+    label: category?.label || '',
+    name: category?.name || '',
+    type: TMetadataType.CATEGORY,
+  };
+};
+
+export const cleanLabels = (labels: TLabelMetadata[]): TLabelMetadata[] => {
+  return labels.map(label => ({
+    key: label.key,
+    label: label.label,
+    name: label.name,
+    type: TMetadataType.LABEL,
+  }));
+};
+
+export const cleanDifficultyLevel = (difficultyLevel: TLevelMetadata | undefined): TLevelMetadata => {
+  return {
+    key: difficultyLevel?.key || '',
+    label: difficultyLevel?.label || '',
+    name: difficultyLevel?.name || '',
+    type: TMetadataType.LEVEL,
+  };
+};

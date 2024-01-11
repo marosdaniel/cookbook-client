@@ -30,6 +30,7 @@ const CREATE_RECIPE = gql`
       createdBy
       cookingTime
       imgSrc
+      servings
     }
   }
 `;
@@ -78,6 +79,7 @@ const EDIT_RECIPE = gql`
         label
         type
       }
+      servings
     }
   }
 `;
