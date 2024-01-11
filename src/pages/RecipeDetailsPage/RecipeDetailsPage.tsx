@@ -3,18 +3,23 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Button, Grid, Link, Typography } from '@mui/material';
 
+import { useAppDispatch } from '../../store/hooks';
+import { setEditRecipe } from '../../store/Recipe/recipe';
+import { TRecipe } from '../../store/Recipe/types';
 import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
-import LoadingBar from '../../components/LoadingBar';
 import { useAuthState } from '../../store/Auth';
-import { RecipeDetailsData } from './types';
-import ErrorMessage from '../../components/ErrorMessage';
 import { ENonProtectedRoutes } from '../../router/types';
+import LoadingBar from '../../components/LoadingBar';
+import ErrorMessage from '../../components/ErrorMessage';
 import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 import PageTitle from '../../components/stylingComponents/PageTitle';
+import RecipeFormEditor from '../../components/Recipe/RecipeFormEditor';
 import PreparationStepList from './PreparationStepList';
 import IngredientList from './IngredientList';
+import { RecipeDetailsData } from './types';
 
 const RecipeDetailsPage = () => {
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const { user } = useAuthState();
   const { loading, error, data } = useQuery<RecipeDetailsData>(GET_RECIPE_BY_ID, {
@@ -26,11 +31,18 @@ const RecipeDetailsPage = () => {
   if (loading) return <LoadingBar />;
   if (error) return <ErrorMessage />;
 
-  const recipe = data?.getRecipeById;
+  const recipe: TRecipe | undefined = data?.getRecipeById;
 
   const isEditAvailable = data?.getRecipeById.createdBy === user?.userName;
 
   const { title = '', createdAt, createdBy, description, preparationSteps, updatedAt, ingredients } = recipe || {};
+
+  const handleEdit = () => {
+    if (recipe) {
+      dispatch(setEditRecipe(recipe));
+    }
+    setIsEditMode(true);
+  };
 
   const linkToCreator = (
     <Link component={RouterLink} to={`${ENonProtectedRoutes.USERS}/${createdBy}`}>
@@ -43,12 +55,16 @@ const RecipeDetailsPage = () => {
       ? preparationSteps?.filter(step => typeof step.order === 'number').sort((a, b) => a.order - b.order)
       : [];
 
+  if (isEditMode) {
+    return <RecipeFormEditor isEditMode setIsEditMode={setIsEditMode} />;
+  }
+
   return (
     <WrapperContainer id="recipe-detail-page">
       <Grid display="flex" justifyContent="space-between" alignItems="center">
         <PageTitle title={title} />
         {isEditAvailable && (
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" onClick={handleEdit}>
             Edit
           </Button>
         )}

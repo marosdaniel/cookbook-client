@@ -34,4 +34,52 @@ const CREATE_RECIPE = gql`
   }
 `;
 
-export { CREATE_RECIPE };
+const EDIT_RECIPE = gql`
+  mutation Mutation($editRecipeId: ID!, $recipeEditInput: RecipeEditInput) {
+    editRecipe(id: $editRecipeId, recipeEditInput: $recipeEditInput) {
+      title
+      description
+      ingredients {
+        localId
+        name
+        quantity
+        unit
+        _id
+      }
+      category {
+        name
+        key
+        label
+        type
+        _id
+      }
+      labels {
+        name
+        key
+        label
+        type
+        _id
+      }
+      _id
+      preparationSteps {
+        _id
+        description
+        order
+      }
+      createdAt
+      updatedAt
+      createdBy
+      imgSrc
+      cookingTime
+      difficultyLevel {
+        _id
+        name
+        key
+        label
+        type
+      }
+    }
+  }
+`;
+
+export { CREATE_RECIPE, EDIT_RECIPE };

@@ -1,6 +1,10 @@
 import { TCategoryMetadata, TLabelMetadata, TLevelMetadata } from '../../../store/Metadata/types';
 import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
+export interface IProps {
+  isEditMode?: boolean;
+  setIsEditMode?: React.Dispatch<React.SetStateAction<boolean>>;
+}
 export interface RenderItemOptions {
   item: TIngredient;
   handleRemoveIngredient: (item: string) => void;

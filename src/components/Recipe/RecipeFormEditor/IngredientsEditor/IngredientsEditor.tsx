@@ -6,14 +6,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TIngredient } from '../../../../store/Recipe/types';
 import { useRecipeState } from '../../../../store/Recipe';
 import { useAppDispatch } from '../../../../store/hooks';
-import { newRecipe } from '../../../../store/Recipe/recipe';
+import { newRecipe, setEditRecipe } from '../../../../store/Recipe/recipe';
 import { useGetUnits } from '../utils';
 import { listItemStyles } from '../styles';
 import { IProps } from './types';
 
-const IngredientsEditor = ({ ingredients, setIngredients }: IProps) => {
+const IngredientsEditor = ({ ingredients, setIngredients, isEditMode }: IProps) => {
   const dispatch = useAppDispatch();
-  const { newRecipe: storedNewRecipe, editRecipe: storedEditRecipe } = useRecipeState();
+  const { newRecipe: storedNewRecipe, editRecipe: editRecipeFromStore } = useRecipeState();
   const units = useGetUnits();
   const addIngredientButtonDisabled = ingredients.some(item => !item.name || !item.quantity || !item.unit);
 
@@ -33,7 +33,23 @@ const IngredientsEditor = ({ ingredients, setIngredients }: IProps) => {
   };
 
   useEffect(() => {
-    dispatch(newRecipe({ ...storedNewRecipe, ingredients }));
+    if (isEditMode) {
+      // const { difficultyLevel, category } = editRecipeFromStore;
+      const difficultyLevel = editRecipeFromStore?.difficultyLevel;
+      const category = editRecipeFromStore?.category;
+      console.log('editRecipeFromStore: ', editRecipeFromStore);
+      if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
+        dispatch(
+          setEditRecipe({
+            ...editRecipeFromStore,
+            ingredients,
+          }),
+        );
+      }
+      // dispatch(setEditRecipe({ ...storedEditRecipe, ingredients }));
+    } else {
+      dispatch(newRecipe({ ...storedNewRecipe, ingredients }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients]);
 

@@ -20,22 +20,46 @@ const GET_RECIPE_BY_ID = gql`
   query GetRecipeById($id: ID!) {
     getRecipeById(_id: $id) {
       _id
-      createdAt
-      createdBy
-      description
+      title
       ingredients {
+        _id
+        localId
         name
         quantity
         unit
       }
+      description
+      category {
+        _id
+        name
+        key
+        label
+        type
+      }
+      labels {
+        _id
+        name
+        key
+        label
+        type
+      }
       preparationSteps {
+        _id
         description
         order
       }
-      title
+      createdAt
       updatedAt
-      cookingTime
+      createdBy
       imgSrc
+      cookingTime
+      difficultyLevel {
+        _id
+        name
+        key
+        label
+        type
+      }
     }
   }
 `;

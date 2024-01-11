@@ -21,7 +21,7 @@ const recipeSlice = createSlice({
     resetNewRecipe: state => {
       delete state.newRecipe;
     },
-    editRecipe: (state, action: PayloadAction<TRecipe>) => {
+    setEditRecipe: (state, action: PayloadAction<TRecipe>) => {
       state.editRecipe = action.payload;
     },
     resetEditRecipe: state => {
@@ -30,5 +30,5 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { newRecipe, resetNewRecipe } = recipeSlice.actions;
+export const { newRecipe, resetNewRecipe, setEditRecipe, resetEditRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;
