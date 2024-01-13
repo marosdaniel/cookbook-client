@@ -14,6 +14,7 @@ export type TRecipe = {
   difficultyLevel: TLevelMetadata;
   category: TCategoryMetadata;
   labels: TLabelMetadata[] | [];
+  servings: number;
 };
 
 export type TIngredient = {

@@ -13,7 +13,7 @@ import { IProps } from './types';
 
 const IngredientsEditor = ({ ingredients, setIngredients, isEditMode }: IProps) => {
   const dispatch = useAppDispatch();
-  const { newRecipe: storedNewRecipe, editRecipe: editRecipeFromStore } = useRecipeState();
+  const { newRecipe: newRecipeFromStore, editRecipe: editRecipeFromStore } = useRecipeState();
   const units = useGetUnits();
   const addIngredientButtonDisabled = ingredients.some(item => !item.name || !item.quantity || !item.unit);
 
@@ -34,10 +34,8 @@ const IngredientsEditor = ({ ingredients, setIngredients, isEditMode }: IProps) 
 
   useEffect(() => {
     if (isEditMode) {
-      // const { difficultyLevel, category } = editRecipeFromStore;
       const difficultyLevel = editRecipeFromStore?.difficultyLevel;
       const category = editRecipeFromStore?.category;
-      console.log('editRecipeFromStore: ', editRecipeFromStore);
       if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
         dispatch(
           setEditRecipe({
@@ -46,9 +44,8 @@ const IngredientsEditor = ({ ingredients, setIngredients, isEditMode }: IProps) 
           }),
         );
       }
-      // dispatch(setEditRecipe({ ...storedEditRecipe, ingredients }));
     } else {
-      dispatch(newRecipe({ ...storedNewRecipe, ingredients }));
+      dispatch(newRecipe({ ...newRecipeFromStore, ingredients }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients]);

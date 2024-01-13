@@ -1,7 +1,7 @@
 export const gridContainerStyles = {
   width: '100%',
   paddingLeft: {
-    md: '80px',
+    md: '60px',
   },
   display: 'flex',
   flexDirection: 'rows',

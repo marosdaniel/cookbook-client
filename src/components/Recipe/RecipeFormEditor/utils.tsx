@@ -8,6 +8,7 @@ import {
   TUnitMetadata,
 } from '../../../store/Metadata/types';
 import { GET_METADATA_BY_TYPE } from '../../../service/graphql/metadata/getMetadata';
+import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
 
 export const useGetDifficultyLevels = () => {
   const { data, loading, error } = useQuery<{ getMetadataByType: TLevelMetadata[] }>(GET_METADATA_BY_TYPE, {
@@ -69,6 +70,26 @@ export const cleanLabels = (labels: TLabelMetadata[]): TLabelMetadata[] => {
     name: label.name,
     type: TMetadataType.LABEL,
   }));
+};
+
+export const cleanIngredients = (ingredients: TIngredient[] | undefined): TIngredient[] => {
+  return (
+    ingredients?.map(ingredient => ({
+      localId: ingredient.localId,
+      name: ingredient.name,
+      quantity: ingredient.quantity,
+      unit: ingredient.unit,
+    })) || []
+  );
+};
+
+export const cleanPreparationSteps = (preparationSteps: TPreparationStep[] | undefined): TPreparationStep[] => {
+  return (
+    preparationSteps?.map(step => ({
+      description: step.description,
+      order: step.order,
+    })) || []
+  );
 };
 
 export const cleanDifficultyLevel = (difficultyLevel: TLevelMetadata | undefined): TLevelMetadata => {

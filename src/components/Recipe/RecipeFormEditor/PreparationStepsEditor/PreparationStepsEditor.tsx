@@ -12,14 +12,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 
 import { useAppDispatch } from '../../../../store/hooks';
-import { newRecipe } from '../../../../store/Recipe/recipe';
+import { newRecipe, setEditRecipe } from '../../../../store/Recipe/recipe';
 import { useRecipeState } from '../../../../store/Recipe';
 import { listItemStyles } from '../styles';
 import { IProps } from './types';
 
-const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps }: IProps) => {
+const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps, isEditMode }: IProps) => {
   const dispatch = useAppDispatch();
-  const { newRecipe: storedNewRecipe, editRecipe: storedEditRecipe } = useRecipeState();
+  const { newRecipe: newRecipeFromStore, editRecipe: editRecipeFromStore } = useRecipeState();
 
   const addPreparationStepButtonDisabled = preparationSteps.some(step => step.description === '');
 
@@ -50,7 +50,17 @@ const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps }: IProp
   };
 
   useEffect(() => {
-    dispatch(newRecipe({ ...storedNewRecipe, preparationSteps }));
+    const difficultyLevel = editRecipeFromStore?.difficultyLevel;
+    const category = editRecipeFromStore?.category;
+    if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
+      dispatch(
+        setEditRecipe({
+          ...editRecipeFromStore,
+          preparationSteps,
+        }),
+      );
+    }
+    dispatch(newRecipe({ ...newRecipeFromStore, preparationSteps }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preparationSteps]);
 
