@@ -14,6 +14,7 @@ import { CREATE_RECIPE, EDIT_RECIPE } from '../../../service/graphql/recipe/crea
 
 import ErrorMessage from '../../ErrorMessage';
 import LoadingBar from '../../LoadingBar';
+import PageTitle from '../../stylingComponents/PageTitle';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
@@ -23,12 +24,12 @@ import {
   cleanIngredients,
   cleanLabels,
   cleanPreparationSteps,
+  getInitialValues,
   useGetCategories,
   useGetDifficultyLevels,
 } from './utils';
 import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
 import { IFormikProps, IProps } from './types';
-import PageTitle from '../../stylingComponents/PageTitle';
 
 const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     : newIngredients?.length
       ? [...newIngredients]
       : [newIngredient];
+
   const initialPreparationSteps = isEditMode
     ? editPreparationSteps
     : newPreparationSteps?.length
@@ -83,14 +85,14 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
       servings: inputValues?.servings || 1,
     };
 
-    console.log(recipeInput.ingredients);
-
     try {
       if (!isEditMode) {
         await createRecipe({
           variables: {
             recipeCreateInput: recipeInput,
           },
+        }).then(() => {
+          // dispatch a success message for the snack bar
         });
       } else {
         await editRecipe({
@@ -98,30 +100,21 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             editRecipeId: editRecipeFromStore?._id,
             recipeEditInput: recipeInput,
           },
+        }).then(() => {
+          // dispatch a success message for the snack bar
         });
       }
 
       navigate(ENonProtectedRoutes.RECIPES);
       dispatch(resetNewRecipe());
       dispatch(resetEditRecipe());
-    } catch (_error: any) {
-      console.log(_error.message);
+    } catch (_error) {
+      console.log((_error as Error).message);
+      // dispatch an error message for the snack bar
     }
   };
 
-  const initialValues = {
-    title: isEditMode ? editRecipeFromStore?.title || '' : newRecipeFromStore?.title || '',
-    description: isEditMode ? editRecipeFromStore?.description || '' : newRecipeFromStore?.description || '',
-    imgSrc: isEditMode ? editRecipeFromStore?.imgSrc || '' : newRecipeFromStore?.imgSrc || '',
-    cookingTime: isEditMode ? editRecipeFromStore?.cookingTime || 0 : newRecipeFromStore?.cookingTime || 0,
-    difficultyLevel: isEditMode
-      ? editRecipeFromStore?.difficultyLevel
-      : newRecipeFromStore?.difficultyLevel || undefined,
-    category: isEditMode ? editRecipeFromStore?.category : newRecipeFromStore?.category || undefined,
-    labels: isEditMode ? editRecipeFromStore?.labels || [] : newRecipeFromStore?.labels || [],
-    ingredients: isEditMode ? editIngredients : newRecipeFromStore?.ingredients || [],
-    preparationSteps: isEditMode ? editPreparationSteps : newRecipeFromStore?.preparationSteps || [],
-  };
+  const initialValues = getInitialValues(isEditMode, newRecipeFromStore, editRecipeFromStore);
 
   const { values, handleChange, handleSubmit, handleBlur, errors, isSubmitting } = useFormik<IFormikProps>({
     initialValues,
@@ -132,7 +125,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const [debouncedValues, setDebouncedValues] = useState(values);
 
   const handleFormChange = () => {
-    console.log('form changed');
     const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels } = debouncedValues;
     if (!isEditMode) {
       dispatch(

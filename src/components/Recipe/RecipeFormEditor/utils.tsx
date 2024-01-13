@@ -8,7 +8,7 @@ import {
   TUnitMetadata,
 } from '../../../store/Metadata/types';
 import { GET_METADATA_BY_TYPE } from '../../../service/graphql/metadata/getMetadata';
-import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
+import { TIngredient, TPreparationStep, TRecipe } from '../../../store/Recipe/types';
 
 export const useGetDifficultyLevels = () => {
   const { data, loading, error } = useQuery<{ getMetadataByType: TLevelMetadata[] }>(GET_METADATA_BY_TYPE, {
@@ -98,5 +98,40 @@ export const cleanDifficultyLevel = (difficultyLevel: TLevelMetadata | undefined
     label: difficultyLevel?.label || '',
     name: difficultyLevel?.name || '',
     type: TMetadataType.LEVEL,
+  };
+};
+
+export const getInitialValues = (
+  isEditMode: boolean | undefined,
+  newRecipeFromStore: TRecipe | undefined,
+  editRecipeFromStore: TRecipe | undefined,
+) => {
+  const newIngredient = { localId: '1', name: '', quantity: 1, unit: '' };
+  const newPreparationStep = { description: '', order: 1 };
+
+  const initialIngredients = isEditMode
+    ? editRecipeFromStore?.ingredients || []
+    : newRecipeFromStore?.ingredients?.length
+      ? [...newRecipeFromStore.ingredients]
+      : [newIngredient];
+
+  const initialPreparationSteps = isEditMode
+    ? editRecipeFromStore?.preparationSteps || []
+    : newRecipeFromStore?.preparationSteps?.length
+      ? [...newRecipeFromStore.preparationSteps]
+      : [newPreparationStep];
+
+  return {
+    title: isEditMode ? editRecipeFromStore?.title || '' : newRecipeFromStore?.title || '',
+    description: isEditMode ? editRecipeFromStore?.description || '' : newRecipeFromStore?.description || '',
+    imgSrc: isEditMode ? editRecipeFromStore?.imgSrc || '' : newRecipeFromStore?.imgSrc || '',
+    cookingTime: isEditMode ? editRecipeFromStore?.cookingTime || 0 : newRecipeFromStore?.cookingTime || 0,
+    difficultyLevel: isEditMode
+      ? editRecipeFromStore?.difficultyLevel
+      : newRecipeFromStore?.difficultyLevel || undefined,
+    category: isEditMode ? editRecipeFromStore?.category : newRecipeFromStore?.category || undefined,
+    labels: isEditMode ? editRecipeFromStore?.labels || [] : newRecipeFromStore?.labels || [],
+    ingredients: initialIngredients,
+    preparationSteps: initialPreparationSteps,
   };
 };

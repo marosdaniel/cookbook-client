@@ -50,17 +50,20 @@ const PreparationStepsEditor = ({ preparationSteps, setPreparationSteps, isEditM
   };
 
   useEffect(() => {
-    const difficultyLevel = editRecipeFromStore?.difficultyLevel;
-    const category = editRecipeFromStore?.category;
-    if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
-      dispatch(
-        setEditRecipe({
-          ...editRecipeFromStore,
-          preparationSteps,
-        }),
-      );
+    if (isEditMode) {
+      const difficultyLevel = editRecipeFromStore?.difficultyLevel;
+      const category = editRecipeFromStore?.category;
+      if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
+        dispatch(
+          setEditRecipe({
+            ...editRecipeFromStore,
+            preparationSteps,
+          }),
+        );
+      }
+    } else {
+      dispatch(newRecipe({ ...newRecipeFromStore, preparationSteps }));
     }
-    dispatch(newRecipe({ ...newRecipeFromStore, preparationSteps }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preparationSteps]);
 
