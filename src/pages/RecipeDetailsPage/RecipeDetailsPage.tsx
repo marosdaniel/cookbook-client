@@ -33,15 +33,32 @@ const RecipeDetailsPage = () => {
 
   const recipe: TRecipe | undefined = data?.getRecipeById;
 
-  const isEditAvailable = data?.getRecipeById.createdBy === user?.userName;
+  const ownRecipe = data?.getRecipeById.createdBy === user?.userName;
 
-  const { title = '', createdBy, description, preparationSteps, ingredients } = recipe || {};
+  const {
+    title = '',
+    createdBy,
+    description,
+    preparationSteps,
+    ingredients,
+    updatedAt,
+    category,
+    cookingTime,
+    createdAt,
+    difficultyLevel,
+    labels,
+    servings,
+    imgSrc,
+  } = recipe || {};
+
+  const formattedCreatedAt = new Date(createdAt || Date.now())?.toLocaleDateString();
+  const formattedUpdatedAt = new Date(updatedAt || Date.now())?.toLocaleDateString();
 
   const handleEdit = () => {
-    if (recipe) {
+    if (recipe?.title) {
       dispatch(setEditRecipe(recipe));
+      setIsEditMode(true);
     }
-    setIsEditMode(true);
   };
 
   const linkToCreator = (
@@ -63,7 +80,7 @@ const RecipeDetailsPage = () => {
     <WrapperContainer id="recipe-detail-page">
       <Grid display="flex" justifyContent="space-between" alignItems="center">
         <PageTitle title={title} />
-        {isEditAvailable && (
+        {ownRecipe && (
           <Button variant="outlined" color="primary" onClick={handleEdit}>
             Edit
           </Button>
@@ -71,6 +88,12 @@ const RecipeDetailsPage = () => {
       </Grid>
       <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
       <Typography variant="subtitle1">{description}</Typography>
+      <Typography variant="subtitle1">{category?.label}</Typography>
+      <Typography variant="subtitle1">cooking time: {cookingTime} mins</Typography>
+      <Typography variant="subtitle1">difficulty level: {difficultyLevel?.label} </Typography>
+      <Typography variant="subtitle1">portions: {servings} </Typography>
+      <Typography variant="subtitle1">created at: {formattedCreatedAt} </Typography>
+      {ownRecipe && <Typography variant="subtitle1">updated at: {formattedUpdatedAt} </Typography>}
 
       {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} title="Ingredients" />}
 
