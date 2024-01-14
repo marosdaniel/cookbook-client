@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Chip,
+  FormControl,
   Grid,
   InputAdornment,
   InputLabel,
@@ -42,9 +43,10 @@ import {
   useGetDifficultyLevels,
   useGetLabels,
 } from './utils';
-import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
+import { buttonStyles, buttonWrapperStyles, gridContainerStyles, menuProps, resetButtonStyles } from './styles';
 import { IFormikProps, IProps } from './types';
 import { TLabelMetadata, TLevelMetadata } from '../../../store/Metadata/types';
+import theme from '../../../theme';
 
 const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const navigate = useNavigate();
@@ -179,28 +181,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     dispatch(resetNewRecipe());
   };
 
-  const handleLabelChange = (event: SelectChangeEvent<typeof currentLabel>) => {
-    // onChange={event => {
-    //   const selectedLabel = metaCategories.find(option => option.label === event.target.value);
-    //   handleChange({
-    //     target: {
-    //       name: 'label',
-    //       value: selectedLabel,
-    //     },
-    //   });
-    // }}
-    const {
-      target: { value },
-    } = event;
-    // setPersonName(
-    //   // On autofill we get a stringified value.
-    //   typeof value === 'string' ? value.split(',') : value,
-    // );
-    // instead of setPersonName we should dispatch an action to update the labels in the store
-
-    // dispatch(setEditRecipe({ ...editRecipeFromStore, labels: personName }));
-  };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedValues(values);
@@ -223,16 +203,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   if (createRecipeError || editRecipeError) {
     return <ErrorMessage />;
   }
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
 
   return (
     <>
@@ -285,12 +255,24 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             variant="standard"
           />
           <TextField
+            sx={{ display: 'flex', width: '240px' }}
             value={values.servings}
             error={Boolean(errors.servings)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
-            fullWidth
+            required
+            type="number"
+            InputProps={{
+              endAdornment: <InputAdornment position="start">min</InputAdornment>,
+              inputProps: {
+                type: 'number',
+                min: 0,
+                max: 999,
+                step: 1,
+                style: { textAlign: 'right', marginRight: '8px' },
+              },
+            }}
             id="servings"
             label="Servings"
             name="servings"
@@ -299,6 +281,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             helperText="Specify the number of servings or portions for this recipe"
           />
           <TextField
+            sx={{ display: 'flex', width: '240px' }}
             value={values.cookingTime}
             error={Boolean(errors.cookingTime)}
             onChange={handleChange}
@@ -317,7 +300,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
                 min: 0,
                 max: 999,
                 step: 1,
-                style: { textAlign: 'right', marginRight: '8px', width: '200px' },
+                style: { textAlign: 'right', marginRight: '8px' },
               },
             }}
             variant="standard"
@@ -386,15 +369,16 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
-            <InputLabel id="label-label">Labels</InputLabel>
+          <Grid component={FormControl} item xs={12} sx={{ mt: '16px', mb: '8px' }}>
+            <InputLabel id="demo-multiple-chip-label">Labels</InputLabel>
             <Select
-              labelId="label-label"
+              labelId="test-select-label"
+              label="Label"
               id="label-label-id"
               multiple
-              value={values.labels.map(label => label.key)} // Assuming 'key' is the unique identifier
+              value={values.labels.map(label => label.key)}
               onChange={event => {
-                const selectedLabelKeys = event.target.value as string[]; // Assuming 'key' is a string
+                const selectedLabelKeys = event.target.value as string[];
                 const selectedLabels = metaLabels.filter(label => selectedLabelKeys.includes(label.key));
                 handleChange({
                   target: {
@@ -403,7 +387,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
                   },
                 });
               }}
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              input={<OutlinedInput id="select-multiple-chip" label="Labels" />}
               renderValue={(selected: string[]) => (
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                   {selected.map(value => {
@@ -412,7 +396,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
                   })}
                 </Box>
               )}
-              MenuProps={MenuProps}
+              MenuProps={menuProps}
             >
               {metaLabels.map(label => (
                 <MenuItem key={label.key} value={label.key}>
@@ -425,18 +409,17 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
         <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} isEditMode={isEditMode} />
         <PreparationStepsEditor preparationSteps={preparationSteps} setPreparationSteps={setPreparationSteps} />
         <Grid item xs={12} sm={12} md={6} lg={8} sx={buttonWrapperStyles}>
-          {
-            <Button
-              color={isEditMode ? 'info' : 'error'}
-              variant="contained"
-              type="reset"
-              disabled={isSubmitting || createRecipeLoading || editRecipeLoading}
-              sx={resetButtonStyles}
-              onClick={handleOnReset}
-            >
-              {isEditMode ? 'Back' : 'Reset'}
-            </Button>
-          }
+          <Button
+            color={isEditMode ? 'info' : 'error'}
+            variant="contained"
+            type="reset"
+            disabled={isSubmitting || createRecipeLoading || editRecipeLoading}
+            sx={resetButtonStyles}
+            onClick={handleOnReset}
+          >
+            {isEditMode ? 'Back' : 'Reset'}
+          </Button>
+
           <Button
             variant="contained"
             type="submit"

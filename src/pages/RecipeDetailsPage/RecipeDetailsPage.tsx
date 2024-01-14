@@ -78,7 +78,9 @@ const RecipeDetailsPage = () => {
 
   return (
     <WrapperContainer id="recipe-detail-page">
-      <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
+      <Typography fontStyle={'italic'} variant="subtitle2">
+        from {linkToCreator}'s kitchen
+      </Typography>
 
       <Grid display="flex" justifyContent="space-between" alignItems="center">
         <PageTitle title={title} />
@@ -93,11 +95,12 @@ const RecipeDetailsPage = () => {
           {labels.map(label => (
             <Chip
               component={RouterLink}
-              to={ENonProtectedRoutes.RECIPES}
+              to={`${ENonProtectedRoutes.RECIPES}/?label=${label.key}`}
               key={label.key}
               label={label.label}
               color="primary"
               variant="outlined"
+              sx={{ cursor: 'pointer' }}
             />
           ))}
         </Stack>
