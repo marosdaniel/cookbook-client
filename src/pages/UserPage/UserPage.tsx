@@ -12,8 +12,6 @@ import PageTitle from '../../components/stylingComponents/PageTitle';
 const UserPage = () => {
   const { userName } = useParams<{ userName: string }>();
 
-  console.log(userName);
-
   const { loading, error, data } = useQuery(GET_USER_BY_USERNAME, {
     variables: { userName } as { userName: string },
   });

@@ -19,8 +19,6 @@ const MyRecipesTab = () => {
 
   const recipes: TRecipe[] = data?.getRecipesByUserName.recipes || [];
 
-  console.log(recipes);
-
   return (
     <section id="my-recipes">
       {recipes?.length > 0 ? <RecipeList recipes={recipes} /> : <div>You haven't added any recipes</div>}

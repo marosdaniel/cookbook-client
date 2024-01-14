@@ -2,7 +2,20 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
-import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { recipeFormValidationSchema } from '../../../utils/validation';
@@ -27,9 +40,11 @@ import {
   getInitialValues,
   useGetCategories,
   useGetDifficultyLevels,
+  useGetLabels,
 } from './utils';
 import { buttonStyles, buttonWrapperStyles, gridContainerStyles, resetButtonStyles } from './styles';
 import { IFormikProps, IProps } from './types';
+import { TLabelMetadata, TLevelMetadata } from '../../../store/Metadata/types';
 
 const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const navigate = useNavigate();
@@ -43,6 +58,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
 
   const metaDifficultyLevels = useGetDifficultyLevels();
   const metaCategories = useGetCategories();
+  const metaLabels = useGetLabels();
 
   const newIngredients = newRecipeFromStore?.ingredients || [];
   const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
@@ -123,7 +139,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   });
 
   const [debouncedValues, setDebouncedValues] = useState(values);
-
+  const [currentLabel, setCurrentLabel] = useState<TLabelMetadata[]>([]);
   const handleFormChange = () => {
     const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels } = debouncedValues;
     if (!isEditMode) {
@@ -163,8 +179,29 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     dispatch(resetNewRecipe());
   };
 
+  const handleLabelChange = (event: SelectChangeEvent<typeof currentLabel>) => {
+    // onChange={event => {
+    //   const selectedLabel = metaCategories.find(option => option.label === event.target.value);
+    //   handleChange({
+    //     target: {
+    //       name: 'label',
+    //       value: selectedLabel,
+    //     },
+    //   });
+    // }}
+    const {
+      target: { value },
+    } = event;
+    // setPersonName(
+    //   // On autofill we get a stringified value.
+    //   typeof value === 'string' ? value.split(',') : value,
+    // );
+    // instead of setPersonName we should dispatch an action to update the labels in the store
+
+    // dispatch(setEditRecipe({ ...editRecipeFromStore, labels: personName }));
+  };
+
   useEffect(() => {
-    console.log(values);
     const timer = setTimeout(() => {
       setDebouncedValues(values);
     }, 400);
@@ -186,6 +223,16 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   if (createRecipeError || editRecipeError) {
     return <ErrorMessage />;
   }
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
   return (
     <>
@@ -236,6 +283,20 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             name="imgSrc"
             autoComplete="image-url"
             variant="standard"
+          />
+          <TextField
+            value={values.servings}
+            error={Boolean(errors.servings)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            margin="normal"
+            fullWidth
+            id="servings"
+            label="Servings"
+            name="servings"
+            autoComplete="servingsurl"
+            variant="standard"
+            helperText="Specify the number of servings or portions for this recipe"
           />
           <TextField
             value={values.cookingTime}
@@ -324,6 +385,41 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
                 </MenuItem>
               ))}
             </TextField>
+          </Grid>
+          <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
+            <InputLabel id="label-label">Labels</InputLabel>
+            <Select
+              labelId="label-label"
+              id="label-label-id"
+              multiple
+              value={values.labels.map(label => label.key)} // Assuming 'key' is the unique identifier
+              onChange={event => {
+                const selectedLabelKeys = event.target.value as string[]; // Assuming 'key' is a string
+                const selectedLabels = metaLabels.filter(label => selectedLabelKeys.includes(label.key));
+                handleChange({
+                  target: {
+                    name: 'labels',
+                    value: selectedLabels,
+                  },
+                });
+              }}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected: string[]) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map(value => {
+                    const selectedLabel = metaLabels.find(label => label.key === value);
+                    return <Chip key={selectedLabel?.key} label={selectedLabel?.label} />;
+                  })}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {metaLabels.map(label => (
+                <MenuItem key={label.key} value={label.key}>
+                  {label.label}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
         </Grid>
         <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} isEditMode={isEditMode} />

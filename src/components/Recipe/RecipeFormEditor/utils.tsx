@@ -133,5 +133,6 @@ export const getInitialValues = (
     labels: isEditMode ? editRecipeFromStore?.labels || [] : newRecipeFromStore?.labels || [],
     ingredients: initialIngredients,
     preparationSteps: initialPreparationSteps,
+    servings: isEditMode ? editRecipeFromStore?.servings || 1 : newRecipeFromStore?.servings || 1,
   };
 };

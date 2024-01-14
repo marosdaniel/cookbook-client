@@ -21,4 +21,5 @@ export interface IFormikProps {
   labels: TLabelMetadata[] | [];
   ingredients: TIngredient[] | [];
   preparationSteps: TPreparationStep[] | [];
+  servings: number;
 }

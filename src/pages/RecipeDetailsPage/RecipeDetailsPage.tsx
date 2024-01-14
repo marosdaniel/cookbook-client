@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Button, Grid, Link, Typography } from '@mui/material';
+import { Button, Chip, Grid, Link, Stack, Typography } from '@mui/material';
 
 import { useAppDispatch } from '../../store/hooks';
 import { setEditRecipe } from '../../store/Recipe/recipe';
@@ -33,8 +33,6 @@ const RecipeDetailsPage = () => {
 
   const recipe: TRecipe | undefined = data?.getRecipeById;
 
-  const ownRecipe = data?.getRecipeById.createdBy === user?.userName;
-
   const {
     title = '',
     createdBy,
@@ -51,6 +49,8 @@ const RecipeDetailsPage = () => {
     imgSrc,
   } = recipe || {};
 
+  const isLabels = labels && labels?.length > 0;
+  const ownRecipe = data?.getRecipeById.createdBy === user?.userName;
   const formattedCreatedAt = new Date(createdAt || Date.now())?.toLocaleDateString();
   const formattedUpdatedAt = new Date(updatedAt || Date.now())?.toLocaleDateString();
 
@@ -78,6 +78,8 @@ const RecipeDetailsPage = () => {
 
   return (
     <WrapperContainer id="recipe-detail-page">
+      <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
+
       <Grid display="flex" justifyContent="space-between" alignItems="center">
         <PageTitle title={title} />
         {ownRecipe && (
@@ -86,14 +88,27 @@ const RecipeDetailsPage = () => {
           </Button>
         )}
       </Grid>
-      <Typography variant="subtitle2">from {linkToCreator}'s kitchen</Typography>
+      {isLabels && (
+        <Stack sx={{ marginTop: -5, marginBottom: 4 }} direction="row" spacing={1}>
+          {labels.map(label => (
+            <Chip
+              component={RouterLink}
+              to={ENonProtectedRoutes.RECIPES}
+              key={label.key}
+              label={label.label}
+              color="primary"
+              variant="outlined"
+            />
+          ))}
+        </Stack>
+      )}
       <Typography variant="subtitle1">{description}</Typography>
-      <Typography variant="subtitle1">{category?.label}</Typography>
-      <Typography variant="subtitle1">cooking time: {cookingTime} mins</Typography>
-      <Typography variant="subtitle1">difficulty level: {difficultyLevel?.label} </Typography>
-      <Typography variant="subtitle1">portions: {servings} </Typography>
-      <Typography variant="subtitle1">created at: {formattedCreatedAt} </Typography>
-      {ownRecipe && <Typography variant="subtitle1">updated at: {formattedUpdatedAt} </Typography>}
+      <Typography variant="body1">{category?.label}</Typography>
+      <Typography variant="body1">cooking time: {cookingTime} mins</Typography>
+      <Typography variant="body1">difficulty level: {difficultyLevel?.label} </Typography>
+      <Typography variant="body1">portions: {servings} </Typography>
+      <Typography variant="body1">created at: {formattedCreatedAt} </Typography>
+      {ownRecipe && <Typography variant="body1">updated at: {formattedUpdatedAt} </Typography>}
 
       {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} title="Ingredients" />}
 
