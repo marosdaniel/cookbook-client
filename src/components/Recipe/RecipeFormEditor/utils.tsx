@@ -9,6 +9,7 @@ import {
 } from '../../../store/Metadata/types';
 import { GET_METADATA_BY_TYPE } from '../../../service/graphql/metadata/getMetadata';
 import { TIngredient, TPreparationStep, TRecipe } from '../../../store/Recipe/types';
+import { IFormikProps } from './types';
 
 export const useGetDifficultyLevels = () => {
   const { data, loading, error } = useQuery<{ getMetadataByType: TLevelMetadata[] }>(GET_METADATA_BY_TYPE, {
@@ -135,4 +136,17 @@ export const getInitialValues = (
     preparationSteps: initialPreparationSteps,
     servings: isEditMode ? editRecipeFromStore?.servings || 1 : newRecipeFromStore?.servings || 1,
   };
+};
+
+export const resetFormFields = (values: IFormikProps) => {
+  values.title = '';
+  values.description = '';
+  values.imgSrc = '';
+  values.servings = 1;
+  values.cookingTime = 0;
+  values.difficultyLevel = undefined;
+  values.category = undefined;
+  values.labels = [];
+  values.ingredients = [];
+  values.preparationSteps = [];
 };

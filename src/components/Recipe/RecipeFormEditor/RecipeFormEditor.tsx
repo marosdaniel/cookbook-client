@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
@@ -13,7 +13,6 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from '@mui/material';
@@ -39,14 +38,13 @@ import {
   cleanLabels,
   cleanPreparationSteps,
   getInitialValues,
+  resetFormFields,
   useGetCategories,
   useGetDifficultyLevels,
   useGetLabels,
 } from './utils';
 import { buttonStyles, buttonWrapperStyles, gridContainerStyles, menuProps, resetButtonStyles } from './styles';
 import { IFormikProps, IProps } from './types';
-import { TLabelMetadata, TLevelMetadata } from '../../../store/Metadata/types';
-import theme from '../../../theme';
 
 const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const navigate = useNavigate();
@@ -132,17 +130,17 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     }
   };
 
-  const initialValues = getInitialValues(isEditMode, newRecipeFromStore, editRecipeFromStore);
+  const initialValues = getInitialValues(isEditMode, editRecipeFromStore, newRecipeFromStore);
 
-  const { values, handleChange, handleSubmit, handleBlur, errors, isSubmitting } = useFormik<IFormikProps>({
+  const { values, handleChange, handleSubmit, handleBlur, errors, touched, isSubmitting } = useFormik<IFormikProps>({
     initialValues,
     onSubmit,
     validationSchema: recipeFormValidationSchema,
   });
 
-  const [debouncedValues, setDebouncedValues] = useState(values);
-  const [currentLabel, setCurrentLabel] = useState<TLabelMetadata[]>([]);
+  const [debouncedValues, setDebouncedValues] = useState<IFormikProps | undefined>(values);
   const handleFormChange = () => {
+    if (!debouncedValues?.title) return;
     const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels } = debouncedValues;
     if (!isEditMode) {
       dispatch(
@@ -177,8 +175,10 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     if (isEditMode) {
       dispatch(resetEditRecipe());
       setIsEditMode?.(false);
+    } else {
+      dispatch(resetNewRecipe());
     }
-    dispatch(resetNewRecipe());
+    resetFormFields(values);
   };
 
   useEffect(() => {
@@ -214,7 +214,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           </Typography>
           <TextField
             value={values.title}
-            error={Boolean(errors.title)}
+            error={Boolean(errors.title && touched.title)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
@@ -228,7 +228,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           />
           <TextField
             value={values.description}
-            error={Boolean(errors.description)}
+            error={Boolean(errors.description && touched.description)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
@@ -243,7 +243,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           />
           <TextField
             value={values.imgSrc}
-            error={Boolean(errors.imgSrc)}
+            error={Boolean(errors.imgSrc && touched.imgSrc)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
@@ -257,18 +257,18 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           <TextField
             sx={{ display: 'flex', width: '240px' }}
             value={values.servings}
-            error={Boolean(errors.servings)}
+            error={Boolean(errors.servings && touched.servings)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
             required
             type="number"
             InputProps={{
-              endAdornment: <InputAdornment position="start">min</InputAdornment>,
+              endAdornment: <InputAdornment position="start">portion</InputAdornment>,
               inputProps: {
                 type: 'number',
                 min: 0,
-                max: 999,
+                max: 99,
                 step: 1,
                 style: { textAlign: 'right', marginRight: '8px' },
               },
@@ -276,14 +276,13 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             id="servings"
             label="Servings"
             name="servings"
-            autoComplete="servingsurl"
             variant="standard"
             helperText="Specify the number of servings or portions for this recipe"
           />
           <TextField
             sx={{ display: 'flex', width: '240px' }}
             value={values.cookingTime}
-            error={Boolean(errors.cookingTime)}
+            error={Boolean(errors.cookingTime && touched.cookingTime)}
             onChange={handleChange}
             onBlur={handleBlur}
             margin="normal"
@@ -309,7 +308,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
             <TextField
               value={values.difficultyLevel?.label || ''}
-              error={Boolean(errors.difficultyLevel)}
+              error={Boolean(errors.difficultyLevel && touched.difficultyLevel)}
               onChange={event => {
                 const selectedDifficulty = metaDifficultyLevels.find(option => option.label === event.target.value);
                 handleChange({
@@ -341,7 +340,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           <Grid item xs={12} sx={{ mt: '16px', mb: '8px' }}>
             <TextField
               value={values.category?.label || ''}
-              error={Boolean(errors.category)}
+              error={Boolean(errors.category && touched.category)}
               onChange={event => {
                 const selectedCategory = metaCategories.find(option => option.label === event.target.value);
                 handleChange({
@@ -372,6 +371,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           <Grid component={FormControl} item xs={12} sx={{ mt: '16px', mb: '8px' }}>
             <InputLabel id="demo-multiple-chip-label">Labels</InputLabel>
             <Select
+              sx={{ minWidth: '100px' }}
               labelId="test-select-label"
               label="Label"
               id="label-label-id"

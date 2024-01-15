@@ -17,6 +17,7 @@ import RecipeFormEditor from '../../components/Recipe/RecipeFormEditor';
 import PreparationStepList from './PreparationStepList';
 import IngredientList from './IngredientList';
 import { RecipeDetailsData } from './types';
+import { commonTypographyStyles } from './styles';
 
 const RecipeDetailsPage = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ const RecipeDetailsPage = () => {
   const recipe: TRecipe | undefined = data?.getRecipeById;
 
   const {
-    title = '',
+    title,
     createdBy,
     description,
     preparationSteps,
@@ -46,7 +47,6 @@ const RecipeDetailsPage = () => {
     difficultyLevel,
     labels,
     servings,
-    imgSrc,
   } = recipe || {};
 
   const isLabels = labels && labels?.length > 0;
@@ -67,6 +67,12 @@ const RecipeDetailsPage = () => {
     </Link>
   );
 
+  const categoryLink = (
+    <Link component={RouterLink} to={`${ENonProtectedRoutes.RECIPES}/?category=${category?.key}`}>
+      {category?.label}
+    </Link>
+  );
+
   const orderedPreparationSteps =
     preparationSteps!.length > 0
       ? preparationSteps?.filter(step => typeof step.order === 'number').sort((a, b) => a.order - b.order)
@@ -79,11 +85,11 @@ const RecipeDetailsPage = () => {
   return (
     <WrapperContainer id="recipe-detail-page">
       <Typography fontStyle={'italic'} variant="subtitle2">
-        from {linkToCreator}'s kitchen
+        a {categoryLink} from {linkToCreator}'s kitchen
       </Typography>
 
       <Grid display="flex" justifyContent="space-between" alignItems="center">
-        <PageTitle title={title} />
+        <PageTitle title={title ?? ''} />
         {ownRecipe && (
           <Button variant="outlined" color="primary" onClick={handleEdit}>
             Edit
@@ -105,13 +111,26 @@ const RecipeDetailsPage = () => {
           ))}
         </Stack>
       )}
-      <Typography variant="subtitle1">{description}</Typography>
-      <Typography variant="body1">{category?.label}</Typography>
-      <Typography variant="body1">cooking time: {cookingTime} mins</Typography>
-      <Typography variant="body1">difficulty level: {difficultyLevel?.label} </Typography>
-      <Typography variant="body1">portions: {servings} </Typography>
-      <Typography variant="body1">created at: {formattedCreatedAt} </Typography>
-      {ownRecipe && <Typography variant="body1">updated at: {formattedUpdatedAt} </Typography>}
+      <Typography sx={commonTypographyStyles} variant="subtitle1">
+        {description}
+      </Typography>
+      <Typography sx={commonTypographyStyles} variant="body1">
+        cooking time: {cookingTime} mins
+      </Typography>
+      <Typography sx={commonTypographyStyles} variant="body1">
+        difficulty level: {difficultyLevel?.label}{' '}
+      </Typography>
+      <Typography sx={commonTypographyStyles} variant="body1">
+        portions: {servings}{' '}
+      </Typography>
+      <Typography sx={commonTypographyStyles} variant="body1">
+        created at: {formattedCreatedAt}{' '}
+      </Typography>
+      {ownRecipe && (
+        <Typography sx={commonTypographyStyles} variant="body1">
+          updated at: {formattedUpdatedAt}{' '}
+        </Typography>
+      )}
 
       {ingredients && ingredients.length > 0 && <IngredientList ingredients={ingredients} title="Ingredients" />}
 
