@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Box } from '@mui/material';
-import { useGlobalState } from '../../store/Global';
+import { useGlobalState } from '../../../store/Global';
 
 const PageWrapper = ({ children }: PropsWithChildren) => {
   const isDrawerOpen = useGlobalState().isDrawerOpen;
@@ -10,6 +10,7 @@ const PageWrapper = ({ children }: PropsWithChildren) => {
       sm: '64px',
       md: isDrawerOpen ? '240px' : '64px',
     },
+    // marginBottom: '84px',
     transition: 'margin-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
     padding: {
       xs: '8px',
@@ -17,6 +18,10 @@ const PageWrapper = ({ children }: PropsWithChildren) => {
       md: '16px',
       lg: '24px',
     },
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+    minHeight: 'calc(100vh - 60px)',
   };
   return <Box sx={wrapperStyles}>{children}</Box>;
 };

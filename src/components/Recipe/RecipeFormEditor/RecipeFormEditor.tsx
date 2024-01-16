@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
@@ -37,6 +37,8 @@ import {
   cleanIngredients,
   cleanLabels,
   cleanPreparationSteps,
+  getInitialIngredients,
+  getInitialPreparationSteps,
   getInitialValues,
   resetFormFields,
   useGetCategories,
@@ -60,27 +62,12 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const metaCategories = useGetCategories();
   const metaLabels = useGetLabels();
 
-  const newIngredients = newRecipeFromStore?.ingredients || [];
-  const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
-  const editIngredients = editRecipeFromStore?.ingredients || [];
-  const editPreparationSteps = editRecipeFromStore?.preparationSteps || [];
-
-  const newIngredient = { localId: '1', name: '', quantity: 1, unit: '' };
-  const newPreparationStep: TPreparationStep = {
-    description: '',
-    order: 1,
-  };
-  const initialIngredients = isEditMode
-    ? editIngredients
-    : newIngredients?.length
-      ? [...newIngredients]
-      : [newIngredient];
-
-  const initialPreparationSteps = isEditMode
-    ? editPreparationSteps
-    : newPreparationSteps?.length
-      ? [...newPreparationSteps]
-      : [newPreparationStep];
+  const initialIngredients = getInitialIngredients(isEditMode || false, newRecipeFromStore, editRecipeFromStore);
+  const initialPreparationSteps = getInitialPreparationSteps(
+    isEditMode || false,
+    newRecipeFromStore,
+    editRecipeFromStore,
+  );
 
   const [ingredients, setIngredients] = useState<TIngredient[]>(initialIngredients);
   const [preparationSteps, setPreparationSteps] = useState<TPreparationStep[]>(initialPreparationSteps);
@@ -96,8 +83,8 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
       difficultyLevel: cleanDifficultyLevel(inputValues?.difficultyLevel),
       category: cleanCategory(inputValues?.category),
       labels: cleanLabels(inputValues?.labels || []),
-      ingredients: cleanIngredients(inputValues?.ingredients),
-      preparationSteps: cleanPreparationSteps(inputValues?.preparationSteps),
+      ingredients: cleanIngredients(ingredients),
+      preparationSteps: cleanPreparationSteps(preparationSteps),
       servings: inputValues?.servings || 1,
     };
 
@@ -130,7 +117,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     }
   };
 
-  const initialValues = getInitialValues(isEditMode, editRecipeFromStore, newRecipeFromStore);
+  const initialValues = getInitialValues(isEditMode, newRecipeFromStore, editRecipeFromStore);
 
   const { values, handleChange, handleSubmit, handleBlur, errors, touched, isSubmitting } = useFormik<IFormikProps>({
     initialValues,
@@ -195,6 +182,10 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     handleFormChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValues]);
+
+  useEffect(() => {
+    console.log(preparationSteps);
+  }, [preparationSteps]);
 
   if (createRecipeLoading || editRecipeLoading) {
     return <LoadingBar />;

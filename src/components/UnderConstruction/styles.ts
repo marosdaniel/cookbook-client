@@ -8,7 +8,7 @@ export const boxStyles = {
   height: {
     xs: 'calc(100vh - 72px)',
     sm: 'calc(100vh - 96px)',
-    md: 'calc(100vh - 112px)',
+    md: 'calc(100vh - 256px)',
   },
   //   backgroundColor: '#f5f5f5',
 };

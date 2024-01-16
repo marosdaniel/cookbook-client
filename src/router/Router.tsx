@@ -2,11 +2,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import loadable from '@loadable/component';
 import LoadingBar from '../components/LoadingBar';
 import AppBar from '../components/AppBar/';
-import PageWrapper from '../components/PageWrapper';
+import PageWrapper from '../components/stylingComponents/PageWrapper';
 import { nonProtectedRoutes } from './nonProtectedRoutes';
 import { protectedRoutes } from './protectedRoutes';
 import Authenticated from './Authenticated';
 import { ENonProtectedRoutes } from './types';
+import Footer from '../components/Footer';
 
 const NotFound = loadable(() => import('../pages/NotFoundPage'), {
   fallback: <LoadingBar />,
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
             <AppBar />
             <PageWrapper>
               <Component />
+              <Footer />
             </PageWrapper>
           </>
         ) : (
@@ -37,6 +39,7 @@ export const router = createBrowserRouter([
         <AppBar />
         <PageWrapper>
           <Component />
+          <Footer />
         </PageWrapper>
       </Authenticated>
     ),

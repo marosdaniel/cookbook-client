@@ -150,3 +150,29 @@ export const resetFormFields = (values: IFormikProps) => {
   values.ingredients = [];
   values.preparationSteps = [];
 };
+
+export const getInitialIngredients = (
+  isEditMode: boolean,
+  newRecipeFromStore: any,
+  editRecipeFromStore: any,
+): TIngredient[] => {
+  const newIngredients = newRecipeFromStore?.ingredients || [];
+  const editIngredients = editRecipeFromStore?.ingredients || [];
+  const newIngredient = { localId: '1', name: '', quantity: 1, unit: '' };
+  return isEditMode ? editIngredients : newIngredients?.length ? [...newIngredients] : [newIngredient];
+};
+
+export const getInitialPreparationSteps = (
+  isEditMode: boolean,
+  newRecipeFromStore: any,
+  editRecipeFromStore: any,
+): TPreparationStep[] => {
+  const newPreparationSteps = newRecipeFromStore?.preparationSteps || [];
+  const editPreparationSteps = editRecipeFromStore?.preparationSteps || [];
+  const newPreparationStep: TPreparationStep = { description: '', order: 1 };
+  return isEditMode
+    ? editPreparationSteps
+    : newPreparationSteps?.length
+      ? [...newPreparationSteps]
+      : [newPreparationStep];
+};

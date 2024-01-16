@@ -17,7 +17,7 @@ import RecipeFormEditor from '../../components/Recipe/RecipeFormEditor';
 import PreparationStepList from './PreparationStepList';
 import IngredientList from './IngredientList';
 import { RecipeDetailsData } from './types';
-import { commonTypographyStyles } from './styles';
+import { commonTypographyStyles, labelWrapperStyles } from './styles';
 
 const RecipeDetailsPage = () => {
   const dispatch = useAppDispatch();
@@ -97,7 +97,7 @@ const RecipeDetailsPage = () => {
         )}
       </Grid>
       {isLabels && (
-        <Stack sx={{ marginTop: -5, marginBottom: 4 }} direction="row" spacing={1}>
+        <Stack sx={labelWrapperStyles} direction="row" spacing={1}>
           {labels.map(label => (
             <Chip
               component={RouterLink}
@@ -106,7 +106,7 @@ const RecipeDetailsPage = () => {
               label={label.label}
               color="primary"
               variant="outlined"
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: 'pointer', marginTop: '8px !important' }}
             />
           ))}
         </Stack>
