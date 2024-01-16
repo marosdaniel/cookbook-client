@@ -30,6 +30,9 @@ const TipsAndTricks = loadable(() => import('../pages/TipsAndTricksPage'), {
 const PrivacyPolicy = loadable(() => import('../pages/PrivacyPage'), {
   fallback: <LoadingBar />,
 });
+const CookiePolicy = loadable(() => import('../pages/CookiePolicyPage'), {
+  fallback: <LoadingBar />,
+});
 
 export const nonProtectedRoutes = [
   {
@@ -67,5 +70,9 @@ export const nonProtectedRoutes = [
   {
     path: ENonProtectedRoutes.PRIVACY_POLICY,
     component: PrivacyPolicy,
+  },
+  {
+    path: ENonProtectedRoutes.COOKIE_POLICY,
+    component: CookiePolicy,
   },
 ];

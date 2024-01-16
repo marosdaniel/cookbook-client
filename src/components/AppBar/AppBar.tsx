@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Avatar, Link } from '@mui/material';

@@ -1,5 +1,3 @@
-import theme from '../../theme';
-
 export const footerStyles = {
   display: 'flex',
   justifyContent: 'space-between',
@@ -8,7 +6,8 @@ export const footerStyles = {
   //   width: 'calc(100% - 64px)',
   width: '100%',
   marginLeft: '-24px',
-  backgroundColor: theme.palette.grey[100],
+  backgroundColor: 'transparent',
+  boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
   position: 'absolute',
   bottom: 0,
 };
@@ -23,4 +22,9 @@ export const footerLeftGroupStyles = {
 
 export const footerRightGroupStyles = {
   marginRight: '24px',
+};
+
+export const linkStyles = {
+  textDecoration: 'none',
+  cursor: 'pointer',
 };

@@ -10,6 +10,7 @@ export enum ENonProtectedRoutes {
   BLOG_DETAILS = '/blogs/:id',
   TIPS_AND_TRICKS = '/tips-and-tricks',
   PRIVACY_POLICY = '/privacy-policy',
+  COOKIE_POLICY = '/cookie-policy',
 }
 
 export enum EProtectedRoutes {

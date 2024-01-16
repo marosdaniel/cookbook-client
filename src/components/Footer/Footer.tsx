@@ -1,20 +1,23 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { footerLeftGroupStyles, footerRightGroupStyles, footerStyles } from './styles';
+import { footerLeftGroupStyles, footerRightGroupStyles, footerStyles, linkStyles } from './styles';
+import { Link } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { ENonProtectedRoutes } from '../../router/types';
 
 export const Footer = () => {
   return (
     <Box component="footer" sx={footerStyles}>
       <Box sx={footerLeftGroupStyles}>
-        <Typography variant="subtitle2" component="p">
+        <Link component={RouterLink} to={ENonProtectedRoutes.PRIVACY_POLICY} variant="subtitle2" sx={linkStyles}>
           Privacy Policy
-        </Typography>
-        <Typography variant="subtitle2" component="p">
+        </Link>
+        <Link component={RouterLink} to={ENonProtectedRoutes.COOKIE_POLICY} variant="subtitle2" sx={linkStyles}>
           Cookie Policy
-        </Typography>
+        </Link>
       </Box>
       <Box sx={footerRightGroupStyles}>
-        <Typography variant="subtitle2" component="p">
+        <Typography variant="subtitle2">
           Copyright &copy; Cookbook {new Date().getFullYear()} - All rights reserved
         </Typography>
       </Box>

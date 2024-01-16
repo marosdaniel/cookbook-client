@@ -6,9 +6,12 @@ import { gridStyles } from './styles';
 import { IProps } from './types';
 
 const RecipeList = ({ recipes }: IProps) => {
+  const sortedByDate = recipes.sort((a: TRecipe, b: TRecipe) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
   return (
     <Grid component="ul" sx={gridStyles}>
-      {recipes.map((recipe: TRecipe, index) => {
+      {sortedByDate.map((recipe: TRecipe, index) => {
         const {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           _id,

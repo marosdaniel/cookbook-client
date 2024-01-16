@@ -7,9 +7,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { IProps } from './types';
 import { cardStyles } from './stsles';
 
-const RecipeCard = ({ title, description, createdAt, createdBy, id, imgSrc }: IProps) => {
-  const date = new Date(createdAt).toLocaleDateString();
-
+const RecipeCard = ({ title, description, createdBy, id }: IProps) => {
   // TODO: Add image or placeholder image
   return (
     <Card sx={cardStyles} variant="elevation">
