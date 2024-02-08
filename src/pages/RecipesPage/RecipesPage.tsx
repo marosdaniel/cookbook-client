@@ -21,7 +21,7 @@ const RecipesPage = () => {
 
   return (
     <WrapperContainer id="recipes-page">
-      <PageTitle title="Recipes page" />
+      <PageTitle title="Find the best recipes" />
       <Box display="flex">
         <Box sx={filterWrapperStyles}>
           <FilterBar />

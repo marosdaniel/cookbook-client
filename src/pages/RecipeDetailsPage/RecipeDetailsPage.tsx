@@ -50,7 +50,7 @@ const RecipeDetailsPage = () => {
   } = recipe || {};
 
   const isLabels = labels && labels?.length > 0;
-  const ownRecipe = data?.getRecipeById.createdBy === user?.userName;
+  const isOwnRecipe = data?.getRecipeById.createdBy === user?.userName;
   const formattedCreatedAt = new Date(createdAt || Date.now())?.toLocaleDateString();
   const formattedUpdatedAt = new Date(updatedAt || Date.now())?.toLocaleDateString();
 
@@ -90,7 +90,7 @@ const RecipeDetailsPage = () => {
 
       <Grid display="flex" justifyContent="space-between" alignItems="center">
         <PageTitle title={title ?? ''} />
-        {ownRecipe && (
+        {isOwnRecipe && (
           <Button variant="outlined" color="primary" onClick={handleEdit}>
             Edit
           </Button>
@@ -118,17 +118,17 @@ const RecipeDetailsPage = () => {
         cooking time: {cookingTime} mins
       </Typography>
       <Typography sx={commonTypographyStyles} variant="body1">
-        difficulty level: {difficultyLevel?.label}{' '}
+        difficulty level: {difficultyLevel?.label}
       </Typography>
       <Typography sx={commonTypographyStyles} variant="body1">
-        portions: {servings}{' '}
+        portions: {servings}
       </Typography>
       <Typography sx={commonTypographyStyles} variant="body1">
-        created at: {formattedCreatedAt}{' '}
+        created at: {formattedCreatedAt}
       </Typography>
-      {ownRecipe && (
+      {isOwnRecipe && (
         <Typography sx={commonTypographyStyles} variant="body1">
-          updated at: {formattedUpdatedAt}{' '}
+          updated at: {formattedUpdatedAt}
         </Typography>
       )}
 

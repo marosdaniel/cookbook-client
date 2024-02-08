@@ -128,7 +128,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const [debouncedValues, setDebouncedValues] = useState<IFormikProps | undefined>(values);
   const handleFormChange = () => {
     if (!debouncedValues?.title) return;
-    const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels } = debouncedValues;
+    const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels, servings } = debouncedValues;
     if (!isEditMode) {
       dispatch(
         newRecipe({
@@ -140,6 +140,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           difficultyLevel,
           category,
           labels,
+          servings,
         }),
       );
     } else if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
@@ -153,6 +154,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           difficultyLevel,
           category,
           labels,
+          servings,
         }),
       );
     }
@@ -398,7 +400,11 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           </Grid>
         </Grid>
         <IngredientsEditor ingredients={ingredients} setIngredients={setIngredients} isEditMode={isEditMode} />
-        <PreparationStepsEditor preparationSteps={preparationSteps} setPreparationSteps={setPreparationSteps} />
+        <PreparationStepsEditor
+          preparationSteps={preparationSteps}
+          setPreparationSteps={setPreparationSteps}
+          isEditMode={isEditMode}
+        />
         <Grid item xs={12} sm={12} md={6} lg={8} sx={buttonWrapperStyles}>
           <Button
             color={isEditMode ? 'info' : 'error'}

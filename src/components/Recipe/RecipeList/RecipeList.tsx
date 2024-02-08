@@ -6,7 +6,7 @@ import { gridStyles } from './styles';
 import { IProps } from './types';
 
 const RecipeList = ({ recipes }: IProps) => {
-  const sortedByDate = recipes.sort((a: TRecipe, b: TRecipe) => {
+  const sortedByDate = [...recipes].sort((a: TRecipe, b: TRecipe) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
   return (
