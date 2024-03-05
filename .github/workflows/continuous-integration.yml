@@ -16,12 +16,12 @@ permissions:
 jobs:
   continous-integration:
     runs-on: ubuntu-latest
-    # environment: something
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js 18.x
+        uses: actions/setup-node@v3
         with:
           node-version: '18.x'
       - uses: actions/cache@v3
