@@ -1,8 +1,8 @@
+import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { footerLeftGroupStyles, footerRightGroupStyles, footerStyles, linkStyles } from './styles';
 import { Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import { ENonProtectedRoutes } from '../../router/types';
 
 export const Footer = () => {

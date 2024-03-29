@@ -107,10 +107,11 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           // dispatch a success message for the snack bar
         });
       }
-
-      navigate(ENonProtectedRoutes.RECIPES);
+      const id = isEditMode ? editRecipeFromStore?._id : newRecipeFromStore?._id;
+      setIsEditMode?.(false);
       dispatch(resetNewRecipe());
       dispatch(resetEditRecipe());
+      navigate(`${ENonProtectedRoutes.RECIPES}/${id}`);
     } catch (_error) {
       console.log((_error as Error).message);
       // dispatch an error message for the snack bar

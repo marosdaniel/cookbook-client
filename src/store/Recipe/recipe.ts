@@ -19,13 +19,13 @@ const recipeSlice = createSlice({
       state.newRecipe = action.payload;
     },
     resetNewRecipe: state => {
-      delete state.newRecipe;
+      state.newRecipe = undefined;
     },
     setEditRecipe: (state, action: PayloadAction<TRecipe>) => {
       state.editRecipe = action.payload;
     },
     resetEditRecipe: state => {
-      delete state.editRecipe;
+      state.editRecipe = undefined;
     },
   },
 });
