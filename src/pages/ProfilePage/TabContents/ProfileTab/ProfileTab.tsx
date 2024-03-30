@@ -20,13 +20,23 @@ const ProfileTab = () => {
 
   const userData: TUser | undefined = data?.getUserById;
   if (!userData) return <Typography variant="h4">User not found</Typography>;
-  const { userName, email } = userData;
+  const { userName, email, firstName, lastName } = userData;
 
   return (
     <section id="profile-tab">
       <Box sx={topSectionStyles}>
+        <Typography variant="h5">General informaiton</Typography>
         <Typography variant="body1">Username: {userName}</Typography>
         <Typography variant="body1">Email address: {email}</Typography>
+      </Box>
+      <Box sx={topSectionStyles}>
+        <Typography variant="h5">Change your name</Typography>
+        <Typography variant="body1">First name: {firstName}</Typography>
+        <Typography variant="body1">Last name: {lastName}</Typography>
+      </Box>
+      <Box sx={topSectionStyles}>
+        <Typography variant="h5">Change your password</Typography>
+        <Typography variant="body1">Password: **********</Typography>
       </Box>
     </section>
   );
