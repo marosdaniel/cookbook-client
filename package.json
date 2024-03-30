@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.9",
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
     "@loadable/component": "^5.16.3",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
@@ -65,7 +65,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/bcryptjs": "^2.4.6",
     "@types/loadable__component": "^5.13.9",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.12.2",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "@types/styled-components": "^5.1.34",

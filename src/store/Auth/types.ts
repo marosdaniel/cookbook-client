@@ -20,7 +20,6 @@ export type TUser = {
   lastName: string;
   locale: TLocale;
   userName: string;
-  password: string;
   role: ERole;
   favoriteRecipes?: TRecipe[];
 };

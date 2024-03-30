@@ -8,8 +8,27 @@ const GET_USER_BY_ID = gql`
       firstName
       lastName
       locale
-      role
       userName
+      favoriteRecipes {
+        _id
+        createdBy
+        description
+        title
+        updatedAt
+      }
+      recipes {
+        _id
+        createdAt
+        createdBy
+        title
+        ingredients {
+          _id
+          name
+          quantity
+          unit
+        }
+      }
+      role
     }
   }
 `;
