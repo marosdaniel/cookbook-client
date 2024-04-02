@@ -43,7 +43,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `nvm use 18.18`
+### `nvm use 20`
 
 ### `npm start`
 

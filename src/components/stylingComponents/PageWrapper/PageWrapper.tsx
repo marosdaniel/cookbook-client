@@ -23,8 +23,7 @@ const PageWrapper = ({ children }: PropsWithChildren) => {
     // position: 'relative',
     minHeight: {
       xs: 'calc(100vh - 56px)',
-      // sm: 'calc(100vh - 56px)',
-      md: 'calc(100vh - 64px)',
+      sm: 'calc(100vh - 64px)',
     },
 
     // paddingBottom: '60px !important',

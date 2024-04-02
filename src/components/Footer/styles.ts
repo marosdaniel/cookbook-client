@@ -23,9 +23,19 @@
 
 export const footerStyles = {
   display: 'flex',
-  justifyContent: 'space-between',
+  flexDirection: {
+    xs: 'column',
+    sm: 'row',
+  },
+  justifyContent: {
+    xs: 'space-evenly',
+    sm: 'space-between',
+  },
   alignItems: 'center',
-  height: '60px',
+  height: {
+    xs: '80px',
+    sm: '60px',
+  },
   //   width: 'calc(100% - 64px)',
   width: '100%',
   // marginLeft: '60px',
