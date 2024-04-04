@@ -4,12 +4,7 @@ export const commonTypographyStyles = {
 
 export const labelWrapperStyles = {
   flexWrap: 'wrap',
-  justifyContent: {
-    xs: 'center',
-    sm: 'center',
-    md: 'flex-start',
-    lg: 'flex-start',
-  },
+  justifyContent: 'flex-start',
 
   marginTop: {
     xs: 2,
