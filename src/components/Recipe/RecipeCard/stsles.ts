@@ -1,4 +1,4 @@
 export const cardStyles = {
-  // maxWidth: '350px',
+  // width: '100%',
   textDecoration: 'none',
 };

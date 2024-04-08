@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 import { TRecipe } from '../../../store/Recipe/types';
 import RecipeCard from '../RecipeCard';
@@ -10,7 +10,7 @@ const RecipeList = ({ recipes }: IProps) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
   return (
-    <Grid component="ul" sx={gridStyles}>
+    <Box component="ul" sx={gridStyles}>
       {sortedByDate.map((recipe: TRecipe, index) => {
         const {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -37,7 +37,7 @@ const RecipeList = ({ recipes }: IProps) => {
           />
         );
       })}
-    </Grid>
+    </Box>
   );
 };
 

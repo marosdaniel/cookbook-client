@@ -1,8 +1,10 @@
 export const gridStyles = {
   display: 'flex',
-  flexWrap: 'wrap',
-  flexGrow: 1,
-  gap: '1rem',
-  flexDirection: 'row',
+  gap: '2rem',
+  flexDirection: {
+    xs: 'column',
+    sm: 'row',
+  },
   width: '100%',
+  padding: 0,
 };

@@ -15,7 +15,7 @@ export const useWrapperStyles = () => {
     },
     transition: 'margin-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
     minHeight: {
-      xs: 'calc(100vh - 56px)',
+      xs: 'calc(100vh - 80px)',
       sm: 'calc(100vh - 64px)',
     },
     position: 'relative',

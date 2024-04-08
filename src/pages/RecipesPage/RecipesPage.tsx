@@ -10,7 +10,7 @@ import WrapperContainer from '../../components/stylingComponents/WrapperContaine
 import PageTitle from '../../components/stylingComponents/PageTitle';
 import FilterBar from '../../components/Filter/FilterBar';
 
-import { filterWrapperStyles, recipeListWrapper } from './styles';
+import { filterWrapperStyles, recipeListWrapper, recipePageContentStyles } from './styles';
 
 const RecipesPage = () => {
   const { loading, error, data } = useQuery(GET_RECIPES);
@@ -22,7 +22,7 @@ const RecipesPage = () => {
   return (
     <WrapperContainer id="recipes-page">
       <PageTitle title="Find the best recipes" />
-      <Box display="flex">
+      <Box sx={recipePageContentStyles}>
         <Box sx={filterWrapperStyles}>
           <FilterBar />
         </Box>

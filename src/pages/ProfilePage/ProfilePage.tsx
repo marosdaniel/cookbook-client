@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 
 import ProfileTab from './TabContents/ProfileTab';
 import MyRecipesTab from './TabContents/MyRecipesTab';
@@ -52,13 +51,18 @@ const ProfilePage = () => {
 
   return (
     <WrapperContainer id="profile-page">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', width: 'max-content' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Profile" {...a11yProps(0)} />
-          <Tab label="Recipes" {...a11yProps(1)} />
-          <Tab label="Favorite recipes" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="basic tabs example"
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+      >
+        <Tab label="Profile" {...a11yProps(0)} />
+        <Tab label="Recipes" {...a11yProps(1)} />
+        <Tab label="Favorite recipes" {...a11yProps(2)} />
+      </Tabs>
       <CustomTabPanel value={value} index={0}>
         <ProfileTab />
       </CustomTabPanel>

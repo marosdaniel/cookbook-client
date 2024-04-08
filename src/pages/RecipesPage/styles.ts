@@ -10,4 +10,20 @@ export const filterWrapperStyles = {
 
 export const recipeListWrapper = {
   width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+  flexGrow: 1,
+  flexShrink: 1,
+};
+
+export const recipePageContentStyles = {
+  display: 'flex',
+  flexDirection: {
+    xs: 'column',
+    sm: 'column',
+    md: 'row',
+  },
+  gap: '1rem',
+  width: '100%',
 };
