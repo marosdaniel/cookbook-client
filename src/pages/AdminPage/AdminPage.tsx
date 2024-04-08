@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import { Box, Tab, Tabs } from '@mui/material';
-
+import { Tab, Tabs } from '@mui/material';
 import { a11yProps } from '../../components/CustomTabPanel/utils';
 import CustomTabPanel from '../../components/CustomTabPanel';
+import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 import { EProtectedRoutes } from '../../router/types';
-
 import UsersTab from './TabContents/UsersTab';
 import CategoriesTab from './TabContents/CategoriesTab';
 import UnitsTab from './TabContents/UnitsTab';
 import LabelsTab from './TabContents/LabelsTab';
-import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
 
 const AdminPage = () => {
   const [value, setValue] = useState(0);
@@ -20,50 +17,35 @@ const AdminPage = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path === EProtectedRoutes.ADMIN) navigate(EProtectedRoutes.ADMIN_USERS);
+    const routes: { [key: string]: number } = {
+      [EProtectedRoutes.ADMIN_USERS]: 0,
+      [EProtectedRoutes.ADMIN_CATEGORIES]: 1,
+      [EProtectedRoutes.ADMIN_UNITS]: 2,
+      [EProtectedRoutes.ADMIN_LABELS]: 3,
+    };
 
-    if (path === EProtectedRoutes.ADMIN_USERS) {
-      setValue(0);
-    } else if (path === EProtectedRoutes.ADMIN_CATEGORIES) {
-      setValue(1);
-    } else if (path === EProtectedRoutes.ADMIN_UNITS) {
-      setValue(2);
-    } else if (path === EProtectedRoutes.ADMIN_LABELS) {
-      setValue(3);
-    } else {
-      setValue(0);
-    }
-  }, [location, navigate]);
+    setValue(routes[path] || 0);
+  }, [location]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    switch (newValue) {
-      case 0:
-        navigate(EProtectedRoutes.ADMIN_USERS);
-        break;
-      case 1:
-        navigate(EProtectedRoutes.ADMIN_CATEGORIES);
-        break;
-      case 2:
-        navigate(EProtectedRoutes.ADMIN_UNITS);
-        break;
-      case 3:
-        navigate(EProtectedRoutes.ADMIN_LABELS);
-        break;
-      default:
-        break;
-    }
+    const routes = [
+      EProtectedRoutes.ADMIN_USERS,
+      EProtectedRoutes.ADMIN_CATEGORIES,
+      EProtectedRoutes.ADMIN_UNITS,
+      EProtectedRoutes.ADMIN_LABELS,
+    ];
+    navigate(routes[newValue]);
   };
+
   return (
     <WrapperContainer id="admin-page">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', width: 'max-content' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Users" {...a11yProps(0)} />
-          <Tab label="Categories" {...a11yProps(1)} />
-          <Tab label="Units" {...a11yProps(2)} />
-          <Tab label="Labels" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
+      <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile>
+        <Tab label="Users" {...a11yProps(0)} />
+        <Tab label="Categories" {...a11yProps(1)} />
+        <Tab label="Units" {...a11yProps(2)} />
+        <Tab label="Labels" {...a11yProps(3)} />
+      </Tabs>
       <CustomTabPanel value={value} index={0}>
         <UsersTab />
       </CustomTabPanel>

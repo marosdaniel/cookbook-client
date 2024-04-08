@@ -41,8 +41,8 @@ export const footerStyles = {
   // marginLeft: '60px',
   backgroundColor: 'transparent',
   boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
-  // position: 'absolute',
-  // bottom: 0,
+  position: 'absolute',
+  bottom: 0,
 };
 
 export const footerLeftGroupStyles = {
