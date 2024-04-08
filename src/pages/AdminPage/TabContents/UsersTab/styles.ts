@@ -1,6 +1,9 @@
 export const listItemStyles = {
   width: '100%',
-  height: '80px',
+  flexDirection: 'column',
+  justifyContent: 'space-evenly',
+  alignItems: 'flex-start',
+  height: '92px',
   marginBottom: '2rem',
   transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
   padding: '8px 48px 8px 16px',

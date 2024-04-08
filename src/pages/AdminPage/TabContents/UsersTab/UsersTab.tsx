@@ -42,11 +42,7 @@ const UsersTab = () => {
                 <Typography variant="h6" color="text.secondary">
                   {userName}
                 </Typography>
-                <Typography
-                  sx={{ marginLeft: '32px', ...getUserRoleStyles(role) }}
-                  variant="body1"
-                  color="text.secondary"
-                >
+                <Typography sx={{ ...getUserRoleStyles(role) }} variant="body2" color="text.secondary">
                   {role}
                 </Typography>
               </ListItem>
