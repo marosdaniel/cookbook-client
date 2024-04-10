@@ -1,41 +1,35 @@
 import React, { useState } from 'react';
 import { Box, Button, Grow, TextField, Typography } from '@mui/material';
-import { useMutation } from '@apollo/client';
 
-import { EDIT_USER } from '../../../../../service/graphql/user/editUser';
 import ErrorMessage from '../../../../../components/ErrorMessage';
 import { editButtonStyles, innerBoxStyles, labelStyles, sectionStyles } from '../styles';
 import { IProps } from './types';
 
-const PersonalData = ({ userId, firstName, lastName }: IProps) => {
-  const [editUser, { loading, error }] = useMutation(EDIT_USER);
-
+const PersonalData = ({
+  localFirstName,
+  localLastName,
+  setLocalFirstName,
+  setLocalLastName,
+  onSavePersonalData,
+  error,
+  loading,
+  disabledSaving,
+}: IProps) => {
   const [isPersonalDataEditable, setIsPersonalDataEditable] = useState(false);
-
-  const [localFirstName, setLocalFirstName] = useState(firstName);
-  const [localLastName, setLocalLastName] = useState(lastName);
 
   const handlePersonalDataEditable = () => {
     setIsPersonalDataEditable(prev => !prev);
   };
 
   const handleCancelPersonalData = () => {
-    setLocalFirstName(firstName);
-    setLocalLastName(lastName);
+    setLocalFirstName(localFirstName);
+    setLocalLastName(localLastName);
     setIsPersonalDataEditable(false);
   };
 
   const handleSavePersonalData = async () => {
     try {
-      await editUser({
-        variables: {
-          editUserId: userId ?? '',
-          userEditInput: {
-            firstName: localFirstName,
-            lastName: localLastName,
-          },
-        },
-      });
+      onSavePersonalData();
       setIsPersonalDataEditable(false);
     } catch (_error) {
       console.error('Something went wrong:', _error);
@@ -61,11 +55,11 @@ const PersonalData = ({ userId, firstName, lastName }: IProps) => {
           <Typography marginTop={1} variant="body2" sx={labelStyles} color="GrayText">
             First name
           </Typography>
-          <Typography variant="body1">{localFirstName ?? firstName}</Typography>
+          <Typography variant="body1">{localFirstName}</Typography>
           <Typography marginTop={1} variant="body2" sx={labelStyles} color="GrayText">
             Last name
           </Typography>
-          <Typography variant="body1">{localLastName ?? lastName}</Typography>
+          <Typography variant="body1">{localLastName}</Typography>
         </>
       ) : null}
       <Box sx={{ display: isPersonalDataEditable ? 'flex' : 'none' }}>
@@ -79,7 +73,7 @@ const PersonalData = ({ userId, firstName, lastName }: IProps) => {
             <TextField
               variant="standard"
               label="First name"
-              value={localFirstName ?? firstName}
+              value={localFirstName}
               fullWidth
               required
               margin="normal"
@@ -90,7 +84,7 @@ const PersonalData = ({ userId, firstName, lastName }: IProps) => {
             <TextField
               variant="standard"
               label="Last name"
-              value={localLastName ?? lastName}
+              value={localLastName}
               fullWidth
               required
               margin="normal"
@@ -107,7 +101,7 @@ const PersonalData = ({ userId, firstName, lastName }: IProps) => {
                 variant="contained"
                 color="primary"
                 onClick={handleSavePersonalData}
-                disabled={loading}
+                disabled={loading || localFirstName === '' || localLastName === '' || disabledSaving}
               >
                 Save
               </Button>

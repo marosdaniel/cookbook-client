@@ -1,7 +1,9 @@
-import { useQuery } from '@apollo/client';
+import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Typography } from '@mui/material';
 
 import { GET_USER_BY_ID } from '../../../../service/graphql/user/getUser';
+import { EDIT_USER } from '../../../../service/graphql/user/editUser';
 import { useAuthState } from '../../../../store/Auth';
 import { TUser } from '../../../../store/Auth/types';
 import LoadingBar from '../../../../components/LoadingBar';
@@ -12,6 +14,7 @@ import { sectionStyles, innerBoxStyles, editButtonStyles, labelStyles } from './
 
 const ProfileTab = () => {
   const { user } = useAuthState();
+  const [editUser, { loading: editUserLoading, error: editUserError }] = useMutation(EDIT_USER);
 
   const { data, loading, error } = useQuery<{ getUserById: TUser }>(GET_USER_BY_ID, {
     variables: { getUserByIdId: user?._id ?? '' },
@@ -20,7 +23,28 @@ const ProfileTab = () => {
   const userData: TUser | undefined = data?.getUserById;
   const { userName, email, firstName, lastName } = userData || {};
 
+  const [localFirstName, setLocalFirstName] = useState(firstName);
+  const [localLastName, setLocalLastName] = useState(lastName);
+
+  const noChangesOnNames = localFirstName === firstName && localLastName === lastName;
+
   if (!userData) return <Typography variant="h4">User not found</Typography>;
+
+  const handleSavePersonalData = async () => {
+    try {
+      await editUser({
+        variables: {
+          editUserId: user?._id ?? '',
+          userEditInput: {
+            firstName: localFirstName,
+            lastName: localLastName,
+          },
+        },
+      });
+    } catch (_error) {
+      console.error('Something went wrong:', _error);
+    }
+  };
 
   if (loading) return <LoadingBar />;
   if (error) return <ErrorMessage />;
@@ -39,7 +63,16 @@ const ProfileTab = () => {
         <Typography variant="body1">{email}</Typography>
       </Box>
 
-      <PersonalData userId={user?._id} firstName={firstName} lastName={lastName} />
+      <PersonalData
+        localFirstName={localFirstName ?? firstName}
+        localLastName={localLastName ?? lastName}
+        onSavePersonalData={handleSavePersonalData}
+        setLocalFirstName={setLocalFirstName}
+        setLocalLastName={setLocalLastName}
+        loading={editUserLoading}
+        error={editUserError}
+        disabledSaving={noChangesOnNames}
+      />
       <Box sx={sectionStyles}>
         <Box sx={innerBoxStyles}>
           <Typography variant="h5">Change your password</Typography>
