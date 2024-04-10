@@ -8,7 +8,7 @@ export const getListItemStyles = (disabled: boolean) => ({
 export const useAppBarTitleStyles = () => {
   const { isDrawerOpen } = useGlobalState();
 
-  const positionValue = isDrawerOpen ? '150%' : '0';
+  const positionValue = isDrawerOpen ? '150%' : '-8px';
   const appBarTitleStyles = {
     fontSize: {
       xs: '16px',

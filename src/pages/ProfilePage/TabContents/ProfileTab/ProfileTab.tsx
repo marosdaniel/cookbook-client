@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { GET_USER_BY_ID } from '../../../../service/graphql/user/getUser';
 import { EDIT_USER } from '../../../../service/graphql/user/editUser';
@@ -10,7 +10,8 @@ import LoadingBar from '../../../../components/LoadingBar';
 import ErrorMessage from '../../../../components/ErrorMessage';
 
 import PersonalData from './PersonalData';
-import { sectionStyles, innerBoxStyles, editButtonStyles, labelStyles } from './styles';
+import Password from './Password';
+import { sectionStyles, labelStyles } from './styles';
 
 const ProfileTab = () => {
   const { user } = useAuthState();
@@ -73,18 +74,7 @@ const ProfileTab = () => {
         error={editUserError}
         disabledSaving={noChangesOnNames}
       />
-      <Box sx={sectionStyles}>
-        <Box sx={innerBoxStyles}>
-          <Typography variant="h5">Change your password</Typography>
-          <Button sx={editButtonStyles} variant="text" color="primary">
-            Edit
-          </Button>
-        </Box>
-        <Typography marginTop={1} variant="body2" sx={labelStyles} color="GrayText">
-          Password
-        </Typography>
-        <Typography variant="body1">**********</Typography>
-      </Box>
+      <Password />
     </section>
   );
 };
