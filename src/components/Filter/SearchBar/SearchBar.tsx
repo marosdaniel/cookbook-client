@@ -15,8 +15,9 @@ const SearchBar = () => {
       type="text"
       name="search-bar"
       id="search-bar"
-      helperText="not working"
+      placeholder="Search..."
       onChange={handleOnChange}
+      disabled
     />
   );
 };

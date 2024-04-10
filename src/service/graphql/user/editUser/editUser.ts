@@ -1,14 +1,10 @@
 import gql from 'graphql-tag';
-
 const EDIT_USER = gql`
-  mutation Mutation($userRegisterInput: UserRegisterInput) {
-    createUser(userRegisterInput: $userRegisterInput) {
-      _id
-      email
+  mutation EditUser($editUserId: ID!, $userEditInput: UserEditInput!) {
+    editUser(id: $editUserId, userEditInput: $userEditInput) {
       firstName
       lastName
       locale
-      role
       userName
     }
   }

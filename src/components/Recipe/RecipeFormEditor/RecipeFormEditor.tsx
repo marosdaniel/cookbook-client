@@ -28,6 +28,7 @@ import { CREATE_RECIPE, EDIT_RECIPE } from '../../../service/graphql/recipe/crea
 import ErrorMessage from '../../ErrorMessage';
 import LoadingBar from '../../LoadingBar';
 import PageTitle from '../../stylingComponents/PageTitle';
+import WrapperContainer from '../../stylingComponents/WrapperContainer';
 
 import PreparationStepsEditor from './PreparationStepsEditor';
 import IngredientsEditor from './IngredientsEditor';
@@ -186,10 +187,6 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValues]);
 
-  useEffect(() => {
-    console.log(preparationSteps);
-  }, [preparationSteps]);
-
   if (createRecipeLoading || editRecipeLoading) {
     return <LoadingBar />;
   }
@@ -199,7 +196,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   }
 
   return (
-    <>
+    <WrapperContainer id="edit-recipe-page">
       <PageTitle title={isEditMode ? 'Your Recipe Your Rules: Time to Edit' : 'Start Crafting'} />
       <Grid component="form" container sx={gridContainerStyles} onSubmit={handleSubmit} onChange={handleFormChange}>
         <Grid item xs={12} sm={12} md={6} lg={8} marginBottom={8}>
@@ -363,7 +360,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
             </TextField>
           </Grid>
           <Grid component={FormControl} item xs={12} sx={{ mt: '16px', mb: '8px' }}>
-            <InputLabel id="demo-multiple-chip-label">Labels</InputLabel>
+            <InputLabel id="multiple-chip-label">Labels</InputLabel>
             <Select
               sx={{ minWidth: '100px' }}
               labelId="test-select-label"
@@ -428,7 +425,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           </Button>
         </Grid>
       </Grid>
-    </>
+    </WrapperContainer>
   );
 };
 

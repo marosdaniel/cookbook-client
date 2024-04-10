@@ -24,7 +24,7 @@ import { ENonProtectedRoutes, EProtectedRoutes } from '../../router/types';
 import myTheme from '../../theme';
 import { getAvatarName, useBottomMenuItems, useTopMenuItems } from './utils';
 import { AppBarProps } from './types';
-import { getListItemStyles } from './styles';
+import { getListItemStyles, useAppBarTitleStyles } from './styles';
 import { useGlobalState } from '../../store/Global';
 import { useAppDispatch } from '../../store/hooks';
 import { closeDrawer, openDrawer } from '../../store/Global/global';
@@ -133,7 +133,7 @@ export default function AppBar({ children }: PropsWithChildren) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={useAppBarTitleStyles}>
             Where Recipes Turn into Magic!
           </Typography>
           {!isAuthenticated ? (
