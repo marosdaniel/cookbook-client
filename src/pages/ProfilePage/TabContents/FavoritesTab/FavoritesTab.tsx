@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import RecipeList from '../../../../components/Recipe/RecipeList';
 import { useAuthState } from '../../../../store/Auth';
 
@@ -8,7 +9,11 @@ const FavoritesTab = () => {
 
   return (
     <section id="favorite-recipes">
-      {favoriteRecipes?.length > 0 ? <RecipeList recipes={favoriteRecipes} /> : <div>No favorite recipes</div>}
+      {favoriteRecipes?.length > 0 ? (
+        <RecipeList recipes={favoriteRecipes} />
+      ) : (
+        <Typography variant="h4">No favorite recipes</Typography>
+      )}
     </section>
   );
 };

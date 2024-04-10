@@ -29,8 +29,6 @@ const ProfileTab = () => {
 
   const noChangesOnNames = localFirstName === firstName && localLastName === lastName;
 
-  if (!userData) return <Typography variant="h4">User not found</Typography>;
-
   const handleSavePersonalData = async () => {
     try {
       await editUser({
@@ -47,7 +45,7 @@ const ProfileTab = () => {
     }
   };
 
-  if (loading) return <LoadingBar />;
+  if (loading || !userData) return <LoadingBar />;
   if (error) return <ErrorMessage />;
 
   return (
@@ -74,7 +72,7 @@ const ProfileTab = () => {
         error={editUserError}
         disabledSaving={noChangesOnNames}
       />
-      <Password />
+      <Password userId={user?._id ?? ''} />
     </section>
   );
 };

@@ -1,20 +1,53 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { Box, Typography, Button, Grow, TextField } from '@mui/material';
+import { CHANGE_PASSWORD } from '../../../../../service/graphql/user/editUser';
+import LoadingBar from '../../../../../components/LoadingBar';
+import ErrorMessage from '../../../../../components/ErrorMessage';
 import { sectionStyles, innerBoxStyles, editButtonStyles, labelStyles } from '../styles';
+import { IProps } from './types';
 
-const Password = () => {
-  const [password, setPassword] = useState('');
+const Password = ({ userId }: IProps) => {
+  const [changePassword, { loading, error }] = useMutation(CHANGE_PASSWORD);
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
+  const saveDisabled = !currentPassword || !newPassword || !confirmNewPassword || newPassword !== confirmNewPassword;
+
   const handleCancelPassword = () => {
-    setPassword('');
+    setCurrentPassword('');
     setNewPassword('');
-    setConfirmPassword('');
+    setConfirmNewPassword('');
     setIsPasswordEditable(false);
   };
+
+  const handleSavePassword = async () => {
+    try {
+      if (saveDisabled) {
+        return;
+      }
+      const passwordEditInput = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+      };
+      await changePassword({
+        variables: {
+          userId,
+          passwordEditInput,
+        },
+      });
+      handleCancelPassword();
+    } catch (_error) {
+      console.error('Something went wrong:', _error);
+    }
+  };
+
+  if (loading) return <LoadingBar />;
+  if (error) return <ErrorMessage />;
 
   return (
     <Box sx={sectionStyles}>
@@ -44,12 +77,13 @@ const Password = () => {
             <TextField
               variant="standard"
               label="Password"
-              value={password}
+              value={currentPassword}
               fullWidth
               required
               margin="normal"
+              type="password"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setPassword(event.target.value);
+                setCurrentPassword(event.target.value);
               }}
             />
             <TextField
@@ -59,6 +93,7 @@ const Password = () => {
               fullWidth
               required
               margin="normal"
+              type="password"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setNewPassword(event.target.value);
               }}
@@ -66,12 +101,13 @@ const Password = () => {
             <TextField
               variant="standard"
               label="Confirm new password"
-              value={confirmPassword}
+              value={confirmNewPassword}
               fullWidth
               required
               margin="normal"
+              type="password"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setConfirmPassword(event.target.value);
+                setConfirmNewPassword(event.target.value);
               }}
             />
             <Box display="flex" justifyContent="flex-end" marginTop={2} gap={1}>
@@ -82,8 +118,8 @@ const Password = () => {
                 size="small"
                 variant="contained"
                 color="primary"
-                onClick={() => console.log('handleSavePassword')}
-                disabled={password === '' || newPassword === '' || confirmPassword === ''}
+                onClick={handleSavePassword}
+                disabled={saveDisabled}
               >
                 Save
               </Button>

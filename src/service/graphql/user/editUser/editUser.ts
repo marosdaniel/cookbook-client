@@ -11,8 +11,8 @@ const EDIT_USER = gql`
 `;
 
 const CHANGE_PASSWORD = gql`
-  mutation Mutation($changePasswordInput: ChangePasswordInput) {
-    changePassword(changePasswordInput: $changePasswordInput)
+  mutation ChangePassword($userId: ID!, $passwordEditInput: PasswordEditInput!) {
+    changePassword(id: $userId, passwordEditInput: $passwordEditInput)
   }
 `;
 
