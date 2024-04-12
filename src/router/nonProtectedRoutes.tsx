@@ -9,6 +9,12 @@ const Home = loadable(() => import('../pages/HomePage'), {
 const Signin = loadable(() => import('../pages/SigninPage'), {
   fallback: <LoadingBar />,
 });
+const ResetPassword = loadable(() => import('../pages/ResetPasswordPage'), {
+  fallback: <LoadingBar />,
+});
+const NewPassword = loadable(() => import('../pages/NewPasswordPage'), {
+  fallback: <LoadingBar />,
+});
 const RecipeDetails = loadable(() => import('../pages/RecipeDetailsPage'), {
   fallback: <LoadingBar />,
 });
@@ -42,6 +48,18 @@ export const nonProtectedRoutes = [
   {
     path: ENonProtectedRoutes.SIGNIN,
     component: Signin,
+  },
+  {
+    path: ENonProtectedRoutes.RESET_PASSWORD,
+    component: ResetPassword,
+  },
+  {
+    path: ENonProtectedRoutes.RESET_PASSWORD,
+    component: NewPassword,
+  },
+  {
+    path: ENonProtectedRoutes.NEW_PASSWORD,
+    component: NewPassword,
   },
   {
     path: `${ENonProtectedRoutes.RECIPES}/:id/*`,

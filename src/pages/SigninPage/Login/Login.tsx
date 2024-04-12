@@ -71,7 +71,7 @@ const Login = ({ setIsLogin }: IProps) => {
           Sign in
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} marginTop={1}>
           <TextField
             margin="normal"
             required
@@ -108,7 +108,7 @@ const Login = ({ setIsLogin }: IProps) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link sx={linkStyles} variant="body2">
+              <Link sx={linkStyles} variant="body2" component={RouterLink} to={ENonProtectedRoutes.RESET_PASSWORD}>
                 Forgot password?
               </Link>
             </Grid>

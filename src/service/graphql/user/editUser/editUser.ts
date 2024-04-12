@@ -16,4 +16,16 @@ const CHANGE_PASSWORD = gql`
   }
 `;
 
-export { EDIT_USER, CHANGE_PASSWORD };
+const RESET_PASSWORD = gql`
+  mutation Mutation($email: String!) {
+    resetPassword(email: $email)
+  }
+`;
+
+const SET_NEW_PASSWORD = gql`
+  mutation Mutation($newPassword: String!, $token: String!) {
+    setNewPassword(newPassword: $newPassword, token: $token)
+  }
+`;
+
+export { EDIT_USER, CHANGE_PASSWORD, RESET_PASSWORD, SET_NEW_PASSWORD };

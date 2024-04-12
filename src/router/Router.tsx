@@ -2,23 +2,28 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import loadable from '@loadable/component';
 import LoadingBar from '../components/LoadingBar';
 import AppBar from '../components/AppBar/';
+import Footer from '../components/Footer';
 import PageWrapper from '../components/stylingComponents/PageWrapper';
 import { nonProtectedRoutes } from './nonProtectedRoutes';
 import { protectedRoutes } from './protectedRoutes';
 import Authenticated from './Authenticated';
 import { ENonProtectedRoutes } from './types';
-import Footer from '../components/Footer';
 
 const NotFound = loadable(() => import('../pages/NotFoundPage'), {
   fallback: <LoadingBar />,
 });
+
+const isPathWithoutAppBar = (path: string) =>
+  path !== ENonProtectedRoutes.SIGNIN &&
+  path !== ENonProtectedRoutes.RESET_PASSWORD &&
+  path !== ENonProtectedRoutes.NEW_PASSWORD;
 
 export const router = createBrowserRouter([
   ...nonProtectedRoutes.map(({ path, component: Component }) => ({
     path,
     element: (
       <>
-        {path !== ENonProtectedRoutes.SIGNIN ? (
+        {isPathWithoutAppBar(path) ? (
           <>
             <AppBar />
             <PageWrapper>

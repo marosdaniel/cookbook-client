@@ -141,7 +141,6 @@ export default function AppBar({ children }: PropsWithChildren) {
               component={RouterLink}
               to={ENonProtectedRoutes.SIGNIN}
               variant="h6"
-              noWrap
               sx={{
                 color: 'white',
                 marginLeft: 'auto',

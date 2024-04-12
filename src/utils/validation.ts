@@ -25,6 +25,24 @@ export const loginValidationSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+export const newPasswordValidationSchema = Yup.object().shape({
+  newPassword: Yup.string()
+    .min(5, 'Too Short!')
+    .max(20, 'Too Long!')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/,
+      'Password must contain at least 5 characters, including at least 1 number',
+    )
+    .required('Password is required'),
+  confirmNewPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+    .required('Confirm password is required'),
+});
+
+export const resetPasswordValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+});
+
 export const customValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .matches(/^[^0-9]+$/, 'should not contain numbers')
