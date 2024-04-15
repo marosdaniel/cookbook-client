@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Box, TextField, Button, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,11 +19,19 @@ const NewPasswordPage = () => {
   const [setNewPassword, { loading }] = useMutation(SET_NEW_PASSWORD);
 
   // TODO: get the token from the URL
+  const { token } = useParams();
+
+  console.log('param token: ', token);
 
   const onSubmit = async () => {
+    if (!token) return;
+    if (values.newPassword !== values.confirmNewPassword) {
+      setError('Passwords do not match');
+      return;
+    }
     try {
       await setNewPassword({
-        variables: { newPassword: values.newPassword, token: 'token' },
+        variables: { newPassword: values.newPassword, token: token },
       });
 
       navigate(ENonProtectedRoutes.SIGNIN);
@@ -53,6 +61,7 @@ const NewPasswordPage = () => {
             required
             fullWidth
             id="newPassword"
+            type="password"
             label="Password"
             name="newPassword"
             autoComplete="newPassword"

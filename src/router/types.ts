@@ -4,7 +4,7 @@ export enum ENonProtectedRoutes {
   RECIPE_DETAILS = '/recipes/:id',
   SIGNIN = '/signin',
   RESET_PASSWORD = '/reset-password',
-  NEW_PASSWORD = '/new-password',
+  NEW_PASSWORD = '/new-password/:token/*',
   ARTICLES = '/articles',
   CONTACT_US = '/contact-us',
   USERS = '/users',

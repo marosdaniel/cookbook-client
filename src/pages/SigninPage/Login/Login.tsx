@@ -114,7 +114,7 @@ const Login = ({ setIsLogin }: IProps) => {
             </Grid>
             <Grid item>
               <Link sx={linkStyles} variant="body2" onClick={() => setIsLogin(false)}>
-                {"Don't have an account? Sign Up"}
+                "Don't have an account? Sign Up"
               </Link>
             </Grid>
           </Grid>
