@@ -18,6 +18,8 @@ const NewPasswordPage = () => {
   const [error, setError] = useState<string>('');
   const [setNewPassword] = useMutation(SET_NEW_PASSWORD);
 
+  // TODO: Add error handling
+
   const onSubmit = async () => {
     if (!token) return;
     if (values.newPassword !== values.confirmNewPassword) {

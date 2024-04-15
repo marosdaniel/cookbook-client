@@ -24,6 +24,7 @@ import { ENonProtectedRoutes } from '../../../router/types';
 import { linkStyles } from '../styles';
 import { IFormikProps, IProps } from './types';
 import { boxStyle } from './styles';
+import PasswordInput from '../../../components/Form/PasswordInput';
 
 const Login = ({ setIsLogin }: IProps) => {
   const dispatch = useAppDispatch();
@@ -86,18 +87,11 @@ const Login = ({ setIsLogin }: IProps) => {
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
+          <PasswordInput
             id="password"
-            autoComplete="current-password"
-            inputProps={{ maxLength: 30 }}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            label="Password"
+            onChange={handleChange('password')}
+            onBlur={handleBlur('password')}
             value={values.password}
             error={touched.password && Boolean(errors.password)}
             helperText={touched.password && errors.password}
@@ -114,7 +108,7 @@ const Login = ({ setIsLogin }: IProps) => {
             </Grid>
             <Grid item>
               <Link sx={linkStyles} variant="body2" onClick={() => setIsLogin(false)}>
-                "Don't have an account? Sign Up"
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>

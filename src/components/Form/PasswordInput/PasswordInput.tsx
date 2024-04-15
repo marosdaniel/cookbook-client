@@ -18,8 +18,7 @@ const PasswordInput = ({ id, value, label, onBlur, onChange, error, helperText }
       fullWidth
       type={showPassword ? 'text' : 'password'}
       label={label}
-      name="newPassword"
-      autoComplete="newPassword"
+      name={id}
       onChange={onChange}
       onBlur={onBlur}
       value={value}
