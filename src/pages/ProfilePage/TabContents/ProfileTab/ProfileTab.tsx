@@ -53,11 +53,11 @@ const ProfileTab = () => {
       <Box sx={sectionStyles}>
         <Typography variant="h5">General informaiton</Typography>
         <Typography marginTop={1} variant="body2" sx={labelStyles} color="GrayText">
-          First name
+          User name
         </Typography>
         <Typography variant="body1">{userName}</Typography>
         <Typography variant="body2" sx={labelStyles} color="GrayText">
-          Email
+          E-mail
         </Typography>
         <Typography variant="body1">{email}</Typography>
       </Box>

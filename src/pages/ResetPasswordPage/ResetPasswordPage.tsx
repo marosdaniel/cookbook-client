@@ -17,7 +17,6 @@ const ResetPasswordPage = () => {
   const [resetPassword, { loading }] = useMutation(RESET_PASSWORD);
 
   const onSubmit = async () => {
-    console.log('reset password submitted');
     try {
       await resetPassword({
         variables: { email: values.email },
@@ -25,11 +24,12 @@ const ResetPasswordPage = () => {
 
       navigate(ENonProtectedRoutes.NEW_PASSWORD);
     } catch (_error: any) {
+      resetForm();
       setError(_error.message);
     }
   };
 
-  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik<IFormikProps>({
+  const { values, handleChange, handleSubmit, handleBlur, resetForm, touched, errors } = useFormik<IFormikProps>({
     initialValues: {
       email: '',
     },
@@ -58,7 +58,7 @@ const ResetPasswordPage = () => {
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
             Send
           </Button>
           <Button type="button" variant="text" component={RouterLink} to={ENonProtectedRoutes.SIGNIN}>

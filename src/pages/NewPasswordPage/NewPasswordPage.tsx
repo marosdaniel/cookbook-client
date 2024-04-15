@@ -16,7 +16,7 @@ const NewPasswordPage = () => {
   const { token } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
-  const [setNewPassword] = useMutation(SET_NEW_PASSWORD);
+  const [setNewPassword, { loading }] = useMutation(SET_NEW_PASSWORD);
 
   // TODO: Add error handling
 
@@ -72,7 +72,7 @@ const NewPasswordPage = () => {
             error={touched.confirmNewPassword && Boolean(errors.confirmNewPassword)}
             helperText={touched.confirmNewPassword && errors.confirmNewPassword}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
             Save
           </Button>
           <Button type="button" variant="text" component={RouterLink} to={ENonProtectedRoutes.SIGNIN}>
