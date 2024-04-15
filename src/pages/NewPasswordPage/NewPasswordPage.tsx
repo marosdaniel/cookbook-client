@@ -1,27 +1,22 @@
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
-import { Box, TextField, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { ENonProtectedRoutes } from '../../router/types';
-import { useAppDispatch } from '../../store/hooks';
+import PasswordInput from '../../components/Form/PasswordInput';
+import { SET_NEW_PASSWORD } from '../../service/graphql/user/editUser';
 import { newPasswordValidationSchema } from '../../utils/validation';
 import { boxStyle } from '../SigninPage/Login/styles';
-import { useMutation } from '@apollo/client';
-import { SET_NEW_PASSWORD } from '../../service/graphql/user/editUser';
 import { IFormikProps } from './types';
 
 const NewPasswordPage = () => {
-  const dispatch = useAppDispatch();
+  const { token } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
-  const [setNewPassword, { loading }] = useMutation(SET_NEW_PASSWORD);
-
-  // TODO: get the token from the URL
-  const { token } = useParams();
-
-  console.log('param token: ', token);
+  const [setNewPassword] = useMutation(SET_NEW_PASSWORD);
 
   const onSubmit = async () => {
     if (!token) return;
@@ -36,11 +31,12 @@ const NewPasswordPage = () => {
 
       navigate(ENonProtectedRoutes.SIGNIN);
     } catch (_error: any) {
+      resetForm();
       setError(_error.message);
     }
   };
 
-  const { values, handleChange, handleSubmit, handleBlur, touched, errors } = useFormik<IFormikProps>({
+  const { values, handleChange, handleSubmit, handleBlur, touched, errors, resetForm } = useFormik<IFormikProps>({
     initialValues: {
       newPassword: '',
       confirmNewPassword: '',
@@ -56,33 +52,20 @@ const NewPasswordPage = () => {
           Set your new password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} marginTop={1}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="newPassword"
-            type="password"
+          <PasswordInput
+            id="new-password"
             label="Password"
-            name="newPassword"
-            autoComplete="newPassword"
-            onChange={handleChange}
-            onBlur={handleBlur}
+            onChange={handleChange('newPassword')}
+            onBlur={handleBlur('newPassword')}
             value={values.newPassword}
             error={touched.newPassword && Boolean(errors.newPassword)}
             helperText={touched.newPassword && errors.newPassword}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="confirmNewPassword"
+          <PasswordInput
+            id="confirm-new-password"
             label="Confirm Password"
-            type="password"
-            id="confirmNewPassword"
-            autoComplete="current-password"
-            inputProps={{ maxLength: 30 }}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            onChange={handleChange('confirmNewPassword')}
+            onBlur={handleBlur('confirmNewPassword')}
             value={values.confirmNewPassword}
             error={touched.confirmNewPassword && Boolean(errors.confirmNewPassword)}
             helperText={touched.confirmNewPassword && errors.confirmNewPassword}
