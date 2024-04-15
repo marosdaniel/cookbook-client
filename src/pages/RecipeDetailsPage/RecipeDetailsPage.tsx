@@ -84,12 +84,11 @@ const RecipeDetailsPage = () => {
   }
 
   return (
-    <WrapperContainer id="recipe-detail-page">
+    <WrapperContainer id="recipe-detail-page" maxWidth="md">
       <Typography fontStyle={'italic'} variant="subtitle2">
         a {categoryLink} from {linkToCreator}'s kitchen
       </Typography>
-
-      <Grid display="flex" justifyContent="space-between" alignItems="center">
+      <Grid display="flex" justifyContent="space-between" alignItems="flex-start">
         <PageTitle title={title ?? ''} />
         {isOwnRecipe && (
           <Button variant="outlined" color="primary" onClick={handleEdit}>

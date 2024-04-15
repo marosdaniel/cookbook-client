@@ -51,7 +51,7 @@ const ProfileTab = () => {
   return (
     <section id="profile-tab">
       <Box sx={sectionStyles}>
-        <Typography variant="h5">General informaiton</Typography>
+        <Typography variant="h5">General information</Typography>
         <Typography marginTop={1} variant="body2" sx={labelStyles} color="GrayText">
           User name
         </Typography>
