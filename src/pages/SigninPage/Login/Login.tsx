@@ -13,7 +13,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Alert, Snackbar } from '@mui/material';
 
 import { login } from '../../../store/Auth/auth';
 import { useAppDispatch } from '../../../store/hooks';
@@ -21,10 +20,11 @@ import { LOGIN_USER } from '../../../service/graphql/user/loginUser';
 import { loginValidationSchema } from '../../../utils/validation';
 import { ENonProtectedRoutes } from '../../../router/types';
 
+import PasswordInput from '../../../components/Form/PasswordInput';
+import AlertSnack from '../../../components/AlertSnack';
 import { linkStyles } from '../styles';
 import { IFormikProps, IProps } from './types';
 import { boxStyle } from './styles';
-import PasswordInput from '../../../components/Form/PasswordInput';
 
 const Login = ({ setIsLogin }: IProps) => {
   const dispatch = useAppDispatch();
@@ -124,20 +124,7 @@ const Login = ({ setIsLogin }: IProps) => {
           </Button>
         </Box>
       </Box>
-      <Snackbar
-        open={!!error}
-        onClose={() => setError('')}
-        autoHideDuration={3000}
-        message={error}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-      >
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      </Snackbar>
+      <AlertSnack error={error} setError={setError} />
     </Container>
   );
 };

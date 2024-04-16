@@ -3,19 +3,7 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Link,
-  Alert,
-  Snackbar,
-  FormControlLabel,
-  Checkbox,
-} from '@mui/material';
+import { Container, Box, Typography, TextField, Button, Grid, Link, FormControlLabel, Checkbox } from '@mui/material';
 
 import { login } from '../../../store/Auth/auth';
 import { useAppDispatch } from '../../../store/hooks';
@@ -27,6 +15,7 @@ import { customValidationSchema } from '../../../utils/validation';
 import { linkStyles } from '../styles';
 import { IFormikProps, IProps } from './types';
 import { boxStyle } from './styles';
+import AlertSnack from '../../../components/AlertSnack';
 
 const Register = ({ setIsLogin }: IProps) => {
   const dispatch = useAppDispatch();
@@ -225,20 +214,7 @@ const Register = ({ setIsLogin }: IProps) => {
           </Grid>
         </Box>
       </Box>
-      <Snackbar
-        open={!!error}
-        onClose={() => setError('')}
-        autoHideDuration={3000}
-        message={error}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-      >
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
-      </Snackbar>
+      <AlertSnack error={error} setError={setError} />
     </Container>
   );
 };

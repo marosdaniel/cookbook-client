@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { ENonProtectedRoutes } from '../../router/types';
 import PasswordInput from '../../components/Form/PasswordInput';
+import AlertSnack from '../../components/AlertSnack';
 import { SET_NEW_PASSWORD } from '../../service/graphql/user/editUser';
 import { newPasswordValidationSchema } from '../../utils/validation';
 import { boxStyle } from '../SigninPage/Login/styles';
@@ -17,8 +18,6 @@ const NewPasswordPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
   const [setNewPassword, { loading }] = useMutation(SET_NEW_PASSWORD);
-
-  // TODO: Add error handling
 
   const onSubmit = async () => {
     if (!token) return;
@@ -32,6 +31,7 @@ const NewPasswordPage = () => {
       });
 
       navigate(ENonProtectedRoutes.SIGNIN);
+      resetForm();
     } catch (_error: any) {
       resetForm();
       setError(_error.message);
@@ -81,6 +81,7 @@ const NewPasswordPage = () => {
           </Button>
         </Box>
       </Box>
+      <AlertSnack error={error} setError={setError} />
     </Container>
   );
 };

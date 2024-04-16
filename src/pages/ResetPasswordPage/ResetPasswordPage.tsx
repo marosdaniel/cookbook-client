@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
-import { Box, TextField, Button, Container, Typography, Alert, Snackbar, Fade } from '@mui/material';
+import { Box, TextField, Button, Container, Typography, Alert } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { RESET_PASSWORD } from '../../service/graphql/user/editUser';
 import { ENonProtectedRoutes } from '../../router/types';
 import { resetPasswordValidationSchema } from '../../utils/validation';
+import AlertSnack from '../../components/AlertSnack';
 import { boxStyle } from '../SigninPage/Login/styles';
 import { IFormikProps } from './types';
 
@@ -75,22 +76,7 @@ const ResetPasswordPage = () => {
             Go to Login
           </Button>
         </Box>
-        <Snackbar
-          open={!!error}
-          onClose={() => setError('')}
-          autoHideDuration={3000}
-          message={error}
-          TransitionComponent={Fade}
-          transitionDuration={380}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-        >
-          <Alert variant="filled" severity="error">
-            {error}
-          </Alert>
-        </Snackbar>
+        <AlertSnack error={error} setError={setError} />
       </Box>
     </Container>
   );
