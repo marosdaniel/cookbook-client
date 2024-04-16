@@ -14,6 +14,7 @@ const Password = ({ userId }: IProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState<string>('');
+  const [messageSeverity, setMessageSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('error');
 
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
@@ -42,9 +43,11 @@ const Password = ({ userId }: IProps) => {
           passwordEditInput,
         },
       });
+      setMessageSeverity('success');
       setAlertMessage('Password changed successfully');
       handleCancelPassword();
     } catch (_error: any) {
+      setMessageSeverity('error');
       setAlertMessage(_error.message);
     }
   };
@@ -130,7 +133,7 @@ const Password = ({ userId }: IProps) => {
           </Box>
         </Grow>
       </Box>
-      <AlertSnack message={alertMessage} setMessage={setAlertMessage} />
+      <AlertSnack message={alertMessage} setMessage={setAlertMessage} severity={messageSeverity} />
     </Box>
   );
 };

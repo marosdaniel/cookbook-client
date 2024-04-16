@@ -18,6 +18,7 @@ const PersonalData = ({
 }: IProps) => {
   const [isPersonalDataEditable, setIsPersonalDataEditable] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string>('');
+  const [messageSeverity, setMessageSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('error');
 
   const handlePersonalDataEditable = () => {
     setIsPersonalDataEditable(prev => !prev);
@@ -32,9 +33,11 @@ const PersonalData = ({
   const handleSavePersonalData = async () => {
     try {
       onSavePersonalData();
+      setMessageSeverity('success');
       setAlertMessage('Personal data changed successfully');
       setIsPersonalDataEditable(false);
     } catch (_error: any) {
+      setMessageSeverity('error');
       setAlertMessage(_error.message);
     }
   };
@@ -112,7 +115,7 @@ const PersonalData = ({
           </Box>
         </Grow>
       </Box>
-      <AlertSnack message={alertMessage} setMessage={setAlertMessage} />
+      <AlertSnack message={alertMessage} setMessage={setAlertMessage} severity={messageSeverity} />
     </Box>
   );
 };
