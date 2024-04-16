@@ -1,8 +1,7 @@
 export interface IProps {
   open?: boolean;
-  message?: string;
+  message: string;
   severity?: 'error' | 'warning' | 'info' | 'success';
-  error?: string;
-  setError: (error: string) => void;
+  setMessage: (message: string) => void;
   variant?: 'filled' | 'outlined' | 'standard';
 }

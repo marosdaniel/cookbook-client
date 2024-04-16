@@ -214,7 +214,7 @@ const Register = ({ setIsLogin }: IProps) => {
           </Grid>
         </Box>
       </Box>
-      <AlertSnack error={error} setError={setError} />
+      <AlertSnack message={error} setMessage={setError} />
     </Container>
   );
 };

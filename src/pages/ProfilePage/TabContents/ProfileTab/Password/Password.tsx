@@ -4,6 +4,7 @@ import { Box, Typography, Button, Grow, TextField } from '@mui/material';
 import { CHANGE_PASSWORD } from '../../../../../service/graphql/user/editUser';
 import LoadingBar from '../../../../../components/LoadingBar';
 import ErrorMessage from '../../../../../components/ErrorMessage';
+import AlertSnack from '../../../../../components/AlertSnack';
 import { sectionStyles, innerBoxStyles, editButtonStyles, labelStyles } from '../styles';
 import { IProps } from './types';
 
@@ -12,6 +13,7 @@ const Password = ({ userId }: IProps) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [alertMessage, setAlertMessage] = useState<string>('');
 
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
@@ -40,9 +42,10 @@ const Password = ({ userId }: IProps) => {
           passwordEditInput,
         },
       });
+      setAlertMessage('Password changed successfully');
       handleCancelPassword();
-    } catch (_error) {
-      console.error('Something went wrong:', _error);
+    } catch (_error: any) {
+      setAlertMessage(_error.message);
     }
   };
 
@@ -127,6 +130,7 @@ const Password = ({ userId }: IProps) => {
           </Box>
         </Grow>
       </Box>
+      <AlertSnack message={alertMessage} setMessage={setAlertMessage} />
     </Box>
   );
 };

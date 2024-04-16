@@ -76,7 +76,7 @@ const ResetPasswordPage = () => {
             Go to Login
           </Button>
         </Box>
-        <AlertSnack error={error} setError={setError} />
+        <AlertSnack message={error} setMessage={setError} />
       </Box>
     </Container>
   );

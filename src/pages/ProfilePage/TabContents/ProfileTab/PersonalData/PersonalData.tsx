@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Grow, TextField, Typography } from '@mui/material';
 
 import ErrorMessage from '../../../../../components/ErrorMessage';
+import AlertSnack from '../../../../../components/AlertSnack';
 import { editButtonStyles, innerBoxStyles, labelStyles, sectionStyles } from '../styles';
 import { IProps } from './types';
 
@@ -16,6 +17,7 @@ const PersonalData = ({
   disabledSaving,
 }: IProps) => {
   const [isPersonalDataEditable, setIsPersonalDataEditable] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string>('');
 
   const handlePersonalDataEditable = () => {
     setIsPersonalDataEditable(prev => !prev);
@@ -30,9 +32,10 @@ const PersonalData = ({
   const handleSavePersonalData = async () => {
     try {
       onSavePersonalData();
+      setAlertMessage('Personal data changed successfully');
       setIsPersonalDataEditable(false);
-    } catch (_error) {
-      console.error('Something went wrong:', _error);
+    } catch (_error: any) {
+      setAlertMessage(_error.message);
     }
   };
 
@@ -109,6 +112,7 @@ const PersonalData = ({
           </Box>
         </Grow>
       </Box>
+      <AlertSnack message={alertMessage} setMessage={setAlertMessage} />
     </Box>
   );
 };

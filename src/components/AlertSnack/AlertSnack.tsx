@@ -1,13 +1,13 @@
 import { Snackbar, Fade, Alert } from '@mui/material';
 import { IProps } from './type';
 
-const AlertSnack = ({ error, setError, severity = 'error', variant = 'filled' }: IProps) => {
+const AlertSnack = ({ message, setMessage, severity = 'error', variant = 'filled' }: IProps) => {
   return (
     <Snackbar
-      open={!!error}
-      onClose={() => setError('')}
+      open={!!message}
+      onClose={() => setMessage('')}
       autoHideDuration={3000}
-      message={error}
+      message={message}
       TransitionComponent={Fade}
       transitionDuration={380}
       anchorOrigin={{
@@ -16,7 +16,7 @@ const AlertSnack = ({ error, setError, severity = 'error', variant = 'filled' }:
       }}
     >
       <Alert variant={variant} severity={severity}>
-        {error}
+        {message}
       </Alert>
     </Snackbar>
   );
