@@ -7,6 +7,7 @@ import ErrorMessage from '../../../../../components/ErrorMessage';
 import AlertSnack from '../../../../../components/AlertSnack';
 import { sectionStyles, innerBoxStyles, editButtonStyles, labelStyles } from '../styles';
 import { IProps } from './types';
+import { TSeverity } from '../../../../../components/AlertSnack/type';
 
 const Password = ({ userId }: IProps) => {
   const [changePassword, { loading, error }] = useMutation(CHANGE_PASSWORD);
@@ -14,7 +15,7 @@ const Password = ({ userId }: IProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState<string>('');
-  const [messageSeverity, setMessageSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('error');
+  const [messageSeverity, setMessageSeverity] = useState<TSeverity>('error');
 
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 

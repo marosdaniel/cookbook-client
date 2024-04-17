@@ -3,6 +3,7 @@ import { Box, Button, Grow, TextField, Typography } from '@mui/material';
 
 import ErrorMessage from '../../../../../components/ErrorMessage';
 import AlertSnack from '../../../../../components/AlertSnack';
+import { TSeverity } from '../../../../../components/AlertSnack/type';
 import { editButtonStyles, innerBoxStyles, labelStyles, sectionStyles } from '../styles';
 import { IProps } from './types';
 
@@ -18,7 +19,7 @@ const PersonalData = ({
 }: IProps) => {
   const [isPersonalDataEditable, setIsPersonalDataEditable] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string>('');
-  const [messageSeverity, setMessageSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('error');
+  const [messageSeverity, setMessageSeverity] = useState<TSeverity>('error');
 
   const handlePersonalDataEditable = () => {
     setIsPersonalDataEditable(prev => !prev);
