@@ -5,7 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 
 import { IProps } from './types';
-import { cardStyles } from './stsles';
+import { cardStyles, cardActionsStyle } from './styles';
 
 const RecipeCard = ({ title, description, createdBy, id }: IProps) => {
   // TODO: Add image or placeholder image
@@ -19,7 +19,7 @@ const RecipeCard = ({ title, description, createdBy, id }: IProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions disableSpacing>
+      <CardActions sx={cardActionsStyle}>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>

@@ -1,14 +1,16 @@
-import UnderConstruction from '../../components/UnderConstruction/UnderConstruction';
+import { Typography } from '@mui/material';
+
 import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
+import { mockRecipes } from '../../mock/recipes';
+import Carousel from '../../components/Carousel';
 
 const HomePage = () => {
-  const tempStyles = {
-    margin: '0 auto',
-  };
   return (
-    <WrapperContainer id="home-page" additionalStyles={tempStyles}>
-      {/* TODO: recently added recipes */}
-      <UnderConstruction />
+    <WrapperContainer id="home-page" maxWidth="xl">
+      <Typography variant="h4" component="h2">
+        popular recipes
+      </Typography>
+      <Carousel recipes={mockRecipes} />
     </WrapperContainer>
   );
 };

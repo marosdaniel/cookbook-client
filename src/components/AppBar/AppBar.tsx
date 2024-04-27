@@ -94,7 +94,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
   }),
 }));
 
-export default function AppBar({ children }: PropsWithChildren) {
+export default function AppBar({ children }: Readonly<PropsWithChildren>) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuthState();

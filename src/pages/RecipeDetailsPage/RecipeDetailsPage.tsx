@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Button, Chip, Grid, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import { useAppDispatch } from '../../store/hooks';
 import { setEditRecipe } from '../../store/Recipe/recipe';
@@ -29,6 +30,7 @@ const RecipeDetailsPage = () => {
   });
 
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   if (loading) return <LoadingBar />;
   if (error) return <ErrorMessage />;
@@ -62,6 +64,10 @@ const RecipeDetailsPage = () => {
     }
   };
 
+  const handleAddToFavorites = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   const linkToCreator = (
     <Link component={RouterLink} to={`${ENonProtectedRoutes.USERS}/${createdBy}`}>
       {createdBy}
@@ -90,11 +96,18 @@ const RecipeDetailsPage = () => {
       </Typography>
       <Grid display="flex" justifyContent="space-between" alignItems="flex-start">
         <PageTitle title={title ?? ''} />
-        {isOwnRecipe && (
-          <Button variant="outlined" color="primary" onClick={handleEdit}>
-            Edit
-          </Button>
-        )}
+        <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center">
+            <IconButton onClick={handleAddToFavorites} size="large">
+              <FavoriteIcon color={isFavorite ? 'error' : 'disabled'} fontSize="inherit" />
+            </IconButton>
+          </Box>
+          {isOwnRecipe && (
+            <Button variant="outlined" color="primary" onClick={handleEdit} sx={{ ml: 2 }}>
+              Edit
+            </Button>
+          )}
+        </Box>
       </Grid>
       {isLabels && (
         <Stack sx={labelWrapperStyles} direction="row" spacing={1}>
