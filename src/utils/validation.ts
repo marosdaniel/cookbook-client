@@ -82,4 +82,6 @@ export const recipeFormValidationSchema = Yup.object().shape({
     }),
   ),
   steps: Yup.array().of(Yup.string().required('Required')),
+  servings: Yup.number().required('Required'),
+  youtubeLink: Yup.string().url('Invalid url'),
 });

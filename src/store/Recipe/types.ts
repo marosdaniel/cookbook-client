@@ -15,6 +15,7 @@ export type TRecipe = {
   category: TCategoryMetadata;
   labels: TLabelMetadata[] | [];
   servings: number;
+  youtubeLink?: string;
 };
 
 export type TIngredient = {

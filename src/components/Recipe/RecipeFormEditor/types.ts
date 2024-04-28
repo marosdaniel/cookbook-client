@@ -22,4 +22,5 @@ export interface IFormikProps {
   ingredients: TIngredient[] | [];
   preparationSteps: TPreparationStep[] | [];
   servings: number;
+  youtubeLink?: string;
 }

@@ -87,6 +87,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
       ingredients: cleanIngredients(ingredients),
       preparationSteps: cleanPreparationSteps(preparationSteps),
       servings: inputValues?.servings || 1,
+      youtubeLink: inputValues?.youtubeLink,
     };
 
     try {
@@ -130,7 +131,8 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
   const [debouncedValues, setDebouncedValues] = useState<IFormikProps | undefined>(values);
   const handleFormChange = () => {
     if (!debouncedValues?.title) return;
-    const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels, servings } = debouncedValues;
+    const { title, description, imgSrc, cookingTime, difficultyLevel, category, labels, servings, youtubeLink } =
+      debouncedValues;
     if (!isEditMode) {
       dispatch(
         newRecipe({
@@ -143,6 +145,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           category,
           labels,
           servings,
+          youtubeLink,
         }),
       );
     } else if (difficultyLevel !== undefined && category !== undefined && editRecipeFromStore?._id !== undefined) {
@@ -157,6 +160,7 @@ const RecipeFormEditor = ({ isEditMode, setIsEditMode }: IProps) => {
           category,
           labels,
           servings,
+          youtubeLink,
         }),
       );
     }

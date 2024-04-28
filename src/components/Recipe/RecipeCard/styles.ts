@@ -1,6 +1,6 @@
 export const cardStyles = {
-  height: '250px',
-  minHeight: '250px',
+  height: '270px',
+  minHeight: '270px',
   textDecoration: 'none',
   cursor: 'grab',
   position: 'relative',

@@ -20,6 +20,7 @@ import IngredientList from './IngredientList';
 
 import { RecipeDetailsData } from './types';
 import { commonTypographyStyles, labelWrapperStyles } from './styles';
+import YoutubeEmbed from '../../components/YoutubeEmbed';
 
 const RecipeDetailsPage = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ const RecipeDetailsPage = () => {
     difficultyLevel,
     labels,
     servings,
+    youtubeLink,
   } = recipe || {};
 
   const isLabels = labels && labels?.length > 0;
@@ -150,6 +152,7 @@ const RecipeDetailsPage = () => {
       {orderedPreparationSteps && orderedPreparationSteps.length > 0 && (
         <PreparationStepList preparationSteps={orderedPreparationSteps} title="Cooking instructions" />
       )}
+      {youtubeLink ? <YoutubeEmbed youtubeLink={youtubeLink} /> : null}
     </WrapperContainer>
   );
 };
