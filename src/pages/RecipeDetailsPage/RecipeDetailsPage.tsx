@@ -10,6 +10,7 @@ import { TRecipe } from '../../store/Recipe/types';
 import { GET_RECIPE_BY_ID } from '../../service/graphql/recipe/getRecipes';
 import { useAuthState } from '../../store/Auth';
 import { ENonProtectedRoutes } from '../../router/types';
+import YoutubeEmbed from '../../components/YoutubeEmbed';
 import LoadingBar from '../../components/LoadingBar';
 import ErrorMessage from '../../components/ErrorMessage';
 import WrapperContainer from '../../components/stylingComponents/WrapperContainer';
@@ -20,7 +21,6 @@ import IngredientList from './IngredientList';
 
 import { RecipeDetailsData } from './types';
 import { commonTypographyStyles, labelWrapperStyles } from './styles';
-import YoutubeEmbed from '../../components/YoutubeEmbed';
 
 const RecipeDetailsPage = () => {
   const dispatch = useAppDispatch();
