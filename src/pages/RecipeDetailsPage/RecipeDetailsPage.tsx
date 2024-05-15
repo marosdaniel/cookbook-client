@@ -25,6 +25,7 @@ import { commonTypographyStyles, labelWrapperStyles } from './styles';
 const RecipeDetailsPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
+
   const { user } = useAuthState();
   const { loading, error, data } = useQuery<RecipeDetailsData>(GET_RECIPE_BY_ID, {
     variables: { id } as { id: string },
