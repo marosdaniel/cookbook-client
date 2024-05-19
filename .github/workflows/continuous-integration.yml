@@ -35,7 +35,9 @@ jobs:
           node-version: '20.x'
       - name: npm ci
         run: npm ci
-      - name: Lint, build and test
-        run: npx rimraf dist
-      - run: npx eslint "src/**" "**/*.{js,jsx,ts,tsx}"
-      - run: npm run build
+      # - name: Clean - rimraf dist
+      #   run: npx rimraf dist
+      - name: Lint
+        run: npx eslint "src/**" "**/*.{js,jsx,ts,tsx}"
+      - name: Build
+        run: npm run build

@@ -1,4 +1,4 @@
-import { TIngredient, TPreparationStep } from '../../../store/Recipe/types';
+import { TIngredient } from '../../../store/Recipe/types';
 
 export interface IProps {
   title: string;
