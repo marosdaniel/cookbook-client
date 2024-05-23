@@ -1,5 +1,11 @@
 name: Continuous Integration
 on:
+  # workflow_run:
+  #   workflows: ['Production Deployment']
+  #   types:
+  #     - completed
+  #   branches:
+  #     - main
   workflow_dispatch:
   push:
     branches:

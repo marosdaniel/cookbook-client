@@ -3,10 +3,21 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
-  push:
+  workflow_run:
+    workflows: ['Continuous Integration']
+    types:
+      - completed
     branches:
       - main
+  # push:
+  #   branches:
+  #     - main
 jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This job will trigger the deploy"
+
   Deploy-Production:
     runs-on: ubuntu-latest
     steps:
