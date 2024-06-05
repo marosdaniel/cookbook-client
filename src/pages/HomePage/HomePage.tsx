@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <WrapperContainer id="home-page" maxWidth="xl">
       <Typography variant="h4" component="h2">
-        popular recipes
+        popular recipes /sample/
       </Typography>
       <Carousel recipes={mockRecipes} />
     </WrapperContainer>
