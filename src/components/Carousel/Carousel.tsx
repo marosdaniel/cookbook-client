@@ -1,5 +1,5 @@
 import MaterialCarousel from 'react-material-ui-carousel';
-import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme, Box } from '@mui/material';
 import { TRecipe } from '../../store/Recipe/types';
 import RecipeCard from '../Recipe/RecipeCard';
 import { groupIntoChunks, useChunkSize } from './utils';
@@ -15,18 +15,16 @@ const Carousel = ({ recipes }: IProps) => {
   const isLg = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const isXl = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const getGridItemSize = () => {
-    if (isXs) return 12;
-    if (isSm) return 6;
-    if (isMd) return 4;
-    if (isLg) return 3;
-    if (isXl) return 3;
-    return 3;
+  const getCardWidth = () => {
+    if (isXs) return '100%';
+    if (isSm) return '100%';
+    if (isMd) return 'calc(100% / 3)';
+    if (isLg) return 'calc(25%)';
+    if (isXl) return 'calc(25%)';
+    return 'calc(25%)';
   };
 
-  const gridItemSize = getGridItemSize();
-
-  console.log(gridItemSize);
+  const cardWidth = getCardWidth();
 
   return (
     <MaterialCarousel
@@ -41,23 +39,21 @@ const Carousel = ({ recipes }: IProps) => {
       indicators
     >
       {groupIntoChunks(recipes, chunkSize).map((group, groupIndex) => (
-        <Grid
-          container
+        <Box
           key={groupIndex}
-          sx={{ gap: '20px', justifyContent: 'center', alignItems: 'center', p: '20px', height: '100%' }}
+          sx={{
+            display: 'flex',
+            // flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '20px',
+            mt: '20px',
+            height: '100%',
+          }}
         >
           {group.map((recipe: TRecipe, index: number) => {
             const { _id: id, createdBy, title, description, ingredients, createdAt, updatedAt } = recipe;
             return (
-              <Grid
-                item
-                key={index}
-                xs={gridItemSize}
-                sm={gridItemSize}
-                md={gridItemSize}
-                lg={gridItemSize}
-                xl={gridItemSize}
-              >
+              <Box key={index} sx={{ width: cardWidth, boxSizing: 'border-box' }}>
                 <RecipeCard
                   key={`card-${index}`}
                   id={id}
@@ -68,10 +64,10 @@ const Carousel = ({ recipes }: IProps) => {
                   createdAt={createdAt}
                   updatedAt={updatedAt}
                 />
-              </Grid>
+              </Box>
             );
           })}
-        </Grid>
+        </Box>
       ))}
     </MaterialCarousel>
   );
