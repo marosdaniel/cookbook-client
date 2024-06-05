@@ -1,10 +1,7 @@
-export const containerStyles = {
+export const carouselContainerStyles = {
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  alignContent: 'center',
   justifyContent: 'center',
-  //   height: '400px',
-  width: '100%',
-  marginTop: '40px',
+  gap: '20px',
+  mt: '20px',
+  height: '100%',
 };

@@ -30,3 +30,26 @@ export const useChunkSize = () => {
   }
   return chunkSize;
 };
+
+export const useResponsiveCardWidth = () => {
+  const theme = useTheme();
+
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
+  const isSm = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+  const isMd = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isLg = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const isXl = useMediaQuery(theme.breakpoints.up('lg'));
+
+  const getCardWidth = () => {
+    if (isXs) return '100%';
+    if (isSm) return '100%';
+    if (isMd) return 'calc(100% / 3)';
+    if (isLg) return 'calc(25%)';
+    if (isXl) return 'calc(25%)';
+    return 'calc(25%)';
+  };
+
+  const cardWidth = getCardWidth();
+
+  return cardWidth;
+};
